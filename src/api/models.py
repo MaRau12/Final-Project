@@ -54,9 +54,8 @@ class Post(db.Model):
             "price": self.price,
             "description": self.description,
             "from_location": self.from_location,
-            "to_location": self.to_location,
-            "transport": self.transport,
-            "comments": self.comments
+            # "to_location": self.to_location,
+            # "transports": self.transports,
         }
 
 class Transport(db.Model):
@@ -69,9 +68,20 @@ class Transport(db.Model):
             "name": self.name
         }
 
+class Country(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(20), unique=True, nullable=False)
+    city = db.relationship('City', backref='country')
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name
+        }
+
 class City(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    country_id = db.Column(db.Integer(), db.ForeignKey('post.id'), nullable=False)
+    country_id = db.Column(db.Integer(), db.ForeignKey('country.id'), nullable=False)
     name = db.Column(db.String(20), unique=False, nullable=False)
     latitude = db.Column(db.Float(), unique=False, nullable=True)
     longitude = db.Column(db.Float(), unique=False, nullable=True)
@@ -83,16 +93,6 @@ class City(db.Model):
             "name": self.name,
             "latitude": self.latitude,
             "longitude": self.longitude
-        }
-
-class Country(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(20), unique=False, nullable=False)
-
-    def serialize(self):
-        return {
-            "id": self.id,
-            "name": self.name
         }
 
 class Comment(db.Model):
