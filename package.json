@@ -73,8 +73,10 @@
 		]
 	},
 	"dependencies": {
+		"@phosphor-icons/react": "^2.0.8",
 		"prop-types": "^15.6.1",
 		"react": "^16.8.4",
+		"react-circle-flags": "^0.0.18",
 		"react-dom": "^16.8.4",
 		"react-polyfills": "0.0.1",
 		"react-router-dom": "^6.3.0"
