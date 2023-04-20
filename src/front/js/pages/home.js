@@ -52,6 +52,24 @@ export const Home = () => {
             <a>UserSettings</a>
           </Link>
         </li>
+
+        <li>
+          <Link to={"/register"}>
+            <a>Register</a>
+          </Link>
+        </li>
+
+        <li>
+          <Link to={"/login"}>
+            <a>Login</a>
+          </Link>
+        </li>
+
+        <li>
+          <Link to={"/forgotpassword"}>
+            <a>Forgot Password</a>
+          </Link>
+        </li>
       </ol>
     </div>
   );
