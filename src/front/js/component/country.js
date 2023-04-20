@@ -18,7 +18,7 @@ export const Country = () => {
         {character.map((item, index) => {
           return (
             <div className="col">
-              <Link to={`/country`}>
+              <Link to={"/country"}>
                 <CircleFlag countryCode={item} />
               </Link>
             </div>
