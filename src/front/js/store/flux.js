@@ -3,6 +3,7 @@ const getState = ({ getStore, getActions, setStore }) => {
     store: {
       posts: [],
       userPosts: [],
+      user: [],
     },
     actions: {
       getAllPosts: async () => {
