@@ -18,6 +18,9 @@ import { Notification } from "./pages/notification";
 import { SearchResult } from "./pages/searchResult";
 import { UserProfile } from "./pages/userProfile";
 import { UserSettings } from "./pages/userSettings";
+import { Register } from "./pages/register";
+import { Login } from "./pages/login";
+import { ForgotPassword } from "./pages/forgotPassword";
 
 //create your first component
 const Layout = () => {
@@ -44,6 +47,9 @@ const Layout = () => {
             <Route element={<SearchResult />} path="/searchresult" />
             <Route element={<UserProfile />} path="/userprofile" />
             <Route element={<UserSettings />} path="/usersettings" />
+            <Route element={<Register />} path="/register" />
+            <Route element={<Login />} path="/login" />
+            <Route element={<ForgotPassword />} path="/forgotpassword" />
             <Route element={<Single />} path="/single/:theid" />
             <Route element={<h1>Not found!</h1>} />
           </Routes>
