@@ -1,8 +1,14 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Country } from "../component/country";
+import { Card } from "../component/card";
 
 export const Home = () => {
   return (
+
+    <div>
+      <Country />
+      <Card />
+
     <div className="text-center mt-5">
       <ol>
         <li>
