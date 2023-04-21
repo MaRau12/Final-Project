@@ -6,13 +6,13 @@ const getState = ({ getStore, getActions, setStore }) => {
     },
     actions: {
       getAllPosts: async () => {
-        const response = await fetch(process.env.BACKEND_URL + "/api/posts")
+        const response = await fetch(process.env.BACKEND_URL + "/api/posts");
         const data = await response.json();
         setStore({ posts: data.posts });
       },
       getAllPostsByUserId: async () => {
         const response = await fetch(
-          process.env.BACKEND_URL + "api/posts_by_user_id"
+          process.env.BACKEND_URL + "/api/posts_by_user_id"
         );
         const data = await response.json();
         setStore({ userPosts: data.posts });

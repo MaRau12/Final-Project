@@ -13,7 +13,5 @@ def get_all_posts():
 @api.route('/posts_by_user_id', methods=['GET'])
 def get_all_posts_by_user_id():
     user_id_check = 1
-    posts = Post.query.filter_by(user_id=user_id_check)
-    print('@@@@@@@@@@@@')
-    print([post.serialize() for post in posts])
-    return jsonify({"posts": [post.serialize() for post in posts]}), 200
+    user_posts = Post.query.filter_by(user_id=user_id_check)
+    return jsonify({"posts": [post.serialize() for post in user_posts]}), 200
