@@ -12,7 +12,7 @@ class User(db.Model):
     country = db.Column(db.String(20), unique=False, nullable=True)
     city = db.Column(db.String(20), unique=False, nullable=True)
     description = db.Column(db.String(120), unique=False, nullable=True)
-    admin = db.Column(db.Boolean(), unique=False, nullable=False)
+    admin = db.Column(db.Boolean(), unique=False, nullable=True)
     posts = db.relationship('Post', backref='user')
 
     def serialize(self):
