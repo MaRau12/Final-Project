@@ -17,10 +17,7 @@ const injectContext = (PassedComponent) => {
       })
     );
 
-    useEffect(() => {
-      state.actions.getAllPosts();
-      state.actions.getAllPostsByUserId();
-    }, []);
+    useEffect(() => {}, []);
 
     return (
       <Context.Provider value={state}>
