@@ -1,7 +1,13 @@
 const getState = ({ getStore, getActions, setStore }) => {
   return {
     store: {
+
+      posts: [],
+      userPosts: [],
+      user: [],
+
       favorites: [],
+
     },
     actions: {
       createNewUser: async () => {
