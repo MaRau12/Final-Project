@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 const getState = ({ getStore, getActions, setStore }) => {
   return {
     store: {
@@ -18,8 +20,14 @@ const getState = ({ getStore, getActions, setStore }) => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(newUser),
           }
+          
         );
+
+        if (response.ok) {
+          useNavigate("/login");
+        }
       },
+      
       logInUser: async () => {
         const response = await fetch(process.env.BACKEND_URL + "/api/login", {
           method: "POST",
