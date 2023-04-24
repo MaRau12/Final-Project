@@ -1,15 +1,13 @@
 import { Country } from "../component/country";
 import { Card } from "../component/card";
 
-import React, { useContext } from "react";
-
-
+import React from "react";
 
 export const Home = () => {
   return (
-   <div>
-    <Country />
-    <Card />
-   </div>
+    <div>
+      <Country />
+      <Card />
+    </div>
   );
 };

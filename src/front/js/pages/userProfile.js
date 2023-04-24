@@ -1,5 +1,7 @@
 import React from "react";
-import rigoImage from "../../img/rigo-baby.jpg";
+import rigoImage from "../../img/rigo-baby.jpg"
+import posts from "../../img/posts.jpg"
+import album from "../../img/album.jpg";
 
 export const UserProfile = () => {
   return (
@@ -13,24 +15,25 @@ export const UserProfile = () => {
             <img src={rigoImage} class="card-img-top rounded-circle" alt="" />
           </div>
         </div>
-        <p className="text-center">User name</p>
+        <h3 className="text-center">User name</h3>
       </div>
-      <div className="row justify-content-md-center">
+      <div className="row justify-content-md-center p-5">
+        
         <img
-          src={rigoImage}
-          className="card-img-top"
+          src={posts}
+          className="card-img-top m-5"
+          style={{ width: "16rem" }}
+          atl=""
+        />
+        <img
+          src={album}
+          className="card-img-top m-5"
           style={{ width: "16rem" }}
           atl=""
         />
         <img
           src={rigoImage}
-          className="card-img-top"
-          style={{ width: "16rem" }}
-          atl=""
-        />
-        <img
-          src={rigoImage}
-          className="card-img-top"
+          className="card-img-top m-5"
           style={{ width: "16rem" }}
           atl=""
         />
