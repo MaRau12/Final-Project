@@ -43,6 +43,11 @@ def login_user():
     else:
         return jsonify({"error": "Error with credentials"}), 403
 
+@api.route('/users', methods=['GET'])
+def get_all_users():
+    users = User.query.all()
+    return jsonify({"users": [user.serialize() for user in users]}), 200
+
 @api.route('/posts', methods=['GET'])
 def get_all_posts():
     posts = Post.query.all()
