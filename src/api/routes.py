@@ -13,19 +13,22 @@ api = Blueprint('api', __name__)
 @api.route('/register', methods=['POST'])
 def create_user():
     body = request.json
+    print(body)
     user_already_exist = User.query.filter_by(email= body["email"]).first()
     if user_already_exist:
         return jsonify({"response": "Email already in use"}), 403
-    if body["user_name"] is not None and body["email"] is not None and body["password"] is not None:
+    if body["user_name"] and body["email"] and body["password"]:
         user = User(
+            full_name = body ["full_name"],
             user_name = body["user_name"],
             email = body["email"],
             password = body["password"],
             country = body["country"],
             city = body["city"],
+            
         )
-        db.session.add(user);
-        db.session.commit();
+        db.session.add(user)
+        db.session.commit()
         return jsonify({"response": "User created"}), 200
     else:
         return jsonify({"error": "Missing user details"}), 403
@@ -39,6 +42,11 @@ def login_user():
         return jsonify({"token": token})
     else:
         return jsonify({"error": "Error with credentials"}), 403
+
+@api.route('/users', methods=['GET'])
+def get_all_users():
+    users = User.query.all()
+    return jsonify({"users": [user.serialize() for user in users]}), 200
 
 @api.route('/posts', methods=['GET'])
 def get_all_posts():
