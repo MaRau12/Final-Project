@@ -60,7 +60,7 @@ def create_new_post():
     body = request.json
     post = Post(
         user_id = user_id_check,
-        tittle = body["tittle"],
+        title = body["title"],
         trip_duration = body["trip_duration"],
         price = body["price"],
         description = body["description"],
@@ -68,8 +68,8 @@ def create_new_post():
         to_location = body["to_location"],
         transports = body["transports"],
     )
-    db.session.add(post);
-    db.session.commit();
+    db.session.add(post)
+    db.session.commit()
     return jsonify({"response": "Post created"}), 200
 
 @api.route('/posts/<int:post_id>', methods=['DELETE'])
@@ -78,8 +78,8 @@ def delete_post(post_id):
     user_id_check = get_jwt_identity()
     post = Post.query.get(post_id)
     if post.user_id == user_id_check:
-        db.session.delete(post);
-        db.session.commit();
+        db.session.delete(post)
+        db.session.commit()
         return jsonify({"response": "Post deleted"}), 200
     else:
         return jsonify({"response": "You don't have permission"}), 400
@@ -91,7 +91,7 @@ def edit_post():
     body = request.json
     post = Post.query.get(body["id"])
     if post.user_id == user_id_check:
-        post.tittle = body["tittle"],
+        post.title = body["title"],
         post.trip_duration = body["trip_duration"],
         post.price = body["price"],
         post.description = body["description"],

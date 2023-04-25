@@ -12,34 +12,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 
     },
     actions: {
-      createNewUser: async () => {
-        const response = await fetch(
-          process.env.BACKEND_URL + "/api/register",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(newUser),
-          }
-          
-        );
 
-        if (response.ok) {
-          useNavigate("/login");
-        }
-      },
       
-      logInUser: async () => {
-        const response = await fetch(process.env.BACKEND_URL + "/api/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(user),
-        });
-        if (response.ok) {
-          const data = await response.json();
-          const token = data.token;
-          sessionStorage.setItem("token", token);
-        }
-      },
+
       getAllPosts: async () => {
         const response = await fetch(process.env.BACKEND_URL + "/api/posts");
         const data = await response.json();
