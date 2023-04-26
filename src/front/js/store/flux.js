@@ -13,7 +13,9 @@ const getState = ({ getStore, getActions, setStore }) => {
     },
     actions: {
 
+
       
+
 
       getAllPosts: async () => {
         const response = await fetch(process.env.BACKEND_URL + "/api/posts");
