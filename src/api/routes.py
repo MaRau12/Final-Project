@@ -52,7 +52,7 @@ def create_new_post():
     body = request.json
     post = Post(
         user_id = user_id_check,
-        tittle = body["tittle"],
+        title = body["title"],
         trip_duration = body["trip_duration"],
         price = body["price"],
         description = body["description"],
@@ -83,7 +83,7 @@ def edit_post():
     body = request.json
     post = Post.query.get(body["id"])
     if post.user_id == user_id_check:
-        post.tittle = body["tittle"],
+        post.title = body["title"],
         post.trip_duration = body["trip_duration"],
         post.price = body["price"],
         post.description = body["description"],
