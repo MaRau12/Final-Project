@@ -70,7 +70,7 @@ class Transport(db.Model):
 
 class Country(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(20), unique=True, nullable=False)
+    name = db.Column(db.String(50), unique=True, nullable=False)
     city = db.relationship('City', backref='country')
 
     def serialize(self):

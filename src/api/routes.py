@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Post
+from api.models import db, User, Post, Transport, Country
 from api.utils import generate_sitemap, APIException
 
 # Token
@@ -7,10 +7,10 @@ from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
 
-api = Blueprint('api', __name__)
+api = Blueprint("api", __name__)
 
 
-@api.route('/register', methods=['POST'])
+@api.route("/register", methods=["POST"])
 def create_user():
     body = request.json
     print(body)
@@ -33,7 +33,7 @@ def create_user():
     else:
         return jsonify({"error": "Missing user details"}), 403
 
-@api.route('/login', methods=['POST'])
+@api.route("/login", methods=["POST"])
 def login_user():
     body = request.json
     user = User.query.filter_by(email= body["email"], password= body["password"]).first()
@@ -43,21 +43,25 @@ def login_user():
     else:
         return jsonify({"error": "Error with credentials"}), 403
 
-@api.route('/users', methods=['GET'])
+@api.route("/users", methods=["GET"])
 def get_all_users():
     users = User.query.all()
     return jsonify({"users": [user.serialize() for user in users]}), 200
 
-@api.route('/posts', methods=['GET'])
+@api.route("/posts", methods=["GET"])
 def get_all_posts():
     posts = Post.query.all()
     return jsonify({"posts": [post.serialize() for post in posts]}), 200
 
-@api.route('/posts', methods=['POST'])
+@api.route("/posts", methods=["POST"])
 @jwt_required()
 def create_new_post():
     user_id_check = get_jwt_identity()
     body = request.json
+    transports = []
+    for name in body["transports"]:
+        transport = Transport.query.filter_by(name = name).first()
+        transports.append(transport)
     post = Post(
         user_id = user_id_check,
         title = body["title"],
@@ -66,13 +70,13 @@ def create_new_post():
         description = body["description"],
         from_location = body["from_location"],
         to_location = body["to_location"],
-        transports = body["transports"],
+        transports = transports,
     )
     db.session.add(post)
     db.session.commit()
     return jsonify({"response": "Post created"}), 200
 
-@api.route('/posts/<int:post_id>', methods=['DELETE'])
+@api.route("/posts/<int:post_id>", methods=["DELETE"])
 @jwt_required()
 def delete_post(post_id):
     user_id_check = get_jwt_identity()
@@ -84,7 +88,7 @@ def delete_post(post_id):
     else:
         return jsonify({"response": "You don't have permission"}), 400
 
-@api.route('/posts', methods=['PUT'])
+@api.route("/posts", methods=["PUT"])
 @jwt_required()
 def edit_post():
     user_id_check = get_jwt_identity()
@@ -103,9 +107,17 @@ def edit_post():
     else:
         return jsonify({"response": "Missing fields"}), 400
 
-@api.route('/posts_by_user_id', methods=['GET'])
+@api.route("/posts_by_user_id", methods=["GET"])
 @jwt_required()
 def get_all_posts_by_user_id():
     user_id_check = get_jwt_identity()
     user_posts = Post.query.filter_by(user_id=user_id_check)
     return jsonify({"posts": [post.serialize() for post in user_posts]}), 200
+
+@api.route("/fillcountry", methods=["POST"])
+def fill_country():
+    body = request.json
+    countries = [Country(name = country['name']) for country in body]
+    db.session.add_all(countries)
+    db.session.commit()
+    return 'done'
