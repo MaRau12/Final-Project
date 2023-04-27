@@ -50,7 +50,7 @@ def upgrade():
     )
     op.create_table('post',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('tittle', sa.String(length=40), nullable=False),
+    sa.Column('title', sa.String(length=40), nullable=False),
     sa.Column('trip_duration', sa.Integer(), nullable=False),
     sa.Column('price', sa.Integer(), nullable=False),
     sa.Column('description', sa.String(length=120), nullable=False),
@@ -61,7 +61,7 @@ def upgrade():
     sa.Column('comments', sa.String(length=120), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('description'),
-    sa.UniqueConstraint('tittle')
+    sa.UniqueConstraint('title')
     )
     op.create_table('transports',
     sa.Column('id', sa.Integer(), nullable=False),

@@ -6,6 +6,7 @@ export const Register = () => {
   const navigate = useNavigate();
   const { store, actions } = useContext(Context);
   const [newUser, setNewUser] = useState({ full_name: "", user_name: "", email: "", country: "", city: "", password: "", })
+  
 
   const createNewUser = async () => {
     const response = await fetch(
@@ -17,7 +18,12 @@ export const Register = () => {
       }
     )
     if (response.ok) {
-      navigate("/login");
+     
+      //let user = {};
+      user.push(newUser);
+      console.log(user);
+      //store.set("user", user);
+      //navigate("/login");
     }
   }
 
