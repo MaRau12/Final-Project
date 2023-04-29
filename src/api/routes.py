@@ -43,6 +43,14 @@ def login_user():
     else:
         return jsonify({"error": "Error with credentials"}), 403
 
+@api.route('/current_user', methods=['GET'])
+@jwt_required()
+def get_current_user():
+    user_id_check = get_jwt_identity()
+    user = User.query.filter_by(id = user_id_check).first()
+    return jsonify(user.serialize()), 200
+    #print("current",current_user)
+
 @api.route('/users', methods=['GET'])
 def get_all_users():
     users = User.query.all()

@@ -18,12 +18,7 @@ export const Register = () => {
       }
     )
     if (response.ok) {
-     
-      //let user = {};
-      user.push(newUser);
-      console.log(user);
-      //store.set("user", user);
-      //navigate("/login");
+      navigate("/login");
     }
   }
 

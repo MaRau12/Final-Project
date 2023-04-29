@@ -1,10 +1,22 @@
-import React from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { Context } from "../store/appContext";
 import rigoImage from "../../img/rigo-baby.jpg"
 import posts from "../../img/posts.jpg"
 import album from "../../img/album.jpg";
 
 export const UserProfile = () => {
+  
+  const { store, actions } = useContext(Context);
+
+  console.log("profile",store.currentUser)
+
+ /* useEffect(()=>{
+    actions.getCurrentUser()
+  },[]) */
+
+
   return (
+    store.currentUser? 
     <div className="Container">
       <div>
         <div className="row justify-content-md-center">
@@ -15,7 +27,7 @@ export const UserProfile = () => {
             <img src={rigoImage} class="card-img-top rounded-circle" alt="" />
           </div>
         </div>
-        <h3 className="text-center">User name</h3>
+        <h3 className="text-center">{store.currentUser.user_name}</h3>
       </div>
       <div className="row justify-content-md-center p-5">
         
@@ -39,5 +51,5 @@ export const UserProfile = () => {
         />
       </div>
     </div>
-  );
+  :"");
 };
