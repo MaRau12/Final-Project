@@ -7,7 +7,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       posts: [],
       userPosts: [],
       user: [],
-
+      currentUser: [],
       favorites: [],
 
     },
@@ -15,7 +15,23 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 
       
+      getCurrentUser: async () => {
+        const token = sessionStorage.getItem("token");
+        const options = {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          }
+        }
 
+        console.log(token)
+      const response = await fetch (process.env.BACKEND_URL + "/api/current_user", options); 
+      const data = await response.json();
+      setStore({ currentUser: data});
+        console.log(data)
+      },
 
       getAllPosts: async () => {
         const response = await fetch(process.env.BACKEND_URL + "/api/posts");
