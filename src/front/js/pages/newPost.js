@@ -3,53 +3,56 @@ import React, { useState } from "react";
 export const NewPost = () => {
   const [title, setTitle] = useState("");
   const [country, setCountry] = useState("");
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
-  const [duration, setDuration] = useState("");
+  const [from_location, setFrom_location] = useState("");
+  const [to_location, setTo_location] = useState("");
+  const [trip_duration, setTrip_Duration] = useState("");
   const [price, setPrice] = useState("");
-  const [transport, setTransport] = useState("");
+  const [transports, setTransports] = useState([]);
   const [description, setDescription] = useState("");
 
-  const newPost = [
-    title,
-    country,
-    from,
-    to,
-    duration,
-    price,
-    transport,
-    description,
-  ];
+  const newPost = {
+    title: title,
+    country: country,
+    from_location: from_location,
+    to_location: to_location,
+    trip_duration: trip_duration,
+    price: price,
+    transports: transports,
+    description: description,
+  };
 
   async function post() {
-    // const response = await fetch(process.env.BACKEND_URL + "/api/posts", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(newPost),
-    // });
-    // if (response.ok) {
-    //   console.log("success");
-    // }
+    console.log(transports);
+    const response = await fetch(process.env.BACKEND_URL + "/api/posts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
+      },
+      body: JSON.stringify(newPost),
+    });
+    if (response.ok) {
+      console.log("success");
+    }
     console.log(title);
     console.log(country);
-    console.log(from);
-    console.log(to);
-    console.log(duration);
+    console.log(from_location);
+    console.log(to_location);
+    console.log(trip_duration);
     console.log(price);
-    console.log(transport);
     console.log(description);
     console.log(newPost);
   }
 
   return (
     <div className="text-center">
-      <div className="border-bottom p-3 ">
+      <div className="border-botto_locationm p-3 ">
         <h3>Create new post</h3>
       </div>
-      <div className="bg-light border-bottom p-3">
+      <div className="bg-light border-botto_locationm p-3">
         <div className="row g-3 justify-content-center mb-3">
           <div className="col-md-5">
-            <label for="title" className="form-label">
+            <label htmlFor="title" className="form-label">
               Title
             </label>
             <input
@@ -62,7 +65,7 @@ export const NewPost = () => {
             <div className="validation"></div>
           </div>
           <div className="col-md-3">
-            <label for="country" className="form-label">
+            <label htmlFor="country" className="form-label">
               Country
             </label>
             <select
@@ -131,10 +134,10 @@ export const NewPost = () => {
 
         <div className="row g-3 justify-content-center mb-3">
           <div className="col-md-4">
-            <label className="form-label">From:</label>
+            <label className="form-label">From_location:</label>
             <select
               className="form-select"
-              onChange={(e) => setFrom(e.target.value)}
+              onChange={(e) => setFrom_location(e.target.value)}
             >
               <option selected disabled value="">
                 Pick a city
@@ -194,10 +197,10 @@ export const NewPost = () => {
             <div className="validation"></div>
           </div>
           <div className="col-md-4">
-            <label className="form-label">To:</label>
+            <label className="form-label">To_location:</label>
             <select
               className="form-select"
-              onChange={(e) => setTo(e.target.value)}
+              onChange={(e) => setTo_location(e.target.value)}
             >
               <option selected disabled value="">
                 Pick a city
@@ -260,13 +263,13 @@ export const NewPost = () => {
 
         <div className="row g-3 justify-content-center mb-3">
           <div className="col-md-2">
-            <label className="form-label">Trip duration</label>
+            <label className="form-label">Trip trip_duration</label>
             <div className="input-group">
               <span className="input-group-text">hh:mm</span>
               <input
                 type="test"
                 className="form-control"
-                onChange={(e) => setDuration(e.target.value)}
+                onChange={(e) => setTrip_Duration(e.target.value)}
               />
             </div>
             <div className="validation"></div>
@@ -284,7 +287,7 @@ export const NewPost = () => {
             <div className="validation"></div>
           </div>
           <div className="col-md-4">
-            <label className="form-label">Transport</label>
+            <label className="form-label">Transports</label>
             <div className="cards d-flex justify-content-center">
               <div className="rectangle rounded bg-secondary p-2">
                 <div className="form-check form-check-inline">
@@ -292,10 +295,12 @@ export const NewPost = () => {
                     className="form-check-input"
                     type="radio"
                     value="car"
-                    onChange={(e) => setTransport(e.target.value)}
+                    onChange={(e) =>
+                      setTransports([...transports, e.target.value])
+                    }
                   />
-                  <label className="form-check-label" for="inlineRadio1">
-                    <i class="fa-solid fa-car"></i>
+                  <label className="form-check-label" htmlFor="inlineRadio1">
+                    <i className="fa-solid fa-car"></i>
                   </label>
                 </div>
                 <div className="form-check form-check-inline">
@@ -303,10 +308,12 @@ export const NewPost = () => {
                     className="form-check-input"
                     type="radio"
                     value="bus"
-                    onChange={(e) => setTransport(e.target.value)}
+                    onChange={(e) =>
+                      setTransports([...transports, e.target.value])
+                    }
                   />
-                  <label className="form-check-label" for="inlineRadio2">
-                    <i class="fa-solid fa-bus-simple"></i>
+                  <label className="form-check-label" htmlFor="inlineRadio2">
+                    <i className="fa-solid fa-bus-simple"></i>
                   </label>
                 </div>
                 <div className="form-check form-check-inline">
@@ -314,10 +321,12 @@ export const NewPost = () => {
                     className="form-check-input"
                     type="radio"
                     value="train"
-                    onChange={(e) => setTransport(e.target.value)}
+                    onChange={(e) =>
+                      setTransports([...transports, e.target.value])
+                    }
                   />
-                  <label className="form-check-label" for="inlineRadio3">
-                    <i class="fa-solid fa-train"></i>
+                  <label className="form-check-label" htmlFor="inlineRadio3">
+                    <i className="fa-solid fa-train"></i>
                   </label>
                 </div>
                 <div className="form-check form-check-inline">
@@ -325,10 +334,15 @@ export const NewPost = () => {
                     className="form-check-input"
                     type="radio"
                     value="bicycle"
-                    onChange={(e) => setTransport(e.target.value)}
+                    onChange={(e) =>
+                      setTransports([...transports, e.target.value])
+                    }
                   />
-                  <label className="form-check-label p-0" for="inlineRadio4">
-                    <i class="fa-solid fa-bicycle"></i>
+                  <label
+                    className="form-check-label p-0"
+                    htmlFor="inlineRadio4"
+                  >
+                    <i className="fa-solid fa-bicycle"></i>
                   </label>
                 </div>
                 <div className="form-check form-check-inline">
@@ -336,10 +350,15 @@ export const NewPost = () => {
                     className="form-check-input"
                     type="radio"
                     value="walking"
-                    onChange={(e) => setTransport(e.target.value)}
+                    onChange={(e) =>
+                      setTransports([...transports, e.target.value])
+                    }
                   />
-                  <label className="form-check-label p-0" for="inlineRadio4">
-                    <i class="fa-solid fa-person-walking"></i>
+                  <label
+                    className="form-check-label p-0"
+                    htmlFor="inlineRadio4"
+                  >
+                    <i className="fa-solid fa-person-walking"></i>
                   </label>
                 </div>
               </div>
@@ -350,7 +369,7 @@ export const NewPost = () => {
 
         <div className="row g-3 justify-content-center mb-3">
           <div className="col-md-8 justify-content-end">
-            <label for="message" className="form-label">
+            <label htmlFor="message" className="form-label">
               Description
             </label>
             <textarea
