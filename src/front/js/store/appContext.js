@@ -18,7 +18,7 @@ const injectContext = (PassedComponent) => {
     );
 
     useEffect(() => {
-      state.actions.getCurrentUser()
+      state.actions.getCurrentUser(), state.actions.getAllCountries();
     }, []);
 
     return (
