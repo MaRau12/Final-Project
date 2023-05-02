@@ -50,15 +50,16 @@ def get_current_user():
     user_id_check = get_jwt_identity()
     user = User.query.filter_by(id = user_id_check).first()
     return jsonify(user.serialize()), 200
-    #print("current",current_user)
-
-
 
 @api.route("/users", methods=["GET"])
-
 def get_all_users():
     users = User.query.all()
     return jsonify({"users": [user.serialize() for user in users]}), 200
+
+@api.route("/countries", methods=["GET"])
+def get_all_countries():
+    countries = Country.query.all()
+    return jsonify({"countries": [country.serialize() for country in countries]}), 200
 
 @api.route("/posts", methods=["GET"])
 def get_all_posts():
@@ -129,7 +130,7 @@ def get_all_posts_by_user_id():
 @api.route("/fillcountry", methods=["POST"])
 def fill_country():
     body = request.json
-    countries = [Country(name = country['name']) for country in body]
+    countries = [Country(name = country['name'], code = country['code']) for country in body]
     db.session.add_all(countries)
     db.session.commit()
     return 'done'
