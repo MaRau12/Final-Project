@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { Context } from "../store/appContext";
 
 export const Login = () => {
-
+const { store, actions } = useContext(Context);
 const navigate = useNavigate();
 const [user, setUser] = useState({email:"", password:""})
 
@@ -17,8 +18,9 @@ const [user, setUser] = useState({email:"", password:""})
       const data = await response.json();
       const token = data.token;
       sessionStorage.setItem("token", token);
-      navigate("/")
-    
+      //actions.getCurrentUser()
+      navigate("/userprofile")
+        
   }
 }
 

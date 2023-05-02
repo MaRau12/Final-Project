@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { Context } from "../store/appContext";
+
 
 export const Navbar = () => {
+  const { store, actions } = useContext(Context);
+
   return (
     <nav className="navbar navbar-light bg-light">
       <div className="container">
@@ -20,7 +24,23 @@ export const Navbar = () => {
               Search
             </button>
           </Link>
+
         </div>
+        {store.currentUser ? (
+          <Link to="/userprofile">
+            <button className="btn btn-outline-warning " >
+              {store.currentUser.user_name}
+            </button>
+          </Link>
+        ) : (
+          <Link to="/login">
+            <button className="btn btn-outline-primary" >
+              Login
+            </button>
+          </Link>
+        )}
+
+
       </div>
     </nav>
   );
