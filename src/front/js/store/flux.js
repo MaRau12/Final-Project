@@ -3,18 +3,14 @@ import { useNavigate } from "react-router-dom";
 const getState = ({ getStore, getActions, setStore }) => {
   return {
     store: {
-
       posts: [],
       userPosts: [],
       user: [],
-      currentUser: [],
+      currentUser: null,
       favorites: [],
-
     },
+
     actions: {
-
-
-      
       getCurrentUser: async () => {
         const token = sessionStorage.getItem("token");
         const options = {
@@ -23,14 +19,17 @@ const getState = ({ getStore, getActions, setStore }) => {
             Authorization: "Bearer " + token,
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
-          }
-        }
+          },
+        };
 
-        console.log(token)
-      const response = await fetch (process.env.BACKEND_URL + "/api/current_user", options); 
-      const data = await response.json();
-      setStore({ currentUser: data});
-        console.log(data)
+        console.log(token);
+        const response = await fetch(
+          process.env.BACKEND_URL + "/api/current_user",
+          options
+        );
+        const data = await response.json();
+        setStore({ currentUser: data });
+        console.log(data);
       },
 
       getAllPosts: async () => {
