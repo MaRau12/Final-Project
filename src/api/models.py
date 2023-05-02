@@ -72,13 +72,11 @@ class Country(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
     city = db.relationship('City', backref='country')
-    code = db.Column(db.String(50), unique=True, nullable=False)
 
     def serialize(self):
         return {
             "id": self.id,
-            "name": self.name,
-            "code": self.code
+            "name": self.name
         }
 
 class City(db.Model):
