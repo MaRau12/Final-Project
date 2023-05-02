@@ -8,7 +8,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       user: [],
       currentUser: null,
       favorites: [],
-      countries: [],
     },
 
     actions: {
@@ -30,18 +29,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         if (response.ok) {
           setStore({ currentUser: data });
         }
-      },
-
-      getAllCountries: async () => {
-        const response = await fetch(
-          process.env.BACKEND_URL + "/api/countries",
-          {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-          }
-        );
-        const data = await response.json();
-        await setStore({ countries: data });
       },
 
       getAllPosts: async () => {
