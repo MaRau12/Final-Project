@@ -21,15 +21,14 @@ const getState = ({ getStore, getActions, setStore }) => {
             "Access-Control-Allow-Origin": "*",
           },
         };
-
-        console.log(token);
         const response = await fetch(
           process.env.BACKEND_URL + "/api/current_user",
           options
         );
         const data = await response.json();
-        setStore({ currentUser: data });
-        console.log(data);
+        if (response.ok) {
+          setStore({ currentUser: data });
+        }
       },
 
       getAllPosts: async () => {
