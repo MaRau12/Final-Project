@@ -9,6 +9,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       currentUser: null,
       favorites: [],
       countries: [],
+
     },
 
     actions: {
