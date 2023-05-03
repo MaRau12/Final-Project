@@ -9,7 +9,7 @@ export const Album = () => {
     <>
       <section className="jumbotron text-center">
         <div className="container">
-          <h1 className="jumbotron-heading">Album</h1>
+          <h1 className="jumbotron-heading p-4">Album</h1>
           <p className="lead text-muted">
             Something short and leading about the collection of user photos.
           </p>
