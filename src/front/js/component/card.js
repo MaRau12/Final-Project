@@ -26,12 +26,14 @@ export const Card = () => {
                     Some quick example text to build on the card title and make
                     up the bulk of the card's content.
                   </p>
-                  <Link to="/searchresult">
-                    <a href="#" className="btn btn-primary">
-                      Learn More!
-                    </a>
-                  </Link>
-                  <Heart className="heart" size={32} />
+                  <div class="d-flex justify-content-between">
+                    <Link to="/searchresult">
+                      <a href="#" className="btn btn-primary">
+                        Learn More!
+                      </a>
+                    </Link>
+                    <Heart className="heart" size={35} />
+                  </div>
                 </div>
               </div>
             </div>
