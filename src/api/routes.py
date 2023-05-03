@@ -137,12 +137,9 @@ def fill_country():
 
 @api.route("/transport_by_name", methods=["GET"])
 def get_transport_by_name():
-    print("###")
     name = request.args.get('name')
-    print(name)
-    transport = Transport.query.filter(Transport.name == name).first()
-    if transport:
-        return jsonify(transport.serialize())
-    else:
-        return jsonify({'error': 'Transport not found'})
+    price = request.args.get('price')
+    posts = Post.query.filter(Post.transports.any(Transport.name == name), Post.price <= price)
+    print([post.serialize() for post in posts])
+    return jsonify({"posts": [post.serialize() for post in posts]}), 200
 
