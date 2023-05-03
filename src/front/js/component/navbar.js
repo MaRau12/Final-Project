@@ -1,22 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 
 
 export const Navbar = () => {
   const { store, actions } = useContext(Context);
-  const [transportName, setTransportName] = useState('');
-
-  const handleInputChange = (event) => {
-    setTransportName(event.target.value);
-  };
-
-  const handleSearch = async (e) =>{
-    const response = await fetch(`https://3001-marau12-finalproject-tw7c3mwzusz.ws-eu96b.gitpod.io/api/transport_by_name/?name=${transportName}`);
-    const data = await response.json();
-    setResults(data);
-    console.log(data);
-  };
 
   return (
     <nav className="navbar navbar-light bg-light">
@@ -30,13 +18,9 @@ export const Navbar = () => {
             type="search"
             placeholder="Search"
             aria-label="Search"
-            id="search-query"
-            name="search-query"
-            value={transportName}
-            onChange={handleInputChange}
           />
           <Link to="/searchresult">
-            <button className="btn btn-outline-success" onClick={handleSearch}>
+            <button className="btn btn-outline-success" type="submit">
               Search
             </button>
           </Link>

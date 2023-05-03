@@ -134,15 +134,3 @@ def fill_country():
     db.session.add_all(countries)
     db.session.commit()
     return 'done'
-
-@api.route("/transport_by_name", methods=["GET"])
-def get_transport_by_name():
-    print("###")
-    name = request.args.get('name')
-    print(name)
-    transport = Transport.query.filter(Transport.name == name).first()
-    if transport:
-        return jsonify(transport.serialize())
-    else:
-        return jsonify({'error': 'Transport not found'})
-
