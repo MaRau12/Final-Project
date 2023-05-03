@@ -9,7 +9,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       currentUser: null,
       favorites: [],
       countries: [],
-
+      searchResults: []
     },
 
     actions: {
@@ -89,6 +89,10 @@ const getState = ({ getStore, getActions, setStore }) => {
         const data = await response.json();
         setStore({ userPosts: data.posts });
       },
+
+      setSearchResults: (result) => {
+        setStore({searchResults: result})
+      }
     },
   };
 };

@@ -6,15 +6,20 @@ import { Context } from "../store/appContext";
 export const Navbar = () => {
   const { store, actions } = useContext(Context);
   const [transportName, setTransportName] = useState('');
+  const [searchPrice, setSearchPrice] = useState('');
 
-  const handleInputChange = (event) => {
+  const handleInputChange1 = (event) => {
     setTransportName(event.target.value);
   };
 
+  const handleInputChange2 = (event) => {
+    setSearchPrice(event.target.value);
+  };
+
   const handleSearch = async (e) =>{
-    const response = await fetch(`https://3001-marau12-finalproject-tw7c3mwzusz.ws-eu96b.gitpod.io/api/transport_by_name/?name=${transportName}`);
+    const response = await fetch(`${process.env.BACKEND_URL}/api/transport_by_name/?name=${transportName}&price=${searchPrice}`);
     const data = await response.json();
-    setResults(data);
+    actions.setSearchResults(data.posts);
     console.log(data);
   };
 
@@ -33,7 +38,17 @@ export const Navbar = () => {
             id="search-query"
             name="search-query"
             value={transportName}
-            onChange={handleInputChange}
+            onChange={handleInputChange1}
+          />
+            <input
+            className="form-control me-2"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+            id="search-query"
+            name="search-query"
+            value={searchPrice}
+            onChange={handleInputChange2}
           />
           <Link to="/searchresult">
             <button className="btn btn-outline-success" onClick={handleSearch}>
