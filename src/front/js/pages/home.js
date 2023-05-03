@@ -1,4 +1,4 @@
-import { Country } from "../component/country";
+import { CountriesScroll } from "../component/countriesScroll";
 import { Card } from "../component/card";
 
 import React from "react";
@@ -6,7 +6,7 @@ import React from "react";
 export const Home = () => {
   return (
     <div>
-      <Country />
+      <CountriesScroll />
       <Card />
     </div>
   );
