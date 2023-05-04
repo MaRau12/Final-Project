@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: eaf19085f74f
+Revision ID: 4c9532281491
 Revises: 
-Create Date: 2023-05-02 17:45:46.975781
+Create Date: 2023-05-04 19:06:52.509897
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'eaf19085f74f'
+revision = '4c9532281491'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -21,7 +21,9 @@ def upgrade():
     op.create_table('country',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=50), nullable=False),
+    sa.Column('code', sa.String(length=50), nullable=False),
     sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('code'),
     sa.UniqueConstraint('name')
     )
     op.create_table('transport',
@@ -61,8 +63,10 @@ def upgrade():
     sa.Column('trip_duration', sa.Integer(), nullable=False),
     sa.Column('price', sa.Integer(), nullable=False),
     sa.Column('description', sa.String(length=120), nullable=False),
-    sa.Column('from_location', sa.String(length=20), nullable=False),
-    sa.Column('to_location', sa.String(length=20), nullable=False),
+    sa.Column('from_location', sa.Integer(), nullable=False),
+    sa.Column('to_location', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['from_location'], ['city.id'], ),
+    sa.ForeignKeyConstraint(['to_location'], ['city.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('description'),
