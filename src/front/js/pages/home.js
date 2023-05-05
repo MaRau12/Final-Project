@@ -1,13 +1,17 @@
+import { useContext } from "react";
+import { Context } from "../store/appContext";
 import { CountriesScroll } from "../component/countriesScroll";
-import { Card } from "../component/card";
+import { CardList } from "../component/cardList";
 
 import React from "react";
 
 export const Home = () => {
+  const { store, actions } = useContext(Context);
+
   return (
     <div>
       <CountriesScroll />
-      <Card />
+      <CardList cardItems={store.posts} />
     </div>
   );
 };

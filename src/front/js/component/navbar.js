@@ -2,11 +2,10 @@ import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 
-
 export const Navbar = () => {
   const { store, actions } = useContext(Context);
-  const [transportName, setTransportName] = useState('');
-  const [searchPrice, setSearchPrice] = useState('');
+  const [transportName, setTransportName] = useState("");
+  const [searchPrice, setSearchPrice] = useState("");
 
   const handleInputChange1 = (event) => {
     setTransportName(event.target.value);
@@ -16,8 +15,10 @@ export const Navbar = () => {
     setSearchPrice(event.target.value);
   };
 
-  const handleSearch = async (e) =>{
-    const response = await fetch(`${process.env.BACKEND_URL}/api/transport_by_name/?name=${transportName}&price=${searchPrice}`);
+  const handleSearch = async (e) => {
+    const response = await fetch(
+      `${process.env.BACKEND_URL}/api/transport_by_name/?name=${transportName}&price=${searchPrice}`
+    );
     const data = await response.json();
     actions.setSearchResults(data.posts);
     console.log(data);
@@ -33,17 +34,18 @@ export const Navbar = () => {
           <input
             className="form-control me-2"
             type="search"
-            placeholder="Search"
+            placeholder="From:"
             aria-label="Search"
             id="search-query"
             name="search-query"
             value={transportName}
             onChange={handleInputChange1}
           />
-            <input
+
+          <input
             className="form-control me-2"
             type="search"
-            placeholder="Search"
+            placeholder="To"
             aria-label="Search"
             id="search-query"
             name="search-query"
@@ -55,23 +57,18 @@ export const Navbar = () => {
               Search
             </button>
           </Link>
-
         </div>
         {store.currentUser ? (
           <Link to="/userprofile">
-            <button className="btn btn-outline-warning " >
+            <button className="btn btn-outline-warning ">
               {store.currentUser.user_name}
             </button>
           </Link>
         ) : (
           <Link to="/login">
-            <button className="btn btn-outline-primary" >
-              Login
-            </button>
+            <button className="btn btn-outline-primary">Login</button>
           </Link>
         )}
-
-
       </div>
     </nav>
   );
