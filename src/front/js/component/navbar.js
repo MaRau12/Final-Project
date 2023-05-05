@@ -2,13 +2,14 @@ import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 
-
 export const Navbar = () => {
   const { store, actions } = useContext(Context);
+
   const [transportName, setTransportName] = useState('');
   const [searchPrice, setSearchPrice] = useState('');
   const [searchFrom, setSearchFrom] = useState('');
   const [searchTo, setSearchTo] = useState ('');
+
 
   const handleInputChange1 = (event) => {
     setTransportName(event.target.value);
@@ -22,12 +23,10 @@ export const Navbar = () => {
     setSearchFrom(event.target.value);
   };
 
-  /*const handleInputChange4 = (event) => {
-    setSearchTo(event.target.value);
-  };*/
 
   const handleSearch = async (e) => {
     const response = await fetch(`${process.env.BACKEND_URL}/api/transport_by_name/?name=${transportName}&price=${searchPrice}&from_location_search=${searchFrom}`);
+
     const data = await response.json();
     actions.setSearchResults(data.posts);
     console.log(data);
@@ -40,6 +39,7 @@ export const Navbar = () => {
           <span className="navbar-brand mb-0 h1">ShareTrip</span>
         </Link>
         <div className="d-flex">
+
           <div className="mb-3">
             <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
               Search Trips!
@@ -96,25 +96,18 @@ export const Navbar = () => {
               </div>
             </div>
           </div>
-
-
-
         </div>
         {store.currentUser ? (
           <Link to="/userprofile">
-            <button className="btn btn-outline-warning " >
+            <button className="btn btn-outline-warning ">
               {store.currentUser.user_name}
             </button>
           </Link>
         ) : (
           <Link to="/login">
-            <button className="btn btn-outline-primary" >
-              Login
-            </button>
+            <button className="btn btn-outline-primary">Login</button>
           </Link>
         )}
-
-
       </div>
     </nav>
   );
