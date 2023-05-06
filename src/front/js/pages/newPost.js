@@ -168,7 +168,6 @@ export const NewPost = () => {
                             ...newPost,
                             transports: transport,
                           });
-                          // console.log([...transports, e.target.value]);
                         }}
                       />
                       <label

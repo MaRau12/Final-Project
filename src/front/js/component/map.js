@@ -65,24 +65,24 @@ export const Map = ({
   };
 
   function getPlace(e) {
-    // if (!both_cities) {
-    Geocode.setApiKey("AIzaSyBWSuXSmKxPovMm6sx3qjinwNyJ10wDg8U");
-    setLat(e.latLng.lat());
-    setLng(e.latLng.lng());
+    if (!both_cities) {
+      Geocode.setApiKey("AIzaSyBWSuXSmKxPovMm6sx3qjinwNyJ10wDg8U");
+      setLat(e.latLng.lat());
+      setLng(e.latLng.lng());
 
-    Geocode.fromLatLng(e.latLng.lat(), e.latLng.lng()).then(
-      (response) => {
-        const plus_code_address = response.plus_code.compound_code;
-        const split_address = plus_code_address.split(" ");
-        split_address.shift();
-        setClick_country(split_address.pop());
-        setName(split_address.join(" ").replace(",", ""));
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
-    // }
+      Geocode.fromLatLng(e.latLng.lat(), e.latLng.lng()).then(
+        (response) => {
+          const plus_code_address = response.plus_code.compound_code;
+          const split_address = plus_code_address.split(" ");
+          split_address.shift();
+          setClick_country(split_address.pop());
+          setName(split_address.join(" ").replace(",", ""));
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
+    }
   }
 
   return (
@@ -101,7 +101,6 @@ export const Map = ({
               <Marker position={country_center} />
             )}
             {first_city && <Marker position={from_to[0]} />}
-            {/* {both_cities && <Marker position={from_to[1]} /> } */}
             {both_cities &&
               ((<Marker position={from_to[1]} />),
               (<Polyline path={from_to} options={lineOptions} />))}
