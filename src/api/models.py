@@ -60,31 +60,37 @@ class Post(db.Model):
             "price": self.price,
             "description": self.description,
             "from_location": self.from_location,
-            # "to_location": self.to_location,
+            "to_location": self.to_location,
             # "transports": self.transports,
         }
 
 class Transport(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), unique=True, nullable=False)
-
-    def serialize(self):
-        return {
-            "id": self.id,
-            "name": self.name
-        }
-
-class Country(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), unique=True, nullable=False)
-    city = db.relationship('City', backref='country')
-    code = db.Column(db.String(50), unique=True, nullable=False)
+    icon = db.Column(db.String(35), unique=True, nullable=False)
 
     def serialize(self):
         return {
             "id": self.id,
             "name": self.name,
-            "code": self.code
+            "icon": self.icon
+        }
+
+class Country(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), unique=True, nullable=False)
+    code = db.Column(db.String(50), unique=True, nullable=False)
+    latitude = db.Column(db.Float(), unique=False, nullable=False)
+    longitude = db.Column(db.Float(), unique=False, nullable=False)
+    city = db.relationship('City', backref='country')
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "code": self.code,
+            "latitude": self.latitude,
+            "longitude": self.longitude
         }
 
 class City(db.Model):

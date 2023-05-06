@@ -20,10 +20,10 @@ import { Register } from "./pages/register";
 import { Login } from "./pages/login";
 import { ForgotPassword } from "./pages/forgotPassword";
 
-//create your first component
+import { Map } from "./component/map";
+
+
 const Layout = () => {
-  //the basename is used when your project is published in a subdirectory and not in the root of the domain
-  // you can set the basename on the .env file located at the root of this project, E.g: BASENAME=/react-hello-webapp/
   const basename = process.env.BASENAME || "";
 
   if (!process.env.BACKEND_URL || process.env.BACKEND_URL == "")
@@ -48,6 +48,9 @@ const Layout = () => {
             <Route element={<Login />} path="/login" />
             <Route element={<ForgotPassword />} path="/forgotpassword" />
             <Route element={<h1>Not found!</h1>} />
+
+            <Route element={<Map />} path="/map" />
+
           </Routes>
           <Footer />
         </ScrollToTop>
