@@ -32,6 +32,10 @@ transports = db.Table('post_transport',
     db.Column('transport_id', db.Integer, db.ForeignKey('transport.id'), primary_key=True),
     db.Column('post_id', db.Integer, db.ForeignKey('post.id'), primary_key=True)
 )
+citys = db.Table('post_from_city',
+db.Column('city_id', db.Integer, db.ForeignKey('city.id'), primary_key=True),
+db.Column('post_id', db.Integer, db.ForeignKey('post.id'), primary_key=True)
+)
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -178,7 +178,10 @@ def fill_transport():
 def get_transport_by_name():
     name = request.args.get('name')
     price = request.args.get('price')
-    posts = Post.query.filter(Post.transports.any(Transport.name == name), Post.price <= price)
+    from_location_search = request.args.get('from_location_search')
+    to_location = request.args.get('to_location')
+    posts = Post.query.filter(Post.transports.any(Transport.name == name), Post.price <= price, Post.from_location == from_location_search )
+    print("#####")
     print([post.serialize() for post in posts])
     return jsonify({"posts": [post.serialize() for post in posts]}), 200
 
