@@ -66,6 +66,7 @@ class Post(db.Model):
             # "from_location": self.from_location,
             # "to_location": self.to_location,
         }
+
     def serialize_post_bis(self):
         return {
             "id": self.id,
@@ -90,38 +91,60 @@ class Transport(db.Model):
             "name": self.name,
             "icon": self.icon
         }
+
+cities = db.Table('country_cities',
+    db.Column('city_id', db.Integer, db.ForeignKey('city.id'), primary_key=True),
+    db.Column('country_id', db.Integer, db.ForeignKey('country.id'), primary_key=True)
+)
+
 class Country(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
     code = db.Column(db.String(50), unique=True, nullable=False)
     latitude = db.Column(db.Float(), unique=False, nullable=False)
     longitude = db.Column(db.Float(), unique=False, nullable=False)
-    # city = db.relationship('City', backref='country')
+    cities = db.relationship('City', secondary = cities, backref=db.backref('country', lazy = True))
+
     def serialize(self):
-        return {
-            "id": self.id,
-            "name": self.name,
-            "code": self.code,
-            "latitude": self.latitude,
-            "longitude": self.longitude
-        }
+        if self.cities:
+            cities = [city.serialize_city_bis() for city in self.cities]
+            return {
+                "id": self.id,
+                "name": self.name,
+                "code": self.code,
+                "latitude": self.latitude,
+                "longitude": self.longitude,
+                "cities" : cities
+            }
+        else:
+            return {
+                "id": self.id,
+                "name": self.name,
+                "code": self.code,
+                "latitude": self.latitude,
+                "longitude": self.longitude
+            }
 class City(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), unique=False, nullable=False)
     latitude = db.Column(db.Float(), unique=False, nullable=True)
     longitude = db.Column(db.Float(), unique=False, nullable=True)
+    # country_name = db.Column(db.String(120), db.ForeignKey('country.name'), nullable=False)
+    # country_info = db.relationship('Country', backref=db.backref('city', lazy = True))
     def serialize(self):
+        # if self.country_info:
+        #     country_info = [country.serialize_country_bis() for country in self.country_info]
         return {
             "id": self.id,
-            "country_id": self.country_id,
+            # "country_name": self.country_name,
             "name": self.name,
             "latitude": self.latitude,
-            "longitude": self.longitude
+            "longitude": self.longitude,
+            # "country_info": country_info
         }
     def serialize_city_bis(self):
         return {
             "id": self.id,
-            "country_id": self.country_id,
             "name": self.name,
             "latitude": self.latitude,
             "longitude": self.longitude
