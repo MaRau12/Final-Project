@@ -70,6 +70,11 @@ def get_all_posts():
     posts = Post.query.all()
     return jsonify({"posts": [post.serialize() for post in posts]}), 200
 
+@api.route("/cities", methods=["GET"])
+def get_all_cities():
+    cities = City.query.all()
+    return jsonify({"cities": [city.serialize() for city in cities]}), 200
+
 @api.route("/posts", methods=["POST"])
 @jwt_required()
 def create_new_post():
