@@ -9,6 +9,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       currentUser: null,
       favorites: [],
       countries: [],
+      cities: [],
       searchResults: [],
       transports: [],
     },
@@ -46,6 +47,15 @@ const getState = ({ getStore, getActions, setStore }) => {
         await setStore({ countries: data });
       },
 
+      getAllCities: async () => {
+        const response = await fetch(process.env.BACKEND_URL + "/api/cities", {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+        const data = await response.json();
+        await setStore({ cities: data.cities });
+      },
+
       getTransports: async () => {
         const response = await fetch(
           process.env.BACKEND_URL + "/api/transports",
@@ -61,7 +71,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       getAllPosts: async () => {
         const response = await fetch(process.env.BACKEND_URL + "/api/posts");
         const data = await response.json();
-        setStore({posts: data.posts})
+        setStore({ posts: data.posts });
       },
       createNewPost: async () => {
         const response = await fetch(process.env.BACKEND_URL + "/api/posts", {
