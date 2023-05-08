@@ -4,6 +4,7 @@ const getState = ({ getStore, getActions, setStore }) => {
   return {
     store: {
       posts: [],
+      currentUserPosts: null,
       userPosts: null,
       user: [],
       currentUser: null,
@@ -31,7 +32,9 @@ const getState = ({ getStore, getActions, setStore }) => {
         const data = await response.json();
         if (response.ok) {
           setStore({ currentUser: data });
+          setStore({currentUserPosts: data.post});
           console.log("current user found");
+          console.log("current user posts:", data.post)
         }
       },
 
