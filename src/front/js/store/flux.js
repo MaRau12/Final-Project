@@ -4,7 +4,7 @@ const getState = ({ getStore, getActions, setStore }) => {
   return {
     store: {
       posts: [],
-      userPosts: [],
+      userPosts: null,
       user: [],
       currentUser: null,
       favorites: [],
@@ -31,6 +31,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         const data = await response.json();
         if (response.ok) {
           setStore({ currentUser: data });
+          console.log("current user found");
         }
       },
 
@@ -61,7 +62,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       getAllPosts: async () => {
         const response = await fetch(process.env.BACKEND_URL + "/api/posts");
         const data = await response.json();
-        setStore({posts: data.posts})
+        setStore({ posts: data.posts });
       },
       createNewPost: async () => {
         const response = await fetch(process.env.BACKEND_URL + "/api/posts", {
@@ -96,11 +97,21 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
       getAllPostsByUserId: async () => {
+        const token = sessionStorage.getItem("token");
+        const options = {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        };
         const response = await fetch(
           process.env.BACKEND_URL + "/api/posts_by_user_id"
         );
         const data = await response.json();
         setStore({ userPosts: data.posts });
+        console.log("fetchUserPosts", data);
       },
 
       setSearchResults: (result) => {
