@@ -22,6 +22,7 @@ const injectContext = (PassedComponent) => {
         state.actions.getAllCountries(),
         state.actions.getTransports();
         state.actions.getAllPosts();
+        //state.actions.getAllPostsByUserId();
     }, []);
 
     return (

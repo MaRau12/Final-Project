@@ -10,7 +10,7 @@ export const CardList = (props) => {
         {props.cardItems.map((item) => {
           return (
             <div className="col ">
-              <div key={item.id} className="card">
+              <div key={item.id} className="card h-100">
                 <img src={rigoImage} className="card-img-top" atl="" />
                 <div className="card-body">
                   <h5 className="card-title">{item.title}</h5>

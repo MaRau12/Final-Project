@@ -24,8 +24,6 @@ export const Register = () => {
 
   return (
     <div className="container text-center mt-5" >
-      <h1>This is the Register Page</h1>
-
 
       <div className="vh-100" >
         <div className="container h-100">

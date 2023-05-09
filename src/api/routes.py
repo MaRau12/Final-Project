@@ -63,7 +63,7 @@ def get_all_countries():
 @api.route("/transports", methods=["GET"])
 def get_all_transports():
     transports = Transport.query.all()
-    return jsonify({"data": [Transport.serialize() for Transport in transports]}), 200
+    return jsonify({"data": [transport.serialize() for transport in transports]}), 200
 
 @api.route("/posts", methods=["GET"])
 def get_all_posts():
