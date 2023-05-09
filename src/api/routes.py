@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User, Post, Transport, Country, City
 from api.utils import generate_sitemap, APIException
-
+from sqlalchemy import or_
 # Token
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
@@ -185,8 +185,12 @@ def get_transport_by_name():
     price = request.args.get('price')
     from_location_search = request.args.get('from_location_search')
     to_location = request.args.get('to_location')
-    posts = Post.query.filter(Post.transports.any(Transport.name == name), Post.price <= price, Post.from_location == from_location_search )
+    print(name == "")
+    if name is None or name == "":
+        posts = Post.query.filter(Post.price <= price, or_( Post.from_city.has(name = from_location_search),  Post.to_city.has(name = from_location_search)) )
+    else:    
+        posts = Post.query.filter(Post.transports.any(Transport.name == name), Post.price <= price, or_( Post.from_city.has(name = from_location_search),  Post.to_city.has(name = from_location_search)) )
     print("#####")
-    print([post.serialize() for post in posts])
+    
     return jsonify({"posts": [post.serialize() for post in posts]}), 200
 

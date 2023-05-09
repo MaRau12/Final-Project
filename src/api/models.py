@@ -12,9 +12,7 @@ class User(db.Model):
     description = db.Column(db.String(120), unique=False, nullable=True)
     admin = db.Column(db.Boolean(), unique=False, nullable=True)
     posts = db.relationship('Post', backref='user')
-    def serialize(self):
-        if self.posts:
-            posts = [post.serialize_post_bis() for post in self.posts]
+    def serialize(self):    
         return {
             "id": self.id,
             "user_name": self.user_name,
@@ -25,7 +23,7 @@ class User(db.Model):
             "city": self.city,
             "description": self.description,
             "admin": self.admin,
-            "post": posts
+            "post": [post.serialize_post_bis() for post in self.posts]
         }
 transports = db.Table('post_transport',
     db.Column('transport_id', db.Integer, db.ForeignKey('transport.id'), primary_key=True),
