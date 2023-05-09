@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User, Post, Transport, Country, City
 from api.utils import generate_sitemap, APIException
-
+from sqlalchemy import or_
 # Token
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
@@ -69,6 +69,11 @@ def get_all_transports():
 def get_all_posts():
     posts = Post.query.all()
     return jsonify({"posts": [post.serialize() for post in posts]}), 200
+
+@api.route("/cities", methods=["GET"])
+def get_all_cities():
+    cities = City.query.all()
+    return jsonify({"cities": [city.serialize() for city in cities]}), 200
 
 @api.route("/posts", methods=["POST"])
 @jwt_required()
@@ -180,8 +185,20 @@ def get_transport_by_name():
     price = request.args.get('price')
     from_location_search = request.args.get('from_location_search')
     to_location = request.args.get('to_location')
-    posts = Post.query.filter(Post.transports.any(Transport.name == name), Post.price <= price, Post.from_location == from_location_search )
-    print("#####")
-    print([post.serialize() for post in posts])
+    travel_time = request.args.get('travel_time')
+   
+    print("####")
+    print(name == "")
+    print(travel_time == "")
+   
+    queries = [Post.price <= price, or_( Post.from_city.has(name = from_location_search),  Post.to_city.has(name = from_location_search))]
+    if name and name != "":
+        queries.append(Post.transports.any(Transport.name == name))
+    elif travel_time and travel_time != "":
+        queries.append(Post.trip_duration <= travel_time)
+    posts = Post.query.filter(*queries).all()
+    
+    print("####")
+    
     return jsonify({"posts": [post.serialize() for post in posts]}), 200
 

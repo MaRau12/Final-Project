@@ -8,8 +8,7 @@ export const Navbar = () => {
   const [transportName, setTransportName] = useState('');
   const [searchPrice, setSearchPrice] = useState('');
   const [searchFrom, setSearchFrom] = useState('');
-  const [searchTo, setSearchTo] = useState ('');
-
+  const [searchTime, setSearchTime] = useState('');
 
   const handleInputChange1 = (event) => {
     setTransportName(event.target.value);
@@ -23,9 +22,11 @@ export const Navbar = () => {
     setSearchFrom(event.target.value);
   };
 
-
+  const handleInputChange4 = (event) => {
+    setSearchTime(event.target.value);
+  };
   const handleSearch = async (e) => {
-    const response = await fetch(`${process.env.BACKEND_URL}/api/transport_by_name/?name=${transportName}&price=${searchPrice}&from_location_search=${searchFrom}`);
+    const response = await fetch(`${process.env.BACKEND_URL}/api/transport_by_name/?name=${transportName}&price=${searchPrice}&from_location_search=${searchFrom}&travel_time=${searchTime}`);
 
     const data = await response.json();
     actions.setSearchResults(data.posts);
@@ -52,20 +53,11 @@ export const Navbar = () => {
                     <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div className="modal-body">
+
                     <input
-                      className="form-control me-2 "
+                      className="form-control me-2 mb-2"
                       type="search"
-                      placeholder="How?"
-                      aria-label="Search"
-                      id="search-query"
-                      name="search-query"
-                      value={transportName}
-                      onChange={handleInputChange1}
-                    />
-                    <input
-                      className="form-control me-2 "
-                      type="search"
-                      placeholder="How much?"
+                      placeholder="Maximum Price"
                       aria-label="Search"
                       id="search-query"
                       name="search-query"
@@ -73,14 +65,36 @@ export const Navbar = () => {
                       onChange={handleInputChange2}
                     />
                     <input
-                      className="form-control me-2 "
+                      className="form-control me-2 mb-2"
                       type="search"
-                      placeholder="From Where?"
+                      placeholder="From or To City"
                       aria-label="Search"
                       id="search-query"
                       name="search-query"
                       value={searchFrom}
                       onChange={handleInputChange3}
+                    />
+
+                    <input
+                      className="form-control me-2 mb-2"
+                      type="search"
+                      placeholder="Optional: Transport"
+                      aria-label="Search"
+                      id="search-query"
+                      name="search-query"
+                      value={transportName}
+                      onChange={handleInputChange1}
+                    />
+
+                    <input
+                      className="form-control me-2 mb-2"
+                      type="search"
+                      placeholder="Optional: Trip duration"
+                      aria-label="Search"
+                      id="search-query"
+                      name="search-query"
+                      value={searchTime}
+                      onChange={handleInputChange4}
                     />
 
                   </div>
