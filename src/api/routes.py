@@ -42,6 +42,27 @@ def login_user():
     else:
         return jsonify({"error": "Error with credentials"}), 403
 
+@api.route("/edituser", methods=["PUT"])
+@jwt_required()
+def edit_user_data():
+    user_id_check = get_jwt_identity()
+    body = request.json
+    user = User.query.get(body["id"])
+    if User.user_id == user_id_check:
+        user.full_name = body["full_name"],
+        user.user_name = ["user_name"],
+        user.email = ["email"],
+        user.full_name = ["full_name"],
+        user.age = ["age"],
+        user.country = ["country",]
+        user.city = ["city"],
+        user.description = ["description"],
+        db.session.commit();
+        return jsonify({"response": "User edited"}), 200
+        print("###")
+        print(user)
+    else:
+        return jsonify({"response": "Missing fields"}), 400   
 
 @api.route('/current_user', methods=['GET'])
 @jwt_required()
