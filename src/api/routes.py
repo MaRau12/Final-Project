@@ -185,12 +185,20 @@ def get_transport_by_name():
     price = request.args.get('price')
     from_location_search = request.args.get('from_location_search')
     to_location = request.args.get('to_location')
+    travel_time = request.args.get('travel_time')
+   
+    print("####")
     print(name == "")
-    if name is None or name == "":
-        posts = Post.query.filter(Post.price <= price, or_( Post.from_city.has(name = from_location_search),  Post.to_city.has(name = from_location_search)) )
-    else:    
-        posts = Post.query.filter(Post.transports.any(Transport.name == name), Post.price <= price, or_( Post.from_city.has(name = from_location_search),  Post.to_city.has(name = from_location_search)) )
-    print("#####")
+    print(travel_time == "")
+   
+    queries = [Post.price <= price, or_( Post.from_city.has(name = from_location_search),  Post.to_city.has(name = from_location_search))]
+    if name and name != "":
+        queries.append(Post.transports.any(Transport.name == name))
+    elif travel_time and travel_time != "":
+        queries.append(Post.trip_duration <= travel_time)
+    posts = Post.query.filter(*queries).all()
+    
+    print("####")
     
     return jsonify({"posts": [post.serialize() for post in posts]}), 200
 

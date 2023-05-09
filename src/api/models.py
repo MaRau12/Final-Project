@@ -47,8 +47,6 @@ class Post(db.Model):
     to_city = db.relationship('City', foreign_keys=[to_location])
     comments = db.relationship('Comment', backref='post')
     def serialize(self):
-        if self.transports:
-            transports = [transport.serialize_transport_bis() for transport in self.transports]
         return {
             "id": self.id,
             "user_id": self.user_id,
@@ -59,6 +57,7 @@ class Post(db.Model):
             "transports": transports,
             "from_location": self.from_location,
             "to_location": self.to_location,
+            "transports": [transport.serialize_transport_bis() for transport in self.transports]
         }
 
     def serialize_post_bis(self):
