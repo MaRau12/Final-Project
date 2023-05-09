@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import Geocode from "react-geocode";
+import { Link } from "react-router-dom";
 
 import { Context } from "../store/appContext";
 import { Map } from "../component/map";
@@ -7,10 +7,6 @@ import { Map } from "../component/map";
 export const NewPost = () => {
   const { store } = useContext(Context);
 
-  const [from_location, setFrom_location] = useState({});
-  const [to_location, setTo_location] = useState({});
-
-  const allCountries = store.countries.countries;
   const [newPost, setNewPost] = useState({
     title: "",
     country: "",
@@ -22,14 +18,13 @@ export const NewPost = () => {
     description: "",
   });
 
-  console.log(newPost.transports);
-
   function setFrom(city) {
     setNewPost({ ...newPost, from_location: city });
   }
   function setTo(city) {
     setNewPost({ ...newPost, to_location: city });
   }
+
   async function postCity(city) {
     console.log(city);
     const response = await fetch(process.env.BACKEND_URL + "/api/city", {
@@ -44,6 +39,7 @@ export const NewPost = () => {
       console.log("success");
     }
   }
+
   async function post() {
     console.log(transports);
     const response = await fetch(process.env.BACKEND_URL + "/api/posts", {
@@ -58,16 +54,18 @@ export const NewPost = () => {
       console.log("success");
     }
   }
+
   async function validations() {
     console.log(newPost);
-    postCity(from_location);
+    // postCity(from_location);
     // post();
   }
 
   return (
     <div className="text-center">
-      <div className="border-botto_locationm p-3 ">
-        <h3>Create new post</h3>
+      <div className="d-flex justify-content-center border-bottom mt-3 p-3 ">
+        <i className="fa-solid fa-circle-plus fa-2xl mp-0"></i>
+        <h3 className="ms-3">New post</h3>
       </div>
 
       <div className="bg-light border-botto_locationm p-3">
@@ -97,8 +95,8 @@ export const NewPost = () => {
                 setNewPost({ ...newPost, country: e.target.value });
               }}
             >
-              {allCountries &&
-                allCountries.map((country) => (
+              {store.countries.countries &&
+                store.countries.countries.map((country) => (
                   <option key={country.id} value={country.id}>
                     {country.name}
                   </option>
@@ -108,20 +106,15 @@ export const NewPost = () => {
           </div>
         </div>
 
+        {/*  --------- MAP --------- */}
         <div className="row g-3 justify-content-center mb-3">
           {newPost.country && (
-            <Map
-              newPost={newPost}
-              from_location={from_location}
-              to_location={to_location}
-              setFrom={setFrom}
-              setTo={setTo}
-            />
+            <Map newPost={newPost} setFrom={setFrom} setTo={setTo} />
           )}
         </div>
 
-        <div className="row g-3 justify-content-center mb-3">
-          <div className="col-md-2">
+        <div className="row g-3 justify-content-center mb-3y">
+          <div className="col-md-2 col-sm-6">
             <label className="form-label">Trip trip_duration</label>
             <div className="input-group">
               <input
@@ -135,7 +128,7 @@ export const NewPost = () => {
             </div>
             <div className="validation"></div>
           </div>
-          <div className="col-md-2">
+          <div className="col-md-2 col-sm-6">
             <label className="form-label">Price</label>
             <div className="input-group">
               <input
@@ -151,35 +144,30 @@ export const NewPost = () => {
           </div>
           <div className="col-md-4">
             <label className="form-label">Transports</label>
-            <div className="cards d-flex justify-content-center">
-              <div className="rectangle rounded bg-secondary p-2">
-                {store.transports.data &&
-                  store.transports.data.map((transport) => (
-                    <div
-                      key={transport.id}
-                      className="form-check form-check-inline"
-                    >
-                      <input
-                        className="form-check-input"
-                        type="radio"
-                        value={transport.name}
-                        onChange={(e) => {
-                          setNewPost({
-                            ...newPost,
-                            transports: transport,
-                          });
-                        }}
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="inlineRadio1"
-                      >
-                        <i className={transport.icon}></i>
-                      </label>
-                      <div className="validation"></div>
-                    </div>
-                  ))}
-              </div>
+            <div className="input-group d-flex rectangle justify-content-center rounded bg-light">
+              {store.transports.data &&
+                store.transports.data.map((transport) => (
+                  <div
+                    key={transport.id}
+                    className="form-check form-check-inline"
+                  >
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      value={transport.name}
+                      onChange={(e) => {
+                        setNewPost({
+                          ...newPost,
+                          transports: transport,
+                        });
+                      }}
+                    />
+                    <label className="form-check-label" htmlFor="inlineRadio1">
+                      <i className={transport.icon}></i>
+                    </label>
+                    <div className="validation"></div>
+                  </div>
+                ))}
             </div>
           </div>
         </div>
@@ -191,7 +179,7 @@ export const NewPost = () => {
             </label>
             <textarea
               className="form-control"
-              rows="5"
+              rows="7"
               onChange={(e) =>
                 setNewPost({ ...newPost, description: e.target.value })
               }
@@ -200,19 +188,19 @@ export const NewPost = () => {
         </div>
       </div>
 
-      <div className="d-flex justify-content-end p-2">
-        <div className="col-1">
-          <button className="btn btn-secondary" type="reset">
-            Cancel
-          </button>
+      <div className="d-flex justify-content-evenly mb-5 p-2">
+        <div className="col-2">
+          <Link to={"/userprofile"}>
+            <button className="btn btn-secondary p-3">Delete</button>
+          </Link>
         </div>
-        <div className="col-1">
+        <div className="col-2">
           <button
-            className="btn btn-primary"
+            className="btn btn-primary p-3"
             type="submit"
             onClick={() => validations()}
           >
-            Send
+            Save
           </button>
         </div>
       </div>

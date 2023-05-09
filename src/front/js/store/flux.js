@@ -33,7 +33,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           setStore({ currentUser: data });
         }
       },
-
       getAllCountries: async () => {
         const response = await fetch(
           process.env.BACKEND_URL + "/api/countries",
@@ -57,7 +56,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         const data = await response.json();
         await setStore({ transports: data });
       },
-
       getAllPosts: async () => {
         const response = await fetch(process.env.BACKEND_URL + "/api/posts");
         const data = await response.json();
