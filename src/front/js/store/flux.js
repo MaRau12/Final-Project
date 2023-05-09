@@ -9,7 +9,8 @@ const getState = ({ getStore, getActions, setStore }) => {
       currentUser: null,
       favorites: [],
       countries: [],
-      searchResults: []
+      searchResults: [],
+      transports: [],
     },
 
     actions: {
@@ -43,6 +44,18 @@ const getState = ({ getStore, getActions, setStore }) => {
         );
         const data = await response.json();
         await setStore({ countries: data });
+      },
+
+      getTransports: async () => {
+        const response = await fetch(
+          process.env.BACKEND_URL + "/api/transports",
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+        const data = await response.json();
+        await setStore({ transports: data });
       },
 
       getAllPosts: async () => {
@@ -91,8 +104,8 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       setSearchResults: (result) => {
-        setStore({searchResults: result})
-      }
+        setStore({ searchResults: result });
+      },
     },
   };
 };

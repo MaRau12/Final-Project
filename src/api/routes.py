@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Post, Transport, Country
+from api.models import db, User, Post, Transport, Country, City
 from api.utils import generate_sitemap, APIException
 
 # Token
@@ -25,7 +25,6 @@ def create_user():
             password = body["password"],
             country = body["country"],
             city = body["city"],
-            
         )
         db.session.add(user)
         db.session.commit()
@@ -61,10 +60,20 @@ def get_all_countries():
     countries = Country.query.all()
     return jsonify({"countries": [country.serialize() for country in countries]}), 200
 
+@api.route("/transports", methods=["GET"])
+def get_all_transports():
+    transports = Transport.query.all()
+    return jsonify({"data": [Transport.serialize() for Transport in transports]}), 200
+
 @api.route("/posts", methods=["GET"])
 def get_all_posts():
     posts = Post.query.all()
     return jsonify({"posts": [post.serialize() for post in posts]}), 200
+
+@api.route("/cities", methods=["GET"])
+def get_all_cities():
+    cities = City.query.all()
+    return jsonify({"cities": [city.serialize() for city in cities]}), 200
 
 @api.route("/posts", methods=["POST"])
 @jwt_required()
@@ -88,6 +97,24 @@ def create_new_post():
     db.session.add(post)
     db.session.commit()
     return jsonify({"response": "Post created"}), 200
+
+@api.route("/city", methods=["POST"])
+@jwt_required()
+def create_new_city():
+    print('@@@@@')
+    body = request.json
+    country = Country.query.filter_by(name = body["country"]).first()
+    country = Country.query.get(body[country])
+    print(country)
+    city = City(
+        name = body["name"],
+        latitude = body["latitude"],
+        longitude = body["longitude"],
+        country = country,
+    )
+    db.session.add(city)
+    db.session.commit()
+    return jsonify({"response": "City added"}), 200
 
 @api.route("/posts/<int:post_id>", methods=["DELETE"])
 @jwt_required()
@@ -130,8 +157,25 @@ def get_all_posts_by_user_id():
 @api.route("/fillcountry", methods=["POST"])
 def fill_country():
     body = request.json
-    countries = [Country(name = country['name'], code = country['code']) for country in body]
+    countries = [
+        Country(
+            name = country['name'], 
+            code = country['code'],
+            longitude = country['longitude'], 
+            latitude = country['latitude']) 
+        for country in body]
     db.session.add_all(countries)
+    db.session.commit()
+    return 'done'
+
+@api.route("/filltransport", methods=["POST"])
+def fill_transport():
+    body = request.json
+    transports = [
+        Transport(name = transport['name'],
+        icon = transport['icon'])   
+        for transport in body]
+    db.session.add_all(transports)
     db.session.commit()
     return 'done'
 
