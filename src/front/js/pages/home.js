@@ -13,7 +13,6 @@ export const Home = () => {
     <div>
       <CountriesScroll />
       <CardList cardItems={store.posts} />
-      <Card />
     </div>
   );
 };
