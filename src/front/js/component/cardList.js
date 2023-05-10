@@ -1,9 +1,13 @@
 import React from "react";
+import { useContext } from "react";
+import { Context } from "../store/appContext";
 import rigoImage from "../../img/rigo-baby.jpg";
 import { Heart } from "@phosphor-icons/react";
 import { Link } from "react-router-dom";
 
 export const CardList = (props) => {
+  const { store, actions } = useContext(Context);
+
   return (
     <div className="container">
       <div className="row row-cols-sm-2 row-cols-md-2 row-cols-lg-4 g-5 ">
@@ -21,7 +25,19 @@ export const CardList = (props) => {
                         Learn More!
                       </a>
                     </Link>
-                    <Heart className="heart" size={35} />
+                    <Heart
+                      className={
+                        store.currentUser.favorites
+                          .map((x) => {
+                            return x.post_id;
+                          })
+                          .includes(item.id)
+                          ? "heart text-danger"
+                          : "heart"
+                      }
+                      onClick={() => actions.addFavorite(item.id)}
+                      size={35}
+                    />
                   </div>
                 </div>
               </div>
