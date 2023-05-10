@@ -11,7 +11,7 @@
     "build": "webpack --config webpack.prod.js"
   },
   "author": {
-    "name": "Alejandro Sanchez",
+    "name": "Martha, Gleisson & Sara",
     "url": "http://alesanchezr.com/"
   },
   "contributors": [

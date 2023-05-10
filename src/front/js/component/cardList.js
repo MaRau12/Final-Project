@@ -1,5 +1,6 @@
 import React from "react";
 import rigoImage from "../../img/rigo-baby.jpg";
+
 import { Heart } from "@phosphor-icons/react";
 import { Link } from "react-router-dom";
 
