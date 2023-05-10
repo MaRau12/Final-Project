@@ -11,7 +11,7 @@ import { Card } from "../component/card";
 import React from "react";
 
 export const Home = () => {
-  const { store, actions } = useContext(Context);
+  const { store } = useContext(Context);
 
   return (
     <div>
