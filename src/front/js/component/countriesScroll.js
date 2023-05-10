@@ -8,7 +8,6 @@ import "../../styles/countriesScroll.css";
 
 export const CountriesScroll = () => {
   const { store } = useContext(Context);
-
   const countries = store.countries.countries;
 
   return (
