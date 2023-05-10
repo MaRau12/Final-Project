@@ -12,6 +12,8 @@ class User(db.Model):
     description = db.Column(db.String(120), unique=False, nullable=True)
     admin = db.Column(db.Boolean(), unique=False, nullable=True)
     posts = db.relationship('Post', backref='user')
+    favorites = db.relationship('Favorites', backref='user')
+    
     def serialize(self):
         if self.posts:
             posts = [post.serialize_post_bis() for post in self.posts]
@@ -25,7 +27,8 @@ class User(db.Model):
             "city": self.city,
             "description": self.description,
             "admin": self.admin,
-            "post": posts
+            "post": posts,
+            "favorites": [favorite.serialize() for favorite in self.favorites]
         }
 transports = db.Table('post_transport',
     db.Column('transport_id', db.Integer, db.ForeignKey('transport.id'), primary_key=True),
@@ -48,9 +51,10 @@ class Post(db.Model):
     to_location = db.Column(db.Integer(), db.ForeignKey('city.id'), nullable=False)
     to_city = db.relationship('City', foreign_keys=[to_location])
     comments = db.relationship('Comment', backref='post')
+    favorites = db.relationship('Favorites', backref='post')
+    
     def serialize(self):
-        if self.transports:
-            transports = [transport.serialize_transport_bis() for transport in self.transports]
+             
         return {
             "id": self.id,
             "user_id": self.user_id,
@@ -58,7 +62,7 @@ class Post(db.Model):
             "trip_duration": self.trip_duration,
             "price": self.price,
             "description": self.description,
-            "transports": transports,
+            "transports": [transport.serialize_transport_bis() for transport in self.transports],
             "from_location": self.from_location,
             "to_location": self.to_location,
         }
