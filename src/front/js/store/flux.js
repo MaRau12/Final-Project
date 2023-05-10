@@ -6,7 +6,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       posts: [],
       userPosts: [],
       user: [],
-      currentUser: null,
+      currentUser: { favorites: [] },
       favorites: [],
       countries: [],
       searchResults: [],
@@ -21,7 +21,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           headers: {
             Authorization: "Bearer " + token,
             "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
           },
         };
         const response = await fetch(
@@ -59,7 +58,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       getAllPosts: async () => {
         const response = await fetch(process.env.BACKEND_URL + "/api/posts");
         const data = await response.json();
-        setStore({posts: data.posts})
+        setStore({ posts: data.posts });
       },
       createNewPost: async () => {
         const response = await fetch(process.env.BACKEND_URL + "/api/posts", {
@@ -103,6 +102,24 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       setSearchResults: (result) => {
         setStore({ searchResults: result });
+      },
+
+      addFavorite: async (postId) => {
+        const token = sessionStorage.getItem("token");
+        const response = await fetch(
+          process.env.BACKEND_URL + "/api/add-to-favorites/" + postId,
+          {
+            method: "POST",
+            headers: {
+              Authorization: "Bearer " + token,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(postId),
+          }
+        );
+        if (response.ok) {
+          getActions().getCurrentUser();
+        }
       },
     },
   };

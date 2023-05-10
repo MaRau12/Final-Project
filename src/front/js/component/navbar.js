@@ -115,7 +115,7 @@ export const Navbar = () => {
             </div>
           </div>
         </div>
-        {store.currentUser ? (
+        {store.currentUser.id ? (
           <>
             <Link to="/userprofile">
               <button className="btn btn-outline-warning mp-0">
