@@ -44,27 +44,27 @@ export const UserSettings = () => {
 
                       <div className="mb-3">
                         <label htmlFor="exampleInputName" className="form-label">Full Name</label>
-                        <input type="text" value={userData.full_name} className="form-control" id="exampleInputName" onChange={(e) => setUserData({ ...userData, full_name: e.target.value })} />
+                        <input type="text" placeholder={store.currentUser.full_name} value={userData.full_name} className="form-control" id="exampleInputName" onChange={(e) => setUserData({ ...userData, full_name: e.target.value })} />
                       </div>
 
                       <div className="mb-3">
                         <label htmlFor="exampleInputUserName" className="form-label">User Name</label>
-                        <input type="text" value={userData.user_name} className="form-control" id="exampleInputUserName" onChange={(e) => setUserData({ ...userData, user_name: e.target.value })} />
+                        <input type="text" placeholder={store.currentUser.user_name}  value={userData.user_name} className="form-control" id="exampleInputUserName" onChange={(e) => setUserData({ ...userData, user_name: e.target.value })} />
                       </div>
 
                       <div className="mb-3">
                         <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
-                        <input type="email" value={userData.email} className="form-control" id="exampleInputEmail1" onChange={(e) => setUserData({ ...userData, email: e.target.value })} />
+                        <input type="email" placeholder={store.currentUser.email} value={userData.email} className="form-control" id="exampleInputEmail1" onChange={(e) => setUserData({ ...userData, email: e.target.value })} />
                       </div>
 
                       <div className="mb-3">
                         <label htmlFor="exampleInputCountry" className="form-label">Country</label>
-                        <input type="text" value={userData.country} className="form-control" id="exampleInputCountry" onChange={(e) => setUserData({ ...userData, country: e.target.value })} />
+                        <input type="text" placeholder={store.currentUser.country} value={userData.country} className="form-control" id="exampleInputCountry" onChange={(e) => setUserData({ ...userData, country: e.target.value })} />
                       </div>
 
                       <div className="mb-3">
                         <label htmlFor="exampleInputCity" className="form-label">City</label>
-                        <input type="text" value={userData.city} className="form-control" id="exampleInputCity" onChange={(e) => setUserData({ ...userData, city: e.target.value })} />
+                        <input type="text" placeholder={store.currentUser.city} value={userData.city} className="form-control" id="exampleInputCity" onChange={(e) => setUserData({ ...userData, city: e.target.value })} />
                       </div>
 
                       <div className="mb-3">

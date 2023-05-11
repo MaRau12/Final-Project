@@ -35,6 +35,11 @@ def create_user():
 @api.route("/login", methods=["POST"])
 def login_user():
     body = request.json
+    print("######")
+    print(body)
+    print(User.query.all())
+    print(User.query.filter_by(email= body["email"], password= body["password"]).first())
+    print("######")
     user = User.query.filter_by(email= body["email"], password= body["password"]).first()
     if user:
         token = create_access_token(identity=user.id) # Token
