@@ -32,9 +32,9 @@ const getState = ({ getStore, getActions, setStore }) => {
         const data = await response.json();
         if (response.ok) {
           setStore({ currentUser: data });
-          setStore({currentUserPosts: data.post});
+          setStore({ currentUserPosts: data.post });
           console.log("current user found");
-          console.log("current user posts:", data.post)
+          console.log("current user posts:", data.post);
         }
       },
       getAllCountries: async () => {
@@ -46,7 +46,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           }
         );
         const data = await response.json();
-        await setStore({ countries: data });
+        await setStore({ countries: data.countries });
       },
 
       getAllCities: async () => {
@@ -55,7 +55,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           headers: { "Content-Type": "application/json" },
         });
         const data = await response.json();
-        await setStore({ cities: data });
+        await setStore({ cities: data.cities });
       },
 
       getTransports: async () => {
@@ -67,7 +67,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           }
         );
         const data = await response.json();
-        await setStore({ transports: data });
+        await setStore({ transports: data.data });
       },
       getAllPosts: async () => {
         const response = await fetch(process.env.BACKEND_URL + "/api/posts");

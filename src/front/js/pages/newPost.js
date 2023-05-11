@@ -14,7 +14,7 @@ export const NewPost = () => {
     to_location: {},
     trip_duration: 0,
     price: 0,
-    transports: [{}],
+    transports: [],
     description: "",
   });
 
@@ -41,7 +41,6 @@ export const NewPost = () => {
   }
 
   async function post() {
-    console.log(transports);
     const response = await fetch(process.env.BACKEND_URL + "/api/posts", {
       method: "POST",
       headers: {
@@ -57,8 +56,7 @@ export const NewPost = () => {
 
   async function validations() {
     console.log(newPost);
-    // postCity(from_location);
-    // post();
+    post();
   }
 
   return (
@@ -95,8 +93,8 @@ export const NewPost = () => {
                 setNewPost({ ...newPost, country: e.target.value });
               }}
             >
-              {store.countries.countries &&
-                store.countries.countries.map((country) => (
+              {store.countries &&
+                store.countries.map((country) => (
                   <option key={country.id} value={country.id}>
                     {country.name}
                   </option>
@@ -145,8 +143,8 @@ export const NewPost = () => {
           <div className="col-md-4">
             <label className="form-label">Transports</label>
             <div className="input-group d-flex rectangle justify-content-center rounded bg-light">
-              {store.transports.data &&
-                store.transports.data.map((transport) => (
+              {store.transports &&
+                store.transports.map((transport) => (
                   <div
                     key={transport.id}
                     className="form-check form-check-inline"
@@ -158,7 +156,7 @@ export const NewPost = () => {
                       onChange={(e) => {
                         setNewPost({
                           ...newPost,
-                          transports: transport,
+                          transports: [...newPost.transports, transport],
                         });
                       }}
                     />

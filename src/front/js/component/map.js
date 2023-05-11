@@ -13,9 +13,7 @@ export const Map = ({ newPost, setFrom, setTo }) => {
     name: "*Select city from map",
     latitude: 0,
     longitude: 0,
-    country: store.countries.countries.filter(
-      (e) => e.name == newPost.country
-    )[0],
+    country: store.countries.filter((e) => e.name == newPost.country)[0],
     isFirst: true,
     editing: true,
   });
@@ -23,9 +21,8 @@ export const Map = ({ newPost, setFrom, setTo }) => {
   const pointers = [
     {
       center: {
-        lat: store.countries.countries.filter((e) => e.id == newPost.country)[0]
-          .latitude,
-        lng: store.countries.countries.filter((e) => e.id == newPost.country)[0]
+        lat: store.countries.filter((e) => e.id == newPost.country)[0].latitude,
+        lng: store.countries.filter((e) => e.id == newPost.country)[0]
           .longitude,
       },
     },
@@ -177,7 +174,7 @@ export const Map = ({ newPost, setFrom, setTo }) => {
                             setNewLocation({
                               ...newLocation,
                               name: "*Select city from map",
-                              country: store.countries.countries.filter(
+                              country: store.countries.filter(
                                 (e) => e.id == newPost.country
                               )[0],
                               isFirst: false,
