@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User, Post, Transport, Country, City, Favorites
 from api.utils import generate_sitemap, APIException
-
+from sqlalchemy import or_
 # Token
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
@@ -35,6 +35,11 @@ def create_user():
 @api.route("/login", methods=["POST"])
 def login_user():
     body = request.json
+    print("######")
+    print(body)
+    print(User.query.all())
+    print(User.query.filter_by(email= body["email"], password= body["password"]).first())
+    print("######")
     user = User.query.filter_by(email= body["email"], password= body["password"]).first()
     if user:
         token = create_access_token(identity=user.id) # Token
@@ -42,6 +47,27 @@ def login_user():
     else:
         return jsonify({"error": "Error with credentials"}), 403
 
+@api.route("/edituser", methods=["PUT"])
+@jwt_required()
+def edit_user_data():
+    user_id_check = get_jwt_identity()
+    body = request.json
+    user = User.query.get(body["id"])
+    if User.user_id == user_id_check:
+        user.full_name = body["full_name"],
+        user.user_name = ["user_name"],
+        user.email = ["email"],
+        user.full_name = ["full_name"],
+        user.age = ["age"],
+        user.country = ["country",]
+        user.city = ["city"],
+        user.description = ["description"],
+        db.session.commit();
+        return jsonify({"response": "User edited"}), 200
+        print("###")
+        print(user)
+    else:
+        return jsonify({"response": "Missing fields"}), 400   
 
 @api.route('/current_user', methods=['GET'])
 @jwt_required()
@@ -67,7 +93,7 @@ def get_all_countries():
 @api.route("/transports", methods=["GET"])
 def get_all_transports():
     transports = Transport.query.all()
-    return jsonify({"data": [Transport.serialize() for Transport in transports]}), 200
+    return jsonify({"data": [transport.serialize() for transport in transports]}), 200
 
 @api.route("/posts", methods=["GET"])
 def get_all_posts():
@@ -189,9 +215,21 @@ def get_transport_by_name():
     price = request.args.get('price')
     from_location_search = request.args.get('from_location_search')
     to_location = request.args.get('to_location')
-    posts = Post.query.filter(Post.transports.any(Transport.name == name), Post.price <= price, Post.from_location == from_location_search )
-    print("#####")
-    print([post.serialize() for post in posts])
+    travel_time = request.args.get('travel_time')
+   
+    print("####")
+    print(name == "")
+    print(travel_time == "")
+   
+    queries = [Post.price <= price, or_( Post.from_city.has(name = from_location_search),  Post.to_city.has(name = from_location_search))]
+    if name and name != "":
+        queries.append(Post.transports.any(Transport.name == name))
+    elif travel_time and travel_time != "":
+        queries.append(Post.trip_duration <= travel_time)
+    posts = Post.query.filter(*queries).all()
+    
+    print("####")
+    
     return jsonify({"posts": [post.serialize() for post in posts]}), 200
 
 @api.route("/add-to-favorites/<int:post_id>", methods=["POST"])
