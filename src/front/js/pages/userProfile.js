@@ -14,6 +14,7 @@ export const UserProfile = () => {
 
   console.log("profile", store.currentUser)
   console.log("user_posts", store.currentUserPosts)
+  console.log("fav:", store.favorites)
 
   return (
     store.currentUser ?
@@ -34,8 +35,8 @@ export const UserProfile = () => {
                   <p>{store.currentUser.description}</p>
                 </div>
                 <div className="card-body p-3">
-                  <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Name: {store.currentUser.full_name}</li>
+                  <ul className="list-group list-group-flush">
+                    <li className="list-group-item">Name: {store.currentUser.full_name}</li>
                     <li className="list-group-item">Email: {store.currentUser.email}</li>
                     <li className="list-group-item">Country: {store.currentUser.country}</li>
                     <li className="list-group-item">City: {store.currentUser.city}</li>

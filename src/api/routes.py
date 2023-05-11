@@ -52,20 +52,23 @@ def login_user():
 def edit_user_data():
     user_id_check = get_jwt_identity()
     body = request.json
+    print("##############")
+    print(body)
     user = User.query.get(body["id"])
     if User.user_id == user_id_check:
-        user.full_name = body["full_name"],
-        user.user_name = ["user_name"],
-        user.email = ["email"],
-        user.full_name = ["full_name"],
-        user.age = ["age"],
-        user.country = ["country",]
-        user.city = ["city"],
-        user.description = ["description"],
-        db.session.commit();
-        return jsonify({"response": "User edited"}), 200
+        user.full_name = body["full_name"]
+        user.user_name = ["user_name"]
+        user.email = ["email"]
+        user.full_name = ["full_name"]
+        user.age = ["age"]
+        user.country = ["country"]
+        user.city = ["city"]
+        user.description = ["description"]
+        db.session.commit()
         print("###")
         print(user)
+        return jsonify({"response": "User edited"}), 200
+
     else:
         return jsonify({"response": "Missing fields"}), 400   
 
@@ -75,12 +78,8 @@ def get_current_user():
     user_id_check = get_jwt_identity()
     user = User.query.filter_by(id = user_id_check).first()
     return jsonify(user.serialize()), 200
-    #print("current",current_user)
-
-
 
 @api.route("/users", methods=["GET"])
-
 def get_all_users():
     users = User.query.all()
     return jsonify({"users": [user.serialize() for user in users]}), 200

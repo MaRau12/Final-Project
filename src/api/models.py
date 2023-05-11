@@ -25,7 +25,7 @@ class User(db.Model):
             "city": self.city,
             "description": self.description,
             "admin": self.admin,
-            "post": [post.serialize_post_bis() for post in self.posts]
+            "post": [post.serialize_post_bis() for post in self.posts],
             "favorites": [favorite.serialize() for favorite in self.favorites]
 
         }
