@@ -67,22 +67,28 @@ class Post(db.Model):
             "transports": [transport.serialize_transport_bis() for transport in self.transports],
             "from_location": self.from_city.serialize(),
             "to_location": self.to_city.serialize(),
-            "transports": [transport.serialize_transport_bis() for transport in self.transports]
+            "transports": [transport.serialize_transport_bis() for transport in self.transports],
+            "likes": len(self.favorites)
         }
 
     def serialize_post_bis(self):
         return {
             "id": self.id,
+            "user_id": self.user_id,
             "title": self.title,
             "trip_duration": self.trip_duration,
             "price": self.price,
             "description": self.description,
+            "transports": [transport.serialize_transport_bis() for transport in self.transports],
+            "from_location": self.from_city.serialize(),
+            "to_location": self.to_city.serialize(),
+            "transports": [transport.serialize_transport_bis() for transport in self.transports]
         }
 
 class Transport(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(20), unique=True, nullable=False)
-    icon = db.Column(db.String(35), unique=True, nullable=False)
+    name = db.Column(db.String(120), unique=True, nullable=False)
+    icon = db.Column(db.String(135), unique=True, nullable=False)
 
     def serialize(self):
         return {
@@ -100,11 +106,11 @@ class Transport(db.Model):
 
 class Country(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), unique=True, nullable=False)
+    name = db.Column(db.String(150), unique=True, nullable=False)
     code = db.Column(db.String(50), unique=True, nullable=False)
     latitude = db.Column(db.Float(), unique=False, nullable=False)
     longitude = db.Column(db.Float(), unique=False, nullable=False)
-    cities = db.relationship('City', backref='country')
+    # cities = db.relationship('City', backref='country')
 
     def serialize(self):
         return {
@@ -113,15 +119,15 @@ class Country(db.Model):
             "code": self.code,
             "latitude": self.latitude,
             "longitude": self.longitude,
-            "cities" : [city.serialize_city_bis() for city in self.cities]
+            # "cities" : [city.serialize_city_bis() for city in self.cities]
         }
 
 class City(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(20), unique=False, nullable=False)
+    name = db.Column(db.String(120), unique=False, nullable=False)
     latitude = db.Column(db.Float(), unique=False, nullable=True)
     longitude = db.Column(db.Float(), unique=False, nullable=True)
-    country_name = db.Column(db.String(120), db.ForeignKey('country.name'), nullable=False)
+    country_name = db.Column(db.String(120), unique=False, nullable=False)
 
     def serialize(self):
         return {
@@ -165,6 +171,6 @@ class Favorites(db.Model):
         return {
             'id': self.id,
             'user_id': self.user_id,
-            'post_id': self.post_id
+            'post': Post.query.get(self.post_id).serialize()
         }
         
