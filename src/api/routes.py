@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Post, Transport, Country, City
+from api.models import db, User, Post, Transport, Country, City, Favorites
 from api.utils import generate_sitemap, APIException
 from sqlalchemy import or_
 # Token
@@ -75,8 +75,12 @@ def get_current_user():
     user_id_check = get_jwt_identity()
     user = User.query.filter_by(id = user_id_check).first()
     return jsonify(user.serialize()), 200
+    #print("current",current_user)
+
+
 
 @api.route("/users", methods=["GET"])
+
 def get_all_users():
     users = User.query.all()
     return jsonify({"users": [user.serialize() for user in users]}), 200
@@ -228,3 +232,23 @@ def get_transport_by_name():
     
     return jsonify({"posts": [post.serialize() for post in posts]}), 200
 
+@api.route("/add-to-favorites/<int:post_id>", methods=["POST"])
+@jwt_required()
+def add_favorite(post_id):
+    user_id_check = get_jwt_identity()
+    already_exist_fav = Favorites.query.filter_by(user_id = user_id_check, post_id = post_id).first()
+    if already_exist_fav:
+        db.session.delete(already_exist_fav)
+        db.session.commit()
+        return jsonify({"response": "favorites deleted"}), 200
+    else:
+        favorite = Favorites(
+            user_id = user_id_check,
+            post_id = post_id,
+        )
+        db.session.add(favorite)
+        db.session.commit()
+        if favorite :
+            return jsonify({"response": "favorites added"}), 200
+
+    return jsonify({"response": "You don't have permission"}), 400
