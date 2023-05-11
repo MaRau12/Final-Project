@@ -9,8 +9,9 @@ const getState = ({ getStore, getActions, setStore }) => {
       currentUser: { favorites: [] },
       favorites: [],
       countries: [],
-      searchResults: [],
+      cities: [],
       transports: [],
+      searchResults: [],
     },
 
     actions: {
@@ -42,6 +43,15 @@ const getState = ({ getStore, getActions, setStore }) => {
         );
         const data = await response.json();
         await setStore({ countries: data });
+      },
+
+      getAllCities: async () => {
+        const response = await fetch(process.env.BACKEND_URL + "/api/cities", {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+        const data = await response.json();
+        await setStore({ cities: data });
       },
 
       getTransports: async () => {

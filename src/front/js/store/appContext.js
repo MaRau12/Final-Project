@@ -18,10 +18,11 @@ const injectContext = (PassedComponent) => {
     );
 
     useEffect(() => {
-      state.actions.getCurrentUser();
-      state.actions.getAllCountries();
-      state.actions.getTransports();
-      state.actions.getAllPosts();
+      state.actions.getCurrentUser(),
+        state.actions.getAllCountries(),
+        state.actions.getTransports();
+        state.actions.getAllPosts();
+        state.actions.getAllCities();
     }, []);
 
     return (
