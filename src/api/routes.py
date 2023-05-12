@@ -62,10 +62,8 @@ def edit_user_data():
         user.country = ["country",]
         user.city = ["city"],
         user.description = ["description"],
-        db.session.commit();
+        db.session.commit()
         return jsonify({"response": "User edited"}), 200
-        print("###")
-        print(user)
     else:
         return jsonify({"response": "Missing fields"}), 400   
 
@@ -75,7 +73,6 @@ def get_current_user():
     user_id_check = get_jwt_identity()
     user = User.query.filter_by(id = user_id_check).first()
     return jsonify(user.serialize()), 200
-    #print("current",current_user)
 
 
 
@@ -110,18 +107,27 @@ def get_all_cities():
 def create_new_post():
     user_id_check = get_jwt_identity()
     body = request.json
+    new_from_city = City(name=body['from_location']['name'], latitude=body['from_location']['latitude'], longitude=body['from_location']['longitude'], country_name=body['from_location']['country'])
+    db.session.add(new_from_city)
+    db.session.commit()
+    new_to_city = City(name=body['to_location']['name'], latitude=body['to_location']['latitude'], longitude=body['to_location']['longitude'], country_name=body['to_location']['country'])
+    db.session.add(new_to_city)
+    db.session.commit()
     transports = []
-    for name in body["transports"]:
-        transport = Transport.query.filter_by(name = name).first()
+    print(body)
+
+    for transport_dict in body["transports"]:
+        transport = Transport.query.get(transport_dict["id"])
         transports.append(transport)
+
     post = Post(
         user_id = user_id_check,
         title = body["title"],
         trip_duration = body["trip_duration"],
         price = body["price"],
         description = body["description"],
-        from_location = body["from_location"],
-        to_location = body["to_location"],
+        from_location = new_from_city.id,
+        to_location = new_to_city.id,
         transports = transports,
     )
     db.session.add(post)
@@ -221,7 +227,7 @@ def get_transport_by_name():
     print(name == "")
     print(travel_time == "")
    
-    queries = [Post.price <= price, or_( Post.from_city.has(name = from_location_search),  Post.to_city.has(name = from_location_search))]
+    queries = [Post.price <= price, or_(Post.from_city.has(name = from_location_search),  Post.to_city.has(name = from_location_search))]
     if name and name != "":
         queries.append(Post.transports.any(Transport.name == name))
     elif travel_time and travel_time != "":
