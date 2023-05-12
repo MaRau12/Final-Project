@@ -72,7 +72,7 @@ export const UserSettings = () => {
                         <input type="password" value={userData.password} className="form-control" id="exampleInputPassword1" onChange={(e) => setUserData({ ...userData, password: e.target.value })} />
                       </div>
 
-                      <button onClick={() => { changeUserData() }} className="btn btn-success"> Register </button>
+                      <button onClick={() => { changeUserData() }} className="btn btn-success"> Save Changes </button>
 
                     </div>
                   </div>

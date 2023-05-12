@@ -14,6 +14,7 @@ export const UserProfile = () => {
 
   console.log("profile", store.currentUser)
   console.log("user_posts", store.currentUserPosts)
+  console.log("profile: favs:", store.currentUser.favorites)
 
   return (
     store.currentUser ?
@@ -40,24 +41,26 @@ export const UserProfile = () => {
                     <li className="list-group-item">Country: {store.currentUser.country}</li>
                     <li className="list-group-item">City: {store.currentUser.city}</li>
                   </ul>
-
+                  <Link to="/usersettings">
+                    <button type="button" className="btn btn-outline-primary rounded-circle border border-0 mp-0">Edit Profile</button>
+                  </Link>
                 </div>
               </div>
             </div>
-            <div className="col-md-4">
-              <Link to="/newpost">
-                  <button type="button" className="btn btn-success btn-lg">New Post</button>
-              </Link>
-            </div>
-            <div className="col-md-4">
-             <Link to="/usersettings">
-              <button type="button" className="btn btn-primary btn-lg">Settings</button>
-             </Link>
+            <div className="col">
+              <CardList cardItems={store.currentUser.favorites} />
             </div>
           </div>
         </div>
-
-         <CardList cardItems={store.currentUserPosts} />
+        <div className="row row-cols-6 p-5 bg-gray">
+          <h3 >Your Posts</h3>
+          <Link to="/newpost">
+            <button className="btn btn-outline-warning rounded-circle border border-0 mp-0">
+              <i className="fa-solid fa-circle-plus fa-2xl mp-0"></i>
+            </button>
+          </Link>
+        </div>
+        <CardList cardItems={store.currentUserPosts} />
         <div className="row justify-content-md-center p-5">
           <img
             src={posts}
@@ -81,3 +84,12 @@ export const UserProfile = () => {
       </div>
       : "");
 };
+
+/*               <Link to="/newpost">
+                  <button type="button" className="btn btn-success btn-lg">New Post</button>
+              </Link>
+
+             <Link to="/usersettings">
+              <button type="button" className="btn btn-primary btn-lg">Settings</button>
+             </Link>
+              */
