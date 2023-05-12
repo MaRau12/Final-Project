@@ -10,9 +10,9 @@ import { Card } from "../component/Card";
 export const UserProfile = () => {
   const { store, actions } = useContext(Context);
 
-  console.log("profile", store.currentUser);
-  console.log("user_posts", store.currentUserPosts);
-  console.log("profile: favs:", store.currentUser.favorites);
+  // console.log("profile", store.currentUser);
+  // console.log("user_posts", store.currentUserPosts);
+  // console.log("profile: favs:", store.currentUser.favorites);
 
   return store.currentUser ? (
     <div className="Container">
@@ -35,8 +35,8 @@ export const UserProfile = () => {
                 <p>{store.currentUser.description}</p>
               </div>
               <div className="card-body p-3">
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item">
+                <ul className="list-group list-group-flush">
+                  <li className="list-group-item">
                     Name: {store.currentUser.full_name}
                   </li>
                   <li className="list-group-item">
@@ -61,7 +61,7 @@ export const UserProfile = () => {
             </div>
           </div>
           <div className="col">
-            <Card cardItems={store.currentUser.favorites} />
+            {/* <Card cardItems={store.currentUser.favorites} /> */}
           </div>
         </div>
       </div>
@@ -73,7 +73,10 @@ export const UserProfile = () => {
           </button>
         </Link>
       </div>
-      <Card cardItems={store.currentUserPosts} />
+      {store.currentUser.post &&
+        store.currentUser.post.map((post) => (
+          <Card key={post.id} cardItems={post} />
+        ))}
       <div className="row justify-content-md-center p-5">
         <img
           src={posts}
