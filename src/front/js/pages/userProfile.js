@@ -4,11 +4,15 @@ import { Context } from "../store/appContext";
 import rigoImage from "../../img/rigo-baby.jpg";
 import posts from "../../img/posts.jpg";
 import album from "../../img/album.jpg";
-import { Heart } from "@phosphor-icons/react";
 import { Card } from "../component/Card";
 
 export const UserProfile = () => {
   const { store, actions } = useContext(Context);
+
+
+  // console.log("profile", store.currentUser);
+   console.log("user_posts", store.currentUserPosts);
+  // console.log("profile: favs:", store.currentUser.favorites);
 
 
   console.log("profile", store.currentUser)
@@ -46,11 +50,12 @@ export const UserProfile = () => {
             </div>
           </div>
           <div className="col">
-            {store.currentUser.favorites &&
-              store.currentUser.favorites.map((favorite) => (
-                <Card key={favorite.id} post={favorite.post} />
-              ))}
-            {/* <Card post={store.currentUser.favorites} /> */}
+            <div className="row row-cols-6 g-3 m-5">
+              {store.currentUser.favorites &&
+                store.currentUser.favorites.map((favorite) => (
+                  <Card key={favorite.id} post={favorite.post} />
+                ))}
+            </div>
           </div>
         </div>
       </div>
@@ -61,11 +66,15 @@ export const UserProfile = () => {
             <i className="fa-solid fa-circle-plus fa-2xl mp-0"></i>
           </button>
         </Link>
+        <Link to="/manageposts">Manage Posts</Link>
       </div>
-      {store.currentUser.post &&
-        store.currentUser.post.map((post) => (
-          <Card key={post.id} post={post} />
-        ))}
+      <div className="row row-cols-sm-2 row-cols-md-2 row-cols-lg-4 g-5 m-5">
+        {store.currentUser.post &&
+          store.currentUser.post.map((post) => (
+            <Card key={post.id} post={post} />
+          ))}
+      </div>
+
       <div className="row justify-content-md-center p-5">
         <img
           src={posts}
@@ -91,12 +100,3 @@ export const UserProfile = () => {
     ""
   );
 };
-
-/*               <Link to="/newpost">
-                  <button type="button" className="btn btn-success btn-lg">New Post</button>
-              </Link>
-
-             <Link to="/usersettings">
-              <button type="button" className="btn btn-primary btn-lg">Settings</button>
-             </Link>
-              */

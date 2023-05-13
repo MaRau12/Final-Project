@@ -31,7 +31,8 @@ export const Card = ({ post }) => {
             onClick={() => actions.addFavorite(post.id)}
             size={35}
           />
-          {/* {post.post.id == currentUser.} */}
+         {store.currentUser.id == post.user_id ? 
+          (<button className="btn btn-outline-danger rounded-circle border border-0 mp-0"> x </button>) : ""}
         </div>
       </div>
     </div>
