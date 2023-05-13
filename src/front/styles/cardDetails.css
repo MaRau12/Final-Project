@@ -1,0 +1,51 @@
+.mb-3 {
+  margin-bottom: 1rem !important;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.box {
+  padding: 15px, 30px;
+  border-width: 1px;
+  border-radius: 2px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0px 7px 15px -13px rgba(0, 0, 0, 0.17);
+}
+.box.box-white {
+  background: #fff;
+  border-color: #fff;
+  color: #000;
+}
+.box.box-primary {
+  background: #1fbbd3;
+  border-color: #1fbbd3;
+  color: #fff;
+}
+.box .icon {
+  width: 60px;
+}
+.box .icon i {
+  font-size: 30px;
+}
+.box .icon.icon-primary i {
+  color: #1fbbd3;
+}
+.box .icon.icon-secondary i {
+  color: #fb582f;
+}
+.box .icon.icon-tertiary i {
+  color: #159688;
+}
+.box .icon.icon-quarternary i {
+  color: #e92465;
+}
+.box .text {
+  width: calc(100% - 60px);
+}
+.text-right {
+  text-align: right !important;
+}
+.box .text h4 {
+  font-size: 22px;
+  margin-bottom: 0;
+}

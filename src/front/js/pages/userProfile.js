@@ -61,7 +61,11 @@ export const UserProfile = () => {
             </div>
           </div>
           <div className="col">
-            {/* <Card cardItems={store.currentUser.favorites} /> */}
+            {store.currentUser.favorites &&
+              store.currentUser.favorites.map((favorite) => (
+                <Card key={favorite.id} post={favorite.post} />
+              ))}
+            {/* <Card post={store.currentUser.favorites} /> */}
           </div>
         </div>
       </div>
@@ -75,7 +79,7 @@ export const UserProfile = () => {
       </div>
       {store.currentUser.post &&
         store.currentUser.post.map((post) => (
-          <Card key={post.id} cardItems={post} />
+          <Card key={post.id} post={post} />
         ))}
       <div className="row justify-content-md-center p-5">
         <img
