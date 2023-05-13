@@ -4,8 +4,9 @@ import { useNavigate } from "react-router-dom";
 
 export const UserSettings = () => {
   const { store, actions } = useContext(Context);
-  const [userData, setUserData] = useState({ full_name: "", user_name: "", email: "", country: "", city: "", password: "", })
-  
+  const [userData, setUserData] = useState({ full_name: "", user_name: "", email: "", age: "", description: "", country: "", city: "", password: "", })
+  const [password2, setPassword2] = useState("")
+
   const changeUserData  = async () => {
     const token = sessionStorage.getItem("token");
     const options = {
@@ -17,14 +18,18 @@ export const UserSettings = () => {
       },
       body: JSON.stringify(userData),
     };
-    const response = await fetch(
-      process.env.BACKEND_URL + "/api/edituser",
+    if (userData.password == password2) {
+          const response = await fetch(
+      process.env.BACKEND_URL + "/api/edituser", options
     )
     if (response.ok) {
       
       await actions.getCurrentUser();
       console.log("user update fetch")
     }
+    }
+    else alert("Passwords do not match");
+
   }
  
     return (
@@ -68,10 +73,25 @@ export const UserSettings = () => {
                       </div>
 
                       <div className="mb-3">
+                        <label htmlFor="exampleInputAge" className="form-label">Age</label>
+                        <input type="number" placeholder={store.currentUser.age} value={userData.age} className="form-control" id="exampleInputAge" onChange={(e) => setUserData({ ...userData, age: e.target.value })} />
+                      </div>
+
+
+                      <div className="mb-3">
+                        <label htmlFor="exampleInputDescription" className="form-label">Description</label>
+                        <textarea type="text" placeholder={store.currentUser.description} value={userData.description} className="form-control" id="exampleInputDescription" onChange={(e) => setUserData({ ...userData, description: e.target.value })} />
+                      </div>
+
+                      <div className="mb-3">
                         <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
                         <input type="password" value={userData.password} className="form-control" id="exampleInputPassword1" onChange={(e) => setUserData({ ...userData, password: e.target.value })} />
                       </div>
 
+                      <div className="mb-3">
+                        <label htmlFor="exampleInputPassword2" className="form-label">Repeat Password</label>
+                        <input type="password" value={password2} className="form-control" id="exampleInputPassword2" onChange={(e) => setPassword2(e.target.value)} />
+                      </div>
                       <button onClick={() => { changeUserData() }} className="btn btn-success"> Register </button>
 
                     </div>

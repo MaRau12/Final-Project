@@ -51,26 +51,42 @@ def login_user():
 @jwt_required()
 def edit_user_data():
     user_id_check = get_jwt_identity()
-    body = request.json
-    print("##############")
-    print(body)
-    user = User.query.get(body["id"])
-    if User.user_id == user_id_check:
-        user.full_name = body["full_name"]
-        user.user_name = ["user_name"]
-        user.email = ["email"]
-        user.full_name = ["full_name"]
-        user.age = ["age"]
-        user.country = ["country"]
-        user.city = ["city"]
-        user.description = ["description"]
-        db.session.commit()
-        print("###")
-        print(user)
-        return jsonify({"response": "User edited"}), 200
-
+    body = request.get_json(force=True)
+    user = User.query.filter_by(id = user_id_check).first()
+    print("this is the user", user)
+    print("this is the body", body)
+    if body["full_name"] :
+        user.full_name = body["full_name"] 
     else:
-        return jsonify({"response": "Missing fields"}), 400   
+         user.full_name      
+    if body["user_name"]:
+        user.user_name = body["user_name"]
+    else: user.user_name 
+    if body["email"] :   
+        user.email = body["email"]
+    else: user.email
+    if body["age"] :
+        user.age = body["age"] 
+    else: user.age    
+    if body["country"] : 
+        user.country = body["country"]
+    else: user.country
+    if body["city"] :   
+        user.city = body["city"]
+    else: 
+        user.city
+    if body["description"] :   
+        user.description = body["description"]
+    else:
+         user.description
+    if body["password"] :
+        user.password = body["password"]
+    else:
+        user.password    
+    db.session.commit()
+    return jsonify({"response": "User edited"}), 200
+      
+   
 
 @api.route('/current_user', methods=['GET'])
 @jwt_required()
