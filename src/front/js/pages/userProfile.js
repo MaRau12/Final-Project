@@ -9,53 +9,43 @@ import { Card } from "../component/Card";
 export const UserProfile = () => {
   const { store, actions } = useContext(Context);
 
+
   // console.log("profile", store.currentUser);
    console.log("user_posts", store.currentUserPosts);
   // console.log("profile: favs:", store.currentUser.favorites);
 
-  return store.currentUser ? (
-    <div className="Container">
-      <div>
-        <div className="row m-5">
-          <div className="col-md-4 float-start">
-            <div className="card text-black" style={{ borderRadius: "25px" }}>
-              <div
-                className="ratio ratio-1x1 rounded-circle overflow-hidden p-5 mx-auto"
-                style={{ width: "14rem" }}
-              >
-                <img
-                  src={rigoImage}
-                  className="card-img-top rounded-circle"
-                  alt=""
-                />
-              </div>
-              <div className="card-title text-center p-3">
-                <h3>{store.currentUser.user_name}</h3>
-                <p>{store.currentUser.description}</p>
-              </div>
-              <div className="card-body p-3">
-                <ul className="list-group list-group-flush">
-                  <li className="list-group-item">
-                    Name: {store.currentUser.full_name}
-                  </li>
-                  <li className="list-group-item">
-                    Email: {store.currentUser.email}
-                  </li>
-                  <li className="list-group-item">
-                    Country: {store.currentUser.country}
-                  </li>
-                  <li className="list-group-item">
-                    City: {store.currentUser.city}
-                  </li>
-                </ul>
-                <Link to="/usersettings">
-                  <button
-                    type="button"
-                    className="btn btn-outline-primary rounded-circle border border-0 mp-0"
-                  >
-                    Edit Profile
-                  </button>
-                </Link>
+
+  console.log("profile", store.currentUser)
+  console.log("user_posts", store.currentUserPosts)
+  console.log("fav:", store.favorites)
+
+  return (
+    store.currentUser ?
+      <div className="Container">
+        <div>
+          <div className="row m-5">
+
+            <div className="col-md-4 float-start">
+
+              <div className="card text-black" style={{ borderRadius: "25px" }}>
+                <div
+                  className="ratio ratio-1x1 rounded-circle overflow-hidden p-5 mx-auto"
+                  style={{ width: "14rem" }}>
+                  <img src={rigoImage} className="card-img-top rounded-circle" alt="" />
+                </div>
+                <div className="card-title text-center p-3">
+                  <h3 >{store.currentUser.user_name}</h3>
+                  <p>{store.currentUser.description}</p>
+                </div>
+                <div className="card-body p-3">
+                  <ul className="list-group list-group-flush">
+                    <li className="list-group-item">Name: {store.currentUser.full_name}</li>
+                    <li className="list-group-item">Email: {store.currentUser.email}</li>
+                    <li className="list-group-item">Country: {store.currentUser.country}</li>
+                    <li className="list-group-item">City: {store.currentUser.city}</li>
+                  </ul>
+
+                </div>
               </div>
             </div>
           </div>
