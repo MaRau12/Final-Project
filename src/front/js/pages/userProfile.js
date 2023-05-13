@@ -1,16 +1,15 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
-import rigoImage from "../../img/rigo-baby.jpg"
-import posts from "../../img/posts.jpg"
+import rigoImage from "../../img/rigo-baby.jpg";
+import posts from "../../img/posts.jpg";
 import album from "../../img/album.jpg";
 import { Heart } from "@phosphor-icons/react";
-import { CardList } from "../component/cardList";
-
+import { Card } from "../component/Card";
 
 export const UserProfile = () => {
-
   const { store, actions } = useContext(Context);
+
 
   console.log("profile", store.currentUser)
   console.log("user_posts", store.currentUserPosts)
@@ -45,40 +44,59 @@ export const UserProfile = () => {
                 </div>
               </div>
             </div>
-            <div className="col-md-4">
-              <Link to="/newpost">
+          </div>
+          <div className="col">
+            {store.currentUser.favorites &&
+              store.currentUser.favorites.map((favorite) => (
+                <Card key={favorite.id} post={favorite.post} />
+              ))}
+            {/* <Card post={store.currentUser.favorites} /> */}
+          </div>
+        </div>
+      </div>
+      <div className="row row-cols-6 p-5 bg-gray">
+        <h3>Your Posts</h3>
+        <Link to="/newpost">
+          <button className="btn btn-outline-warning rounded-circle border border-0 mp-0">
+            <i className="fa-solid fa-circle-plus fa-2xl mp-0"></i>
+          </button>
+        </Link>
+      </div>
+      {store.currentUser.post &&
+        store.currentUser.post.map((post) => (
+          <Card key={post.id} post={post} />
+        ))}
+      <div className="row justify-content-md-center p-5">
+        <img
+          src={posts}
+          className="card-img-top m-5"
+          style={{ width: "16rem" }}
+          atl=""
+        />
+        <img
+          src={album}
+          className="card-img-top m-5"
+          style={{ width: "16rem" }}
+          atl=""
+        />
+        <img
+          src={rigoImage}
+          className="card-img-top m-5"
+          style={{ width: "16rem" }}
+          atl=""
+        />
+      </div>
+    </div>
+  ) : (
+    ""
+  );
+};
+
+/*               <Link to="/newpost">
                   <button type="button" className="btn btn-success btn-lg">New Post</button>
               </Link>
-            </div>
-            <div className="col-md-4">
+
              <Link to="/usersettings">
               <button type="button" className="btn btn-primary btn-lg">Settings</button>
              </Link>
-            </div>
-          </div>
-        </div>
-
-         <CardList cardItems={store.currentUserPosts} />
-        <div className="row justify-content-md-center p-5">
-          <img
-            src={posts}
-            className="card-img-top m-5"
-            style={{ width: "16rem" }}
-            atl=""
-          />
-          <img
-            src={album}
-            className="card-img-top m-5"
-            style={{ width: "16rem" }}
-            atl=""
-          />
-          <img
-            src={rigoImage}
-            className="card-img-top m-5"
-            style={{ width: "16rem" }}
-            atl=""
-          />
-        </div>
-      </div>
-      : "");
-};
+              */

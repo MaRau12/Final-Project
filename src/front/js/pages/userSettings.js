@@ -88,11 +88,13 @@ export const UserSettings = () => {
                         <input type="password" value={userData.password} className="form-control" id="exampleInputPassword1" onChange={(e) => setUserData({ ...userData, password: e.target.value })} />
                       </div>
 
+
                       <div className="mb-3">
                         <label htmlFor="exampleInputPassword2" className="form-label">Repeat Password</label>
                         <input type="password" value={password2} className="form-control" id="exampleInputPassword2" onChange={(e) => setPassword2(e.target.value)} />
                       </div>
-                      <button onClick={() => { changeUserData() }} className="btn btn-success"> Register </button>
+                      <button onClick={() => { changeUserData() }} className="btn btn-success"> Save Changes </button>
+
 
                     </div>
                   </div>

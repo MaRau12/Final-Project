@@ -19,9 +19,9 @@ import { UserSettings } from "./pages/userSettings";
 import { Register } from "./pages/register";
 import { Login } from "./pages/login";
 import { ForgotPassword } from "./pages/forgotPassword";
+import { CardDetails } from "./pages/cardDetails";
 
 import { Map } from "./component/map";
-
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
@@ -44,13 +44,13 @@ const Layout = () => {
             <Route element={<SearchResult />} path="/searchresult" />
             <Route element={<UserProfile />} path="/userprofile" />
             <Route element={<UserSettings />} path="/usersettings" />
+            <Route element={<CardDetails />} path="/tripdetails/:id" />
             <Route element={<Register />} path="/register" />
             <Route element={<Login />} path="/login" />
             <Route element={<ForgotPassword />} path="/forgotpassword" />
             <Route element={<h1>Not found!</h1>} />
 
             <Route element={<Map />} path="/map" />
-
           </Routes>
           <Footer />
         </ScrollToTop>
