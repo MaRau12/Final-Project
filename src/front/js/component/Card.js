@@ -32,7 +32,10 @@ export const Card = ({ post }) => {
             size={35}
           />
          {store.currentUser.id == post.user_id ? 
-          (<button className="btn btn-outline-danger rounded-circle border border-0 mp-0"> x </button>) : ""}
+          (<button className="btn btn-outline-danger rounded-circle border border-0 mp-0"  data-bs-toggle="modal"
+          data-bs-target="#exampleModal" > x </button>) 
+   
+          : ""}
         </div>
       </div>
     </div>
