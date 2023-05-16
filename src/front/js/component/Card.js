@@ -1,5 +1,5 @@
 import React from "react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import rigoImage from "../../img/rigo-baby.jpg";
 import { Heart } from "@phosphor-icons/react";
@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 
 export const Card = ({ post }) => {
   const { store, actions } = useContext(Context);
+  const [showModal, setShowModal] = useState(false);
+
   // console.log(post);
   return (
     <div key={post.id} className="card h-100">
@@ -31,9 +33,51 @@ export const Card = ({ post }) => {
             onClick={() => actions.addFavorite(post.id)}
             size={35}
           />
-         {store.currentUser.id == post.user_id ? 
-          (<button className="btn btn-outline-danger rounded-circle border border-0 mp-0"> x </button>) : ""}
-        </div>
+          </div>
+         <div>
+                    {store.currentUser.id == post.user_id ?
+            (
+              <button className="btn btn-outline-danger rounded-circle border border-0 mp-0"
+                onClick={() => setShowModal(true)}> x </button> 
+            )
+            : ("")}
+
+          {showModal && (
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h1 className="modal-title fs-5" id="cardModalLabel">
+                    Are you sure?
+                  </h1>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    onClick={() => setShowModal(false)}
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={() => setShowModal(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={() => actions.deletePost(post.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+           </div> 
+
+        
       </div>
     </div>
   );
