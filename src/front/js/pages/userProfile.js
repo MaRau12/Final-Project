@@ -20,8 +20,10 @@ export const UserProfile = () => {
   console.log("fav:", store.favorites)
 
   return (
-    store.currentUser ? 
-      <div>
+   
+    store.currentUser ?
+   ( <div>
+
       <div className="Container">
         <div>
           <div className="row m-5">
@@ -97,5 +99,8 @@ export const UserProfile = () => {
         />
       </div>
     </div>
-   : "" ); 
+
+    ) : ("")
+    );
+
 };
