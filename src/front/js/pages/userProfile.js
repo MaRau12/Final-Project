@@ -9,98 +9,103 @@ import { Card } from "../component/Card";
 export const UserProfile = () => {
   const { store, actions } = useContext(Context);
 
-
   // console.log("profile", store.currentUser);
-   console.log("user_posts", store.currentUserPosts);
+  console.log("user_posts", store.currentUserPosts);
   // console.log("profile: favs:", store.currentUser.favorites);
 
+  console.log("profile", store.currentUser);
+  console.log("user_posts", store.currentUserPosts);
+  console.log("fav:", store.favorites);
 
-  console.log("profile", store.currentUser)
-  console.log("user_posts", store.currentUserPosts)
-  console.log("fav:", store.favorites)
-
-  return (
-   
-    store.currentUser ?
-   ( <div>
-
-      <div className="Container">
-        <div>
-          <div className="row m-5">
-
-            <div className="col-md-4 float-start">
-
-              <div className="card text-black" style={{ borderRadius: "25px" }}>
-                <div
-                  className="ratio ratio-1x1 rounded-circle overflow-hidden p-5 mx-auto"
-                  style={{ width: "14rem" }}>
-                  <img src={rigoImage} className="card-img-top rounded-circle" alt="" />
-                </div>
-                <div className="card-title text-center p-3">
-                  <h3 >{store.currentUser.user_name}</h3>
-                  <p>{store.currentUser.description}</p>
-                </div>
-                <div className="card-body p-3">
-                  <ul className="list-group list-group-flush">
-                    <li className="list-group-item">Name: {store.currentUser.full_name}</li>
-                    <li className="list-group-item">Email: {store.currentUser.email}</li>
-                    <li className="list-group-item">Country: {store.currentUser.country}</li>
-                    <li className="list-group-item">City: {store.currentUser.city}</li>
-                  </ul>
-
-                </div>
-              </div>
+  return store.currentUser ? (
+    <div>
+      <div className="Container bg-light">
+        <div className="row bg-white m-5">
+          <div className="col-md-4 float-start">
+            <div
+              className="ratio ratio-1x1 rounded-circle overflow-hidden p-5 mx-auto"
+              style={{ width: "14rem" }}
+            >
+              <img
+                src={rigoImage}
+                className="card-img-top rounded-circle"
+                alt=""
+              />
             </div>
+
+            <h3>{store.currentUser.user_name}</h3>
+            <p>{store.currentUser.description}</p>
           </div>
-          <div className="col">
-            <div className="row row-cols-6 g-3 m-5">
-              {store.currentUser.favorites &&
-                store.currentUser.favorites.map((favorite) => (
-                  <Card key={favorite.id} post={favorite.post} />
-                ))}
-            </div>
+          <div className="col-4 p-3">
+            <ul className="list-group list-group-flush">
+              <li className="list-group-item">
+                Name: {store.currentUser.full_name}
+              </li>
+              <li className="list-group-item">
+                Email: {store.currentUser.email}
+              </li>
+              <li className="list-group-item">
+                Country: {store.currentUser.country}
+              </li>
+              <li className="list-group-item">
+                City: {store.currentUser.city}
+              </li>
+            </ul>
+          </div>
+          <div className="col-4 p-3">
+            <p>Album</p>
+            <img
+              src={album}
+              className="card-img-top "
+              style={{ width: "12rem" }}
+              atl=""
+            />
           </div>
         </div>
-      </div>
-      <div className="row row-cols-6 p-5 bg-gray">
-        <h3>Your Posts</h3>
-        <Link to="/newpost">
-          <button className="btn btn-outline-warning rounded-circle border border-0 mp-0">
-            <i className="fa-solid fa-circle-plus fa-2xl mp-0"></i>
-          </button>
-        </Link>
-        <Link to="/manageposts">Manage Posts</Link>
-      </div>
-      <div className="row row-cols-sm-2 row-cols-md-2 row-cols-lg-4 g-5 m-5">
-        {store.currentUser.post &&
-          store.currentUser.post.map((post) => (
-            <Card key={post.id} post={post} />
-          ))}
-      </div>
 
-      <div className="row justify-content-md-center p-5">
-        <img
-          src={posts}
-          className="card-img-top m-5"
-          style={{ width: "16rem" }}
-          atl=""
-        />
-        <img
-          src={album}
-          className="card-img-top m-5"
-          style={{ width: "16rem" }}
-          atl=""
-        />
-        <img
-          src={rigoImage}
-          className="card-img-top m-5"
-          style={{ width: "16rem" }}
-          atl=""
-        />
+        <div className="row p-5">
+          <h3>Your favorites:</h3>
+        </div>
+        <div className="row row-cols-6 g-3 m-5">
+          {store.currentUser.favorites &&
+            store.currentUser.favorites.map((favorite) => (
+              <Card key={favorite.id} post={favorite.post} />
+            ))}
+        </div>
+
+        <div className="row p-5">
+          <h3>Your Posts </h3>
+          <Link to="/newpost">
+            <button className="btn btn-outline-warning rounded-circle border border-0 mp-0">
+              <i className="fa-solid fa-circle-plus fa-2xl mp-0"></i>
+            </button>
+          </Link>
+        </div>
+        <div className="row row-cols-sm-2 row-cols-md-2 row-cols-lg-4 g-5 m-5">
+          {store.currentUser.post &&
+            store.currentUser.post.map((post) => (
+              <Card key={post.id} post={post} />
+            ))}
+        </div>
+
+        <div className="row justify-content-md-center p-5">
+          <img
+            src={posts}
+            className="card-img-top m-5"
+            style={{ width: "16rem" }}
+            atl=""
+          />
+
+          <img
+            src={rigoImage}
+            className="card-img-top m-5"
+            style={{ width: "16rem" }}
+            atl=""
+          />
+        </div>
       </div>
     </div>
-
-    ) : ("")
-    );
-
+  ) : (
+    ""
+  );
 };
