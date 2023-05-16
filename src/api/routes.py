@@ -178,6 +178,8 @@ def create_new_city():
 def delete_post(post_id):
     user_id_check = get_jwt_identity()
     post = Post.query.get(post_id)
+    print("####")
+    print(post.serialize())
     if post.user_id == user_id_check:
         db.session.delete(post)
         db.session.commit()
