@@ -1,11 +1,16 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { Context } from "../store/appContext";
 import { Map } from "../component/map";
+import { object } from "prop-types";
 
 export const NewPost = () => {
   const { store } = useContext(Context);
+  const navigate = useNavigate();
+
+  const [validationErrors, setValidationErrors] = useState({});
 
   const [newPost, setNewPost] = useState({
     title: "",
@@ -25,21 +30,6 @@ export const NewPost = () => {
     setNewPost({ ...newPost, to_location: city });
   }
 
-  async function postCity(city) {
-    console.log(city);
-    const response = await fetch(process.env.BACKEND_URL + "/api/city", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + sessionStorage.getItem("token"),
-      },
-      body: JSON.stringify(city),
-    });
-    if (response.ok) {
-      console.log("success");
-    }
-  }
-
   async function post() {
     const response = await fetch(process.env.BACKEND_URL + "/api/posts", {
       method: "POST",
@@ -51,12 +41,41 @@ export const NewPost = () => {
     });
     if (response.ok) {
       console.log("success");
+      navigate("/userprofile");
     }
   }
 
-  async function validations() {
-    console.log(newPost);
-    post();
+  function validations() {
+    const errors = {};
+
+    if (newPost.title.trim() === "" || newPost.title.trim().length < 5) {
+      errors.title = "Title must have at least 5 characters";
+    }
+    if (!newPost.country) {
+      errors.country = "Please select a country";
+    }
+    if (
+      !newPost.trip_duration ||
+      isNaN(newPost.trip_duration) ||
+      newPost.trip_duration <= 0
+    ) {
+      errors.trip_duration = "Please enter a valid duration";
+    }
+    if (!newPost.price || isNaN(newPost.price) || newPost.price <= 0) {
+      errors.price = "Please enter a valid price";
+    }
+    if (
+      newPost.description.trim() === "" ||
+      newPost.description.trim().length < 5
+    ) {
+      errors.description = "Description must have at least 5 characters";
+    }
+
+    setValidationErrors(errors);
+
+    if (Object.keys(errors).length === 0) {
+      post();
+    }
   }
 
   return (
@@ -76,11 +95,17 @@ export const NewPost = () => {
               className="form-control"
               type="text"
               placeholder="My amazing trip!"
-              onChange={(e) =>
-                setNewPost({ ...newPost, title: e.target.value })
-              }
+              onChange={(e) => {
+                setNewPost({ ...newPost, title: e.target.value });
+                setValidationErrors((prevErrors) => ({
+                  ...prevErrors,
+                  title: "",
+                }));
+              }}
             />
-            <div className="validation"></div>
+            {validationErrors.title && (
+              <div className="text-danger">{validationErrors.title}</div>
+            )}
           </div>
 
           <div className="col-md-3">
@@ -91,6 +116,10 @@ export const NewPost = () => {
               className="form-select"
               onChange={(e) => {
                 setNewPost({ ...newPost, country: e.target.value });
+                setValidationErrors((prevErrors) => ({
+                  ...prevErrors,
+                  country: "",
+                }));
               }}
             >
               {store.countries &&
@@ -100,7 +129,9 @@ export const NewPost = () => {
                   </option>
                 ))}
             </select>
-            <div className="validation"></div>
+            {validationErrors.country && (
+              <div className="text-danger">{validationErrors.country}</div>
+            )}
           </div>
         </div>
 
@@ -118,13 +149,21 @@ export const NewPost = () => {
               <input
                 type="test"
                 className="form-control"
-                onChange={(e) =>
-                  setNewPost({ ...newPost, trip_duration: e.target.value })
-                }
+                onChange={(e) => {
+                  setNewPost({ ...newPost, trip_duration: e.target.value });
+                  setValidationErrors((prevErrors) => ({
+                    ...prevErrors,
+                    trip_duration: "",
+                  }));
+                }}
               />
               <span className="input-group-text">hrs</span>
             </div>
-            <div className="validation"></div>
+            {validationErrors.trip_duration && (
+              <div className="text-danger">
+                {validationErrors.trip_duration}
+              </div>
+            )}
           </div>
           <div className="col-md-2 col-sm-6">
             <label className="form-label">Price</label>
@@ -132,13 +171,19 @@ export const NewPost = () => {
               <input
                 type="test"
                 className="form-control"
-                onChange={(e) =>
-                  setNewPost({ ...newPost, price: e.target.value })
-                }
+                onChange={(e) => {
+                  setNewPost({ ...newPost, price: e.target.value });
+                  setValidationErrors((prevErrors) => ({
+                    ...prevErrors,
+                    price: "",
+                  }));
+                }}
               />
               <span className="input-group-text">€</span>
             </div>
-            <div className="validation"></div>
+            {validationErrors.price && (
+              <div className="text-danger">{validationErrors.price}</div>
+            )}
           </div>
           <div className="col-md-4">
             <label className="form-label">Transports</label>
@@ -163,7 +208,9 @@ export const NewPost = () => {
                     <label className="form-check-label" htmlFor="inlineRadio1">
                       <i className={transport.icon}></i>
                     </label>
-                    <div className="validation"></div>
+                    {validationErrors.transports && (
+                      <div className="text-danger">{error.transports}</div>
+                    )}
                   </div>
                 ))}
             </div>
@@ -178,10 +225,17 @@ export const NewPost = () => {
             <textarea
               className="form-control"
               rows="7"
-              onChange={(e) =>
-                setNewPost({ ...newPost, description: e.target.value })
-              }
+              onChange={(e) => {
+                setNewPost({ ...newPost, description: e.target.value });
+                setValidationErrors((prevErrors) => ({
+                  ...prevErrors,
+                  description: "",
+                }));
+              }}
             ></textarea>
+            {validationErrors.description && (
+              <div className="text-danger">{validationErrors.description}</div>
+            )}
           </div>
         </div>
       </div>

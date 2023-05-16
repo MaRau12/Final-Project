@@ -9,7 +9,6 @@ export const Card = ({ post }) => {
   const { store, actions } = useContext(Context);
   const [showModal, setShowModal] = useState(false);
 
-  // console.log(post);
   return (
     <div key={post.id} className="card h-100">
       <img src={rigoImage} className="card-img-top" atl="" />
@@ -33,14 +32,19 @@ export const Card = ({ post }) => {
             onClick={() => actions.addFavorite(post.id)}
             size={35}
           />
-          </div>
-         <div>
-                    {store.currentUser.id == post.user_id ?
-            (
-              <button className="btn btn-outline-danger rounded-circle border border-0 mp-0"
-                onClick={() => setShowModal(true)}> x </button> 
-            )
-            : ("")}
+        </div>
+        <div>
+          {store.currentUser.id == post.user_id ? (
+            <button
+              className="btn btn-outline-danger rounded-circle border border-0 mp-0"
+              onClick={() => setShowModal(true)}
+            >
+              {" "}
+              <i class="fa-solid fa-trash"></i>{" "}
+            </button>
+          ) : (
+            ""
+          )}
 
           {showModal && (
             <div className="modal-dialog">
@@ -75,9 +79,7 @@ export const Card = ({ post }) => {
               </div>
             </div>
           )}
-           </div> 
-
-        
+        </div>
       </div>
     </div>
   );
