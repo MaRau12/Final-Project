@@ -31,6 +31,7 @@ export const Card = ({ post }) => {
             onClick={() => actions.addFavorite(post.id)}
             size={35}
           />
+
           </div>
          <div>
                     {store.currentUser.id == post.user_id ?
@@ -40,6 +41,7 @@ export const Card = ({ post }) => {
             )
             : ("")}
            <div className="modal fade" id={"staticBackdrop"+post.id} data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
             <div className="modal-dialog">
               <div className="modal-content">
                 <div className="modal-header">
@@ -71,8 +73,10 @@ export const Card = ({ post }) => {
                 </div>
               </div>
             </div>
+
            </div> 
            </div> 
+
       </div>
     </div>
   );
