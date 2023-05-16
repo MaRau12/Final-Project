@@ -4,6 +4,7 @@ import { Context } from "../store/appContext";
 
 export const Navbar = () => {
   const { store, actions } = useContext(Context);
+  
   const navigate = useNavigate();
 
   const [transportName, setTransportName] = useState('');
@@ -37,9 +38,8 @@ export const Navbar = () => {
 
   const handleLogout = async () => {
     sessionStorage.removeItem('token');
-    await actions.getCurrentUser();
-    window.location.reload();
     navigate("/")
+    window.location.reload();
   }
 
   return (
