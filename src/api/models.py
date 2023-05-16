@@ -53,8 +53,8 @@ class Post(db.Model):
     from_city = db.relationship('City', foreign_keys=[from_location])
     to_location = db.Column(db.Integer(), db.ForeignKey('city.id'), nullable=False)
     to_city = db.relationship('City', foreign_keys=[to_location])
-    comments = db.relationship('Comment', backref='post')
-    favorites = db.relationship('Favorites', backref='post')
+    comments = db.relationship('Comment', backref='post', cascade="all,delete")
+    favorites = db.relationship('Favorites', backref='post', cascade="all,delete")
     
     def serialize(self):
         return {

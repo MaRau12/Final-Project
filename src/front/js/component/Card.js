@@ -7,9 +7,7 @@ import { Link } from "react-router-dom";
 
 export const Card = ({ post }) => {
   const { store, actions } = useContext(Context);
-  const [showModal, setShowModal] = useState(false);
 
-  // console.log(post);
   return (
     <div key={post.id} className="card h-100">
       <img src={rigoImage} className="card-img-top" atl="" />
@@ -37,30 +35,29 @@ export const Card = ({ post }) => {
          <div>
                     {store.currentUser.id == post.user_id ?
             (
-              <button className="btn btn-outline-danger rounded-circle border border-0 mp-0"
+              <button className="btn btn-outline-danger rounded-circle border border-0 mp-0" data-bs-toggle="modal" data-bs-target={"#staticBackdrop"+post.id}
                 onClick={() => setShowModal(true)}> x </button> 
             )
             : ("")}
-
-          {showModal && (
+           <div className="modal fade" id={"staticBackdrop"+post.id} data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div className="modal-dialog">
               <div className="modal-content">
                 <div className="modal-header">
                   <h1 className="modal-title fs-5" id="cardModalLabel">
-                    Are you sure?
+                    Are you sure you want to delete this post permanentely?
                   </h1>
                   <button
                     type="button"
                     className="btn-close"
-                    onClick={() => setShowModal(false)}
                     aria-label="Close"
+                    data-bs-dismiss="modal"
                   ></button>
                 </div>
                 <div className="modal-footer">
                   <button
                     type="button"
                     className="btn btn-secondary"
-                    onClick={() => setShowModal(false)}
+                    data-bs-dismiss="modal"
                   >
                     Cancel
                   </button>
@@ -74,10 +71,8 @@ export const Card = ({ post }) => {
                 </div>
               </div>
             </div>
-          )}
            </div> 
-
-        
+           </div> 
       </div>
     </div>
   );
