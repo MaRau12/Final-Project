@@ -20,7 +20,6 @@ import { Register } from "./pages/register";
 import { Login } from "./pages/login";
 import { ForgotPassword } from "./pages/forgotPassword";
 import { CardDetails } from "./pages/cardDetails";
-
 import { Map } from "./component/map";
 
 const Layout = () => {
@@ -49,7 +48,6 @@ const Layout = () => {
             <Route element={<Login />} path="/login" />
             <Route element={<ForgotPassword />} path="/forgotpassword" />
             <Route element={<h1>Not found!</h1>} />
-
             <Route element={<Map />} path="/map" />
           </Routes>
           <Footer />

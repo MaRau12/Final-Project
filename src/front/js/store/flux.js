@@ -85,17 +85,23 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
       deletePost: async (postId) => {
-        const response = await fetch(
-          process.env.BACKEND_URL + "/api/posts/" + postId,
-          {
-            method: "DELETE",
-            headers: { "Content-Type": "application/json" },
-          }
+        const token = sessionStorage.getItem("token");
+        const options = {
+          method: "DELETE",
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body: JSON.stringify(postId),
+        };
+        const response = await fetch( process.env.BACKEND_URL + "/api/posts/" + postId, options 
         );
         if (response.ok) {
           await getAllPostsByUserId();
         }
       },
+
       editPost: async (editedPost) => {
         const response = await fetch(process.env.BACKEND_URL + "/api/posts", {
           method: "PUT",
