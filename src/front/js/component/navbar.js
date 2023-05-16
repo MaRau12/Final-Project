@@ -1,10 +1,10 @@
-import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState, } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 
 export const Navbar = () => {
   const { store, actions } = useContext(Context);
-
+  const navigate = useNavigate();
 
   const [transportName, setTransportName] = useState('');
   const [searchPrice, setSearchPrice] = useState('');
@@ -30,11 +30,17 @@ export const Navbar = () => {
   const handleSearch = async (e) => {
     const response = await fetch(`${process.env.BACKEND_URL}/api/transport_by_name/?name=${transportName}&price=${searchPrice}&from_location_search=${searchFrom}&travel_time=${searchTime}`);
 
-
     const data = await response.json();
     actions.setSearchResults(data.posts);
     console.log(data);
   };
+
+  const handleLogout = async () => {
+    sessionStorage.removeItem('token');
+    await actions.getCurrentUser();
+    window.location.reload();
+    navigate("/")
+  }
 
   return (
     <nav className="navbar navbar-light bg-light">
@@ -144,6 +150,7 @@ export const Navbar = () => {
                 <i className="fa-solid fa-circle-plus fa-2xl mp-0"></i>
               </button>
             </Link>
+            <button className="btn btn-outline-secondary mp-0" onClick={handleLogout}>Logout</button>
           </>
         ) : (
           <Link to="/login">
