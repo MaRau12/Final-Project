@@ -7,6 +7,7 @@ export const Login = () => {
   const { store, actions } = useContext(Context);
   const navigate = useNavigate();
   const [user, setUser] = useState({ email: "", password: "" });
+  const [loginStatus, setLoginStatus] = useState()
 
   const logInUser = async () => {
     const response = await fetch(process.env.BACKEND_URL + "/api/login", {
@@ -21,6 +22,7 @@ export const Login = () => {
       await actions.getCurrentUser();
       navigate("/userprofile");
     }
+    else setLoginStatus('failed');
   };
 
   return (
@@ -88,8 +90,12 @@ export const Login = () => {
                       >
                         Login
                       </button>
-
                       <div>
+                      {loginStatus === "failed" &&
+                        <span> Login not successful </span>
+                      }
+                      </div>
+                      <div> 
                         <Link to="/register">
                           <span>Create new account</span>
                         </Link>
