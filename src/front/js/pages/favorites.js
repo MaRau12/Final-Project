@@ -1,5 +1,5 @@
 import React from "react";
-import { Card } from "../component/cardList";
+import { Card } from "../component/Card";
 
 export const Favorite = () => {
   return (
@@ -14,7 +14,7 @@ export const Favorite = () => {
       </section>
 
       <div className="Container bg-light py-5">
-        <CardList />
+        <Card />
       </div>
     </>
   );

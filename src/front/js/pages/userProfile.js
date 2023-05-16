@@ -1,23 +1,29 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
-import rigoImage from "../../img/rigo-baby.jpg"
-import posts from "../../img/posts.jpg"
+import rigoImage from "../../img/rigo-baby.jpg";
+import posts from "../../img/posts.jpg";
 import album from "../../img/album.jpg";
-import { Heart } from "@phosphor-icons/react";
-import { CardList } from "../component/cardList";
-
+import { Card } from "../component/Card";
 
 export const UserProfile = () => {
-
   const { store, actions } = useContext(Context);
+
+
+  // console.log("profile", store.currentUser);
+   console.log("user_posts", store.currentUserPosts);
+  // console.log("profile: favs:", store.currentUser.favorites);
+
 
   console.log("profile", store.currentUser)
   console.log("user_posts", store.currentUserPosts)
-  console.log("profile: favs:", store.currentUser.favorites)
+  console.log("fav:", store.favorites)
 
   return (
+   
     store.currentUser ?
+   ( <div>
+
       <div className="Container">
         <div>
           <div className="row m-5">
@@ -35,61 +41,66 @@ export const UserProfile = () => {
                   <p>{store.currentUser.description}</p>
                 </div>
                 <div className="card-body p-3">
-                  <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Name: {store.currentUser.full_name}</li>
+                  <ul className="list-group list-group-flush">
+                    <li className="list-group-item">Name: {store.currentUser.full_name}</li>
                     <li className="list-group-item">Email: {store.currentUser.email}</li>
                     <li className="list-group-item">Country: {store.currentUser.country}</li>
                     <li className="list-group-item">City: {store.currentUser.city}</li>
                   </ul>
-                  <Link to="/usersettings">
-                    <button type="button" className="btn btn-outline-primary rounded-circle border border-0 mp-0">Edit Profile</button>
-                  </Link>
+
                 </div>
               </div>
             </div>
-            <div className="col">
-              <CardList cardItems={store.currentUser.favorites} />
+          </div>
+          <div className="col">
+            <div className="row row-cols-6 g-3 m-5">
+              {store.currentUser.favorites &&
+                store.currentUser.favorites.map((favorite) => (
+                  <Card key={favorite.id} post={favorite.post} />
+                ))}
             </div>
           </div>
         </div>
-        <div className="row row-cols-6 p-5 bg-gray">
-          <h3 >Your Posts</h3>
-          <Link to="/newpost">
-            <button className="btn btn-outline-warning rounded-circle border border-0 mp-0">
-              <i className="fa-solid fa-circle-plus fa-2xl mp-0"></i>
-            </button>
-          </Link>
-        </div>
-        <CardList cardItems={store.currentUserPosts} />
-        <div className="row justify-content-md-center p-5">
-          <img
-            src={posts}
-            className="card-img-top m-5"
-            style={{ width: "16rem" }}
-            atl=""
-          />
-          <img
-            src={album}
-            className="card-img-top m-5"
-            style={{ width: "16rem" }}
-            atl=""
-          />
-          <img
-            src={rigoImage}
-            className="card-img-top m-5"
-            style={{ width: "16rem" }}
-            atl=""
-          />
-        </div>
       </div>
-      : "");
+      <div className="row row-cols-6 p-5 bg-gray">
+        <h3>Your Posts</h3>
+        <Link to="/newpost">
+          <button className="btn btn-outline-warning rounded-circle border border-0 mp-0">
+            <i className="fa-solid fa-circle-plus fa-2xl mp-0"></i>
+          </button>
+        </Link>
+        <Link to="/manageposts">Manage Posts</Link>
+      </div>
+      <div className="row row-cols-sm-2 row-cols-md-2 row-cols-lg-4 g-5 m-5">
+        {store.currentUser.post &&
+          store.currentUser.post.map((post) => (
+            <Card key={post.id} post={post} />
+          ))}
+      </div>
+
+      <div className="row justify-content-md-center p-5">
+        <img
+          src={posts}
+          className="card-img-top m-5"
+          style={{ width: "16rem" }}
+          atl=""
+        />
+        <img
+          src={album}
+          className="card-img-top m-5"
+          style={{ width: "16rem" }}
+          atl=""
+        />
+        <img
+          src={rigoImage}
+          className="card-img-top m-5"
+          style={{ width: "16rem" }}
+          atl=""
+        />
+      </div>
+    </div>
+
+    ) : ("")
+    );
+
 };
-
-/*               <Link to="/newpost">
-                  <button type="button" className="btn btn-success btn-lg">New Post</button>
-              </Link>
-
-             <Link to="/usersettings">
-              <button type="button" className="btn btn-primary btn-lg">Settings</button>
-             </Link>
-              */
