@@ -47,7 +47,7 @@ class Post(db.Model):
     title = db.Column(db.String(40), unique=True, nullable=False)
     trip_duration = db.Column(db.Integer(), unique=False, nullable=False)
     price = db.Column(db.Integer(), unique=False, nullable=False)
-    description = db.Column(db.String(120), unique=True, nullable=False)
+    description = db.Column(db.String(500), unique=True, nullable=False)
     transports = db.relationship('Transport', secondary = transports, backref=db.backref('post', lazy = True))
     from_location = db.Column(db.Integer(), db.ForeignKey('city.id'), nullable=False)
     from_city = db.relationship('City', foreign_keys=[from_location])

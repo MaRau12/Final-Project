@@ -2,7 +2,8 @@ import React from "react";
 import { useContext } from "react";
 import { Context } from "../store/appContext";
 
-import { CountriesScroll } from "../component/countriesScroll";
+import { Jumbotron } from "../component/jumbotron";
+import { Buttons } from "../component/buttons";
 import { Card } from "../component/Card";
 
 export const Home = () => {
@@ -10,8 +11,8 @@ export const Home = () => {
 
   return (
     <div>
-      <CountriesScroll />
-
+      <Jumbotron />
+      <Buttons />
       <div className="container">
         <div className="row row-cols-sm-2 row-cols-md-2 row-cols-lg-4 g-5 ">
           {store.posts &&
