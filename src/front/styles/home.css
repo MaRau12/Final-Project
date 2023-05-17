@@ -1,7 +1,155 @@
-/*
-    home.css: This website contains selectors only used in home.css
+/* ---------- NavBar ----------- */
+nav {
+  background-color: #d3c5bd;
+  color: #fff;
+}
+.no-underline {
+  text-decoration: none;
+}
+.logo {
+  width: 150px;
+  border-radius: 5%;
+}
+.navbar-brand {
+  font-family: "Dancing Script", cursive;
+  width: 500;
+  color: #7d4432;
+  font-size: 20px;
+}
+@media (min-width: 768px) {
+  /* Adjust font size for medium-sized screens */
+  .navbar-brand {
+    font-size: 24px;
+  }
+}
 
-    All pages share the styles on index.css but you should create 
-    one more css for each page that will contain the selected used 
-    on that page only (the ones not reused in other pages).
-*/
+@media (min-width: 992px) {
+  /* Adjust font size for large screens */
+  .navbar-brand {
+    font-size: 30px;
+  }
+}
+
+/* ---------- Colors ----------- */
+.color-primary {
+  background-color: #d3c5bd;
+}
+.color-secondary {
+  background-color: #411c1b;
+}
+.color-tertiary {
+  background-color: #7d4432;
+}
+.color-quaternary {
+  background-color: #b07443;
+}
+
+/* ---------- Buttons ----------- */
+.buttons {
+  background-color: #d3c5bd;
+}
+.fill:hover,
+.fill:focus {
+  box-shadow: inset 0 0 0 2em var(--hover);
+}
+
+.pulse:hover,
+.pulse:focus {
+  -webkit-animation: pulse 1s;
+  animation: pulse 1s;
+  box-shadow: 0 0 0 2em transparent;
+}
+
+@-webkit-keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 var(--hover);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 var(--hover);
+  }
+}
+.close:hover,
+.close:focus {
+  box-shadow: inset -3.5em 0 0 0 var(--hover), inset 3.5em 0 0 0 var(--hover);
+}
+
+.raise:hover,
+.raise:focus {
+  box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
+  transform: translateY(-0.25em);
+}
+
+.up:hover,
+.up:focus {
+  box-shadow: inset 0 -3.25em 0 0 var(--hover);
+}
+
+.slide:hover,
+.slide:focus {
+  box-shadow: inset 6.5em 0 0 0 var(--hover);
+}
+
+.offset {
+  box-shadow: 0.3em 0.3em 0 0 var(--color), inset 0.3em 0.3em 0 0 var(--color);
+}
+.offset:hover,
+.offset:focus {
+  box-shadow: 0 0 0 0 var(--hover), inset 6em 3.5em 0 0 var(--hover);
+}
+
+.fill {
+  --color: #a972cb;
+  --hover: #cb72aa;
+}
+
+.pulse {
+  --color: #7d4432;
+  --hover: #b07443;
+}
+
+.close {
+  --color: #ff7f82;
+  --hover: #ffdc7f;
+}
+
+.raise {
+  --color: #ffa260;
+  --hover: #e5ff60;
+}
+
+.up {
+  --color: #e4cb58;
+  --hover: #94e458;
+}
+
+.slide {
+  --color: #8fc866;
+  --hover: #66c887;
+}
+
+.offset {
+  --color: #b07443;
+  --hover: #7d4432;
+}
+
+button {
+  color: var(--color);
+  transition: 0.25s;
+}
+button:hover,
+button:focus {
+  border-color: var(--hover);
+  color: #fff;
+}
+
+button {
+  background: none;
+  border: 2px solid;
+  font: inherit;
+  line-height: 1;
+  margin: 0.5em;
+  padding: 1em 2em;
+}

@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 
 export const Card = ({ post }) => {
   const { store, actions } = useContext(Context);
-  const [showModal, setShowModal] = useState(false);
 
   return (
     <div key={post.id} className="card h-100">
@@ -46,26 +45,24 @@ export const Card = ({ post }) => {
           ) : (
             ""
           )}
-
-          {showModal && (
             <div className="modal-dialog">
               <div className="modal-content">
                 <div className="modal-header">
                   <h1 className="modal-title fs-5" id="cardModalLabel">
-                    Are you sure?
+                    Are you sure you want to delete this post permanentely?
                   </h1>
                   <button
                     type="button"
                     className="btn-close"
-                    onClick={() => setShowModal(false)}
                     aria-label="Close"
+                    data-bs-dismiss="modal"
                   ></button>
                 </div>
                 <div className="modal-footer">
                   <button
                     type="button"
                     className="btn btn-secondary"
-                    onClick={() => setShowModal(false)}
+                    data-bs-dismiss="modal"
                   >
                     Cancel
                   </button>
