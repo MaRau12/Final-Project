@@ -9,14 +9,6 @@ import { Card } from "../component/Card";
 export const UserProfile = () => {
   const { store, actions } = useContext(Context);
 
-  // console.log("profile", store.currentUser);
-  console.log("user_posts", store.currentUserPosts);
-  // console.log("profile: favs:", store.currentUser.favorites);
-
-  console.log("profile", store.currentUser);
-  console.log("user_posts", store.currentUserPosts);
-  console.log("fav:", store.favorites);
-
   return store.currentUser ? (
     <div>
       <div className="Container bg-light">
@@ -32,6 +24,9 @@ export const UserProfile = () => {
                 alt=""
               />
             </div>
+            <Link to="/usersettings">
+              <button>usersettings</button>
+            </Link>
 
             <h3>{store.currentUser.user_name}</h3>
             <p>{store.currentUser.description}</p>
