@@ -140,24 +140,47 @@ export const Navbar = () => {
           </div>
         </div>
         {store.currentUser.id ? (
-          <>
-            <Link to="/userprofile">
-              <button className="btn btn-outline-warning mp-0">
-                {store.currentUser.user_name}
-              </button>
-            </Link>
-            <Link to="/newpost">
-              <button className="btn btn-outline-warning rounded-circle border border-0 mp-0">
-                <i className="fa-solid fa-circle-plus fa-2xl mp-0"></i>
-              </button>
-            </Link>
+          <div className="dropdown">
             <button
-              className="btn btn-outline-secondary mp-0"
-              onClick={handleLogout}
+              className="offset dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
             >
-              Logout
+              Profile img
             </button>
-          </>
+            <ul className="dropdown-menu">
+              <li>
+                <Link className="dropdown-item" to="/">
+                  Welcome{" "}
+                  {store.currentUser.user_name.charAt(0).toUpperCase() +
+                    store.currentUser.user_name.slice(1)}
+                  !
+                </Link>
+              </li>
+              <li>
+                <hr className="dropdown-divider" />
+              </li>
+              <li>
+                <Link className="dropdown-item" to="/userprofile">
+                  Profile
+                </Link>
+              </li>
+              <li>
+                <Link className="dropdown-item" to="/newpost">
+                  Create new post
+                </Link>
+              </li>
+              <li>
+                <hr className="dropdown-divider" />
+              </li>
+              <li onClick={handleLogout}>
+                <a className="dropdown-item" href="#">
+                  LogOut
+                </a>
+              </li>
+            </ul>
+          </div>
         ) : (
           <Link to="/login">
             <button className="offset">LogIn</button>
