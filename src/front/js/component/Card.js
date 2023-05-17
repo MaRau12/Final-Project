@@ -18,30 +18,33 @@ export const Card = ({ post }) => {
           <Link to={"/tripdetails/" + post.id} className="btn btn-primary">
             See more!
           </Link>
-          <Heart
-            className={
-              store.currentUser.favorites
-                .map((x) => {
-                  return x.post_id;
-                })
-                .includes(post.id)
-                ? "heart text-danger"
-                : "heart"
-            }
-            onClick={() => actions.addFavorite(post.id)}
-            size={35}
-          />
-
-          </div>
-         <div>
-                    {store.currentUser.id == post.user_id ?
-            (
-              <button className="btn btn-outline-danger rounded-circle border border-0 mp-0" data-bs-toggle="modal" data-bs-target={"#staticBackdrop"+post.id}
-                onClick={() => setShowModal(true)}> x </button> 
-            )
-            : ("")}
-           <div className="modal fade" id={"staticBackdrop"+post.id} data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-
+          {store.currentUser.favorites
+            .map((x) => {
+              return x.post.id;
+            })
+            .includes(post.id) ? (
+            <Heart
+              onClick={() => actions.addFavorite(post.id)}
+              size={35}
+              color="#eb0f0f"
+              weight="fill"
+            />
+          ) : (
+            <Heart onClick={() => actions.addFavorite(post.id)} size={35} />
+          )}
+        </div>
+        <div>
+          {store.currentUser.id == post.user_id ? (
+            <button
+              className="btn btn-outline-danger rounded-circle border border-0 mp-0"
+              onClick={() => setShowModal(true)}
+            >
+              {" "}
+              x{" "}
+            </button>
+          ) : (
+            ""
+          )}
             <div className="modal-dialog">
               <div className="modal-content">
                 <div className="modal-header">
@@ -73,10 +76,8 @@ export const Card = ({ post }) => {
                 </div>
               </div>
             </div>
-
-           </div> 
-           </div> 
-
+          )}
+        </div>
       </div>
     </div>
   );

@@ -2,10 +2,13 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User, Post, Transport, Country, City, Favorites
 from api.utils import generate_sitemap, APIException
 from sqlalchemy import or_
+import cloudinary
+import cloudinary.uploader
 # Token
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
+import json
 
 api = Blueprint("api", __name__)
 
@@ -22,6 +25,7 @@ def create_user():
             full_name = body ["full_name"],
             user_name = body["user_name"],
             email = body["email"],
+            profile_image_url = ["profile_image_url "],
             password = body["password"],
             country = body["country"],
             city = body["city"],
@@ -35,11 +39,6 @@ def create_user():
 @api.route("/login", methods=["POST"])
 def login_user():
     body = request.json
-    print("######")
-    print(body)
-    print(User.query.all())
-    print(User.query.filter_by(email= body["email"], password= body["password"]).first())
-    print("######")
     user = User.query.filter_by(email= body["email"], password= body["password"]).first()
     if user:
         token = create_access_token(identity=user.id) # Token
@@ -51,14 +50,21 @@ def login_user():
 @jwt_required()
 def edit_user_data():
     user_id_check = get_jwt_identity()
-    body = request.get_json(force=True)
+    body = json.loads(request.form["user_data"])
     user = User.query.filter_by(id = user_id_check).first()
     print("this is the user", user)
     print("this is the body", body)
     if body["full_name"] :
         user.full_name = body["full_name"] 
     else:
-         user.full_name      
+         user.full_name
+
+    if 'profile_image' in request.files:
+        # upload file to uploadcare
+        result = cloudinary.uploader.upload(request.files['profile_image'])
+        # update the user with the given cloudinary image URL
+        user.profile_image_url = result['secure_url']  
+
     if body["user_name"]:
         user.user_name = body["user_name"]
     else: user.user_name 
@@ -144,6 +150,7 @@ def create_new_post():
     post = Post(
         user_id = user_id_check,
         title = body["title"],
+        post_image_url = self.post_image_url,
         trip_duration = body["trip_duration"],
         price = body["price"],
         description = body["description"],
@@ -195,6 +202,7 @@ def edit_post():
     post = Post.query.get(body["id"])
     if post.user_id == user_id_check:
         post.title = body["title"],
+        post.post_image_url = body["post_image_url"],
         post.trip_duration = body["trip_duration"],
         post.price = body["price"],
         post.description = body["description"],
