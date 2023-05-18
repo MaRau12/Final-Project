@@ -7,7 +7,7 @@ export const Login = () => {
   const { store, actions } = useContext(Context);
   const navigate = useNavigate();
   const [user, setUser] = useState({ email: "", password: "" });
-  const [loginStatus, setLoginStatus] = useState()
+  const [loginStatus, setLoginStatus] = useState();
 
   const logInUser = async () => {
     const response = await fetch(process.env.BACKEND_URL + "/api/login", {
@@ -21,19 +21,19 @@ export const Login = () => {
       sessionStorage.setItem("token", token);
       await actions.getCurrentUser();
       navigate("/userprofile");
-    }
-    else setLoginStatus('failed');
+    } else setLoginStatus("failed");
   };
 
   return (
-    <div className="container text-center mt-5">
-      <h1>Login Page</h1>
-
-      <div className="vh-100">
-        <div className="container h-100">
-          <div className="row d-flex justify-content-center align-items-center h-100">
-            <div className="col-lg-12 col-xl-11">
-              <div className="card text-black" style={{ borderRadius: "25px" }}>
+    <div className="container text-center">
+      <div>
+        <div className="container pt-5">
+          <div className="row d-flex justify-content-center align-items-center">
+            <div className="col-lg-12 col-xl-11 ">
+              <div
+                className="card text-black shadow p-3 mb-5 bg-body"
+                style={{ borderRadius: "25px" }}
+              >
                 <div className="card-body p-md-5">
                   <div className="row justify-content-center">
                     <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
@@ -91,11 +91,11 @@ export const Login = () => {
                         Login
                       </button>
                       <div>
-                      {loginStatus === "failed" &&
-                        <span> Login not successful </span>
-                      }
+                        {loginStatus === "failed" && (
+                          <span> Login not successful </span>
+                        )}
                       </div>
-                      <div> 
+                      <div>
                         <Link to="/register">
                           <span>Create new account</span>
                         </Link>

@@ -1,7 +1,5 @@
 import React from "react";
-
 import { CountriesScroll } from "./countriesScroll";
-
 import "../../styles/jumbotron.css";
 
 export const Jumbotron = () => {
@@ -16,7 +14,7 @@ export const Jumbotron = () => {
           stories and insider tips for your next adventure.
         </p>
         <div className="col-10 mx-auto">
-          <CountriesScroll></CountriesScroll>
+          <CountriesScroll />
         </div>
       </div>
     </div>

@@ -4,30 +4,29 @@ import { Context } from "../store/appContext";
 import rigoImage from "../../img/rigo-baby.jpg";
 import posts from "../../img/posts.jpg";
 import album from "../../img/album.jpg";
-import { Card } from "../component/Card";
+import { Card } from "../component/card";
 
 export const UserProfile = () => {
   const { store, actions } = useContext(Context);
-
-  // console.log("profile", store.currentUser);
-  console.log("user_posts", store.currentUserPosts);
-  // console.log("profile: favs:", store.currentUser.favorites);
-
-  console.log("profile", store.currentUser);
-  console.log("user_posts", store.currentUserPosts);
-  console.log("fav:", store.favorites);
+  const [preView, setPreview] = useState(null);
 
   return store.currentUser ? (
-    <div>
-      <div className="Container bg-light">
-        <div className="row bg-white m-5">
-          <div className="col-md-4 float-start">
+    <div className="container ">
+      <div className="container bg-light ">
+        <div className="row bg-white m-5 shadow p-3 mb-5 bg-body rounded">
+          <div className="col-md-4 float-start ">
             <div
               className="ratio ratio-1x1 rounded-circle overflow-hidden p-5 mx-auto"
               style={{ width: "14rem" }}
             >
               <img
-                src={rigoImage}
+                src={
+                  preView != null
+                  ? preView
+                  : store.currentUser.profile_image_url
+                  ? store.currentUser.profile_image_url
+                  : "https://placehold.co/200x200"
+                }
                 className="card-img-top rounded-circle"
                 alt=""
               />

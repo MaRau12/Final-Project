@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
-import { Card } from "../component/Card";
+import { Card } from "../component/card";
 
 export const SearchResult = () => {
   const { store, actions } = useContext(Context);

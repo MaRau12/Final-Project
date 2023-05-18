@@ -167,6 +167,11 @@ export const Navbar = () => {
                 </Link>
               </li>
               <li>
+                <Link className="dropdown-item" to="/usersettings">
+                  Settings
+                </Link>
+              </li>
+              <li>
                 <Link className="dropdown-item" to="/newpost">
                   Create new post
                 </Link>
