@@ -32,6 +32,12 @@ class User(db.Model):
             "post": [post.serialize_post_bis() for post in self.posts],
             "favorites": [favorite.serialize() for favorite in self.favorites]
         }
+    def serialize_user_bis(self):
+        return {
+            "id": self.id,
+            "user_name": self.user_name,
+            "country": self.country
+        }
 
 transports = db.Table('post_transport',
     db.Column('transport_id', db.Integer, db.ForeignKey('transport.id'), primary_key=True),
