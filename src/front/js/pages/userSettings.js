@@ -70,7 +70,9 @@ export const UserSettings = () => {
                         Change your data here
                       </p>
                       <img
+                      className="rounded-circle"
                         src={
+                          
                           preView != null
                             ? preView
                             : store.currentUser.profile_image_url
