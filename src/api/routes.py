@@ -159,7 +159,7 @@ def create_new_post():
     post = Post(
         user_id = user_id_check,
         title = body["title"],
-        post_image_url = self.post_image_url,
+        # post_image_url = self.post_image_url,
         trip_duration = body["trip_duration"],
         price = body["price"],
         description = body["description"],

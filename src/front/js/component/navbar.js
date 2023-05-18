@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 
-import "../../styles/home.css";
 import logo from "../../img/logo.png";
 
 export const Navbar = () => {
