@@ -1,3 +1,18 @@
+.img-bg {
+  background: #fff
+    url("https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1721&q=80")
+    no-repeat center center;
+  color: #fff;
+}
+.title {
+  border-top: 2px solid #d3c5bd;
+  border-bottom: 2px solid #d3c5bd;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+footer {
+  background-color: #d3c5bd;
+}
 /* ---------- NavBar ----------- */
 nav {
   background-color: #d3c5bd;
@@ -32,15 +47,30 @@ nav {
 
 /* ---------- Colors ----------- */
 .color-primary {
-  background-color: #d3c5bd;
+  color: #d3c5bd;
 }
 .color-secondary {
-  background-color: #411c1b;
+  color: #411c1b;
+}
+.color-danger {
+  color: #a31c11;
 }
 .color-tertiary {
-  background-color: #7d4432;
+  color: #7d4432;
 }
 .color-quaternary {
+  color: #b07443;
+}
+.color-bg-primary {
+  background-color: #d3c5bd;
+}
+.color-bg-secondary {
+  background-color: #411c1b;
+}
+.color-bg-tertiary {
+  background-color: #7d4432;
+}
+.color-bg-quaternary {
   background-color: #b07443;
 }
 
@@ -89,7 +119,7 @@ nav {
 
 .slide:hover,
 .slide:focus {
-  box-shadow: inset 6.5em 0 0 0 var(--hover);
+  box-shadow: inset -10em 0 0 0 var(--hover);
 }
 
 .offset {
@@ -116,8 +146,8 @@ nav {
 }
 
 .raise {
-  --color: #ffa260;
-  --hover: #e5ff60;
+  --color: #d3c5bd;
+  --hover: #411c1b;
 }
 
 .up {
@@ -126,14 +156,19 @@ nav {
 }
 
 .slide {
-  --color: #8fc866;
-  --hover: #66c887;
+  --color: #d3c5bd;
+  --hover: #b07443;
 }
 
 .offset {
   --color: #b07443;
   --hover: #7d4432;
 }
+
+/* .fake-button {
+  --color: #d3c5bd;
+  --hover: #b07443;
+} */
 
 button {
   color: var(--color);
@@ -145,11 +180,38 @@ button:focus {
   color: #fff;
 }
 
-button {
+input.fake-input:focus,
+select.fake-input:focus,
+textarea.fake-input:focus {
+  outline: 1px solid #fff !important;
+  background: #7d4432;
+}
+
+button,
+.fake-button {
   background: none;
   border: 2px solid;
   font: inherit;
   line-height: 1;
   margin: 0.5em;
   padding: 1em 2em;
+}
+
+label {
+  color: #d3c5bd;
+  font-size: 1.5em;
+}
+.fake-input {
+  background: none;
+  border: 2px solid #d3c5bd;
+  font: inherit;
+  line-height: 1;
+  margin: 0.5em;
+  padding: 1em 2em;
+  color: #fff;
+  font-size: 1.2em;
+}
+::placeholder {
+  color: #d3c5bd;
+  opacity: 1;
 }
