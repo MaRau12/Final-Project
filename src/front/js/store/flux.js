@@ -84,6 +84,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           await getAllPostsByUserId();
         }
       },
+
       deletePost: async (postId) => {
         const token = sessionStorage.getItem("token");
         const options = {
@@ -91,14 +92,13 @@ const getState = ({ getStore, getActions, setStore }) => {
           headers: {
             Authorization: "Bearer " + token,
             "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
           },
           body: JSON.stringify(postId),
         };
         const response = await fetch( process.env.BACKEND_URL + "/api/posts/" + postId, options 
         );
         if (response.ok) {
-          await getAllPostsByUserId();
+          await getActions().getCurrentUser()
         }
       },
 
@@ -119,11 +119,10 @@ const getState = ({ getStore, getActions, setStore }) => {
           headers: {
             Authorization: "Bearer " + token,
             "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
           },
         };
         const response = await fetch(
-          process.env.BACKEND_URL + "/api/posts_by_user_id"
+          process.env.BACKEND_URL + "/api/posts_by_user_id", options
         );
         const data = await response.json();
         setStore({ userPosts: data.posts });

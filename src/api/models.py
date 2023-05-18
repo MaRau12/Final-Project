@@ -6,6 +6,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_name = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
+    profile_image_url = db.Column(db.String(255), unique=False, nullable=True)
     password = db.Column(db.String(80), unique=False, nullable=False)
     full_name = db.Column(db.String(80), unique=False, nullable=True)
     age = db.Column(db.Integer(), unique=False, nullable=True)
@@ -20,6 +21,7 @@ class User(db.Model):
         return {
             "id": self.id,
             "user_name": self.user_name,
+            "profile_image_url": self.profile_image_url,
             "email": self.email,
             "full_name": self.full_name,
             "age": self.age,
@@ -29,6 +31,12 @@ class User(db.Model):
             "admin": self.admin,
             "post": [post.serialize_post_bis() for post in self.posts],
             "favorites": [favorite.serialize() for favorite in self.favorites]
+        }
+    def serialize_user_bis(self):
+        return {
+            "id": self.id,
+            "user_name": self.user_name,
+            "country": self.country
         }
 
 transports = db.Table('post_transport',
@@ -44,22 +52,24 @@ citys = db.Table('post_from_city',
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
+    # post_image_url = db.Column(db.String(255), unique=False, nullable=True)
     title = db.Column(db.String(40), unique=True, nullable=False)
     trip_duration = db.Column(db.Integer(), unique=False, nullable=False)
     price = db.Column(db.Integer(), unique=False, nullable=False)
-    description = db.Column(db.String(120), unique=True, nullable=False)
+    description = db.Column(db.String(500), unique=True, nullable=False)
     transports = db.relationship('Transport', secondary = transports, backref=db.backref('post', lazy = True))
     from_location = db.Column(db.Integer(), db.ForeignKey('city.id'), nullable=False)
     from_city = db.relationship('City', foreign_keys=[from_location])
     to_location = db.Column(db.Integer(), db.ForeignKey('city.id'), nullable=False)
     to_city = db.relationship('City', foreign_keys=[to_location])
-    comments = db.relationship('Comment', backref='post')
-    favorites = db.relationship('Favorites', backref='post')
+    comments = db.relationship('Comment', backref='post', cascade="all,delete")
+    favorites = db.relationship('Favorites', backref='post', cascade="all,delete")
     
     def serialize(self):
         return {
             "id": self.id,
             "user_id": self.user_id,
+            # "post_image_url": self.post_image_url,
             "title": self.title,
             "trip_duration": self.trip_duration,
             "price": self.price,
@@ -75,6 +85,7 @@ class Post(db.Model):
         return {
             "id": self.id,
             "user_id": self.user_id,
+            # "post_image_url": self.post_image_url,
             "title": self.title,
             "trip_duration": self.trip_duration,
             "price": self.price,

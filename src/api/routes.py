@@ -2,10 +2,13 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User, Post, Transport, Country, City, Favorites
 from api.utils import generate_sitemap, APIException
 from sqlalchemy import or_
+import cloudinary
+import cloudinary.uploader
 # Token
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
+import json
 
 api = Blueprint("api", __name__)
 
@@ -22,6 +25,7 @@ def create_user():
             full_name = body ["full_name"],
             user_name = body["user_name"],
             email = body["email"],
+            profile_image_url = ["profile_image_url "],
             password = body["password"],
             country = body["country"],
             city = body["city"],
@@ -35,11 +39,6 @@ def create_user():
 @api.route("/login", methods=["POST"])
 def login_user():
     body = request.json
-    print("######")
-    print(body)
-    print(User.query.all())
-    print(User.query.filter_by(email= body["email"], password= body["password"]).first())
-    print("######")
     user = User.query.filter_by(email= body["email"], password= body["password"]).first()
     if user:
         token = create_access_token(identity=user.id) # Token
@@ -51,14 +50,21 @@ def login_user():
 @jwt_required()
 def edit_user_data():
     user_id_check = get_jwt_identity()
-    body = request.get_json(force=True)
+    body = json.loads(request.form["user_data"])
     user = User.query.filter_by(id = user_id_check).first()
     print("this is the user", user)
     print("this is the body", body)
     if body["full_name"] :
         user.full_name = body["full_name"] 
     else:
-         user.full_name      
+         user.full_name
+
+    if 'profile_image' in request.files:
+        # upload file to uploadcare
+        result = cloudinary.uploader.upload(request.files['profile_image'])
+        # update the user with the given cloudinary image URL
+        user.profile_image_url = result['secure_url']  
+
     if body["user_name"]:
         user.user_name = body["user_name"]
     else: user.user_name 
@@ -96,7 +102,16 @@ def get_current_user():
     user = User.query.filter_by(id = user_id_check).first()
     return jsonify(user.serialize()), 200
 
-
+@api.route("/users/<int:user_id>", methods=['GET'])
+def get_user_by_id(user_id):
+    print('@@@@@@@@@')
+    user = User.query.get(user_id)
+    print('@@@@@@@@@')
+    print(user)
+    if user:
+        return jsonify({ "user": user.serialize_user_bis() }), 200
+    else:
+        return jsonify({"error": "User not found"}), 404
 
 @api.route("/users", methods=["GET"])
 def get_all_users():
@@ -144,6 +159,7 @@ def create_new_post():
     post = Post(
         user_id = user_id_check,
         title = body["title"],
+        # post_image_url = self.post_image_url,
         trip_duration = body["trip_duration"],
         price = body["price"],
         description = body["description"],
@@ -158,11 +174,9 @@ def create_new_post():
 @api.route("/city", methods=["POST"])
 @jwt_required()
 def create_new_city():
-    print('@@@@@')
     body = request.json
     country = Country.query.filter_by(name = body["country"]).first()
     country = Country.query.get(body[country])
-    print(country)
     city = City(
         name = body["name"],
         latitude = body["latitude"],
@@ -178,6 +192,8 @@ def create_new_city():
 def delete_post(post_id):
     user_id_check = get_jwt_identity()
     post = Post.query.get(post_id)
+    print("####")
+    print(post.serialize())
     if post.user_id == user_id_check:
         db.session.delete(post)
         db.session.commit()
@@ -193,6 +209,7 @@ def edit_post():
     post = Post.query.get(body["id"])
     if post.user_id == user_id_check:
         post.title = body["title"],
+        post.post_image_url = body["post_image_url"],
         post.trip_duration = body["trip_duration"],
         post.price = body["price"],
         post.description = body["description"],

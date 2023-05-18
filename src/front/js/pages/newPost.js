@@ -1,11 +1,16 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { Context } from "../store/appContext";
 import { Map } from "../component/map";
+import { object } from "prop-types";
 
 export const NewPost = () => {
   const { store } = useContext(Context);
+  const navigate = useNavigate();
+
+  const [validationErrors, setValidationErrors] = useState({});
 
   const [newPost, setNewPost] = useState({
     title: "",
@@ -25,21 +30,6 @@ export const NewPost = () => {
     setNewPost({ ...newPost, to_location: city });
   }
 
-  async function postCity(city) {
-    console.log(city);
-    const response = await fetch(process.env.BACKEND_URL + "/api/city", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + sessionStorage.getItem("token"),
-      },
-      body: JSON.stringify(city),
-    });
-    if (response.ok) {
-      console.log("success");
-    }
-  }
-
   async function post() {
     const response = await fetch(process.env.BACKEND_URL + "/api/posts", {
       method: "POST",
@@ -51,155 +41,260 @@ export const NewPost = () => {
     });
     if (response.ok) {
       console.log("success");
+      navigate("/userprofile");
     }
   }
 
-  async function validations() {
-    console.log(newPost);
-    post();
+  function validations() {
+    const errors = {};
+
+    if (newPost.title.trim() === "" || newPost.title.trim().length < 5) {
+      errors.title = "Title must have at least 5 characters";
+    }
+    if (!newPost.country) {
+      errors.country = "Please select a country";
+    }
+    if (
+      !newPost.trip_duration ||
+      isNaN(newPost.trip_duration) ||
+      newPost.trip_duration <= 0
+    ) {
+      errors.trip_duration = "Please enter a valid duration";
+    }
+    if (!newPost.price || isNaN(newPost.price) || newPost.price <= 0) {
+      errors.price = "Please enter a valid price";
+    }
+    if (
+      newPost.description.trim() === "" ||
+      newPost.description.trim().length < 5
+    ) {
+      errors.description = "Description must have at least 5 characters";
+    }
+
+    setValidationErrors(errors);
+
+    if (Object.keys(errors).length === 0) {
+      post();
+    }
   }
 
+  const navigateBack = useNavigate();
+  const goBack = () => {
+    navigateBack(-1);
+  };
+
   return (
-    <div className="text-center">
-      <div className="d-flex justify-content-center border-bottom mt-3 p-3 ">
-        <i className="fa-solid fa-circle-plus fa-2xl mp-0"></i>
-        <h3 className="ms-3">New post</h3>
-      </div>
-
-      <div className="bg-light border-botto_locationm p-3">
-        <div className="row g-3 justify-content-center mb-3">
-          <div className="col-md-5">
-            <label htmlFor="title" className="form-label">
-              Title
-            </label>
-            <input
-              className="form-control"
-              type="text"
-              placeholder="My amazing trip!"
-              onChange={(e) =>
-                setNewPost({ ...newPost, title: e.target.value })
-              }
-            />
-            <div className="validation"></div>
-          </div>
-
-          <div className="col-md-3">
-            <label htmlFor="country" className="form-label">
-              Country
-            </label>
-            <select
-              className="form-select"
-              onChange={(e) => {
-                setNewPost({ ...newPost, country: e.target.value });
-              }}
-            >
-              {store.countries &&
-                store.countries.map((country) => (
-                  <option key={country.id} value={country.id}>
-                    {country.name}
-                  </option>
-                ))}
-            </select>
-            <div className="validation"></div>
+    <div className="img-bg">
+      <div className="container primary">
+        <div className="row mb-3 pt-3">
+          <div>
+            <button type="button" className="slide p-2" onClick={goBack}>
+              Go Back
+            </button>
           </div>
         </div>
 
-        {/*  --------- MAP --------- */}
-        <div className="row g-3 justify-content-center mb-3">
-          {newPost.country && (
-            <Map newPost={newPost} setFrom={setFrom} setTo={setTo} />
-          )}
+        <div className="row justify-content-center mb-3">
+          <div className="title col-8 col-sm-8 col-md-8 text-center">
+            <h1 className="color-primary m-0">New post</h1>
+          </div>
         </div>
 
-        <div className="row g-3 justify-content-center mb-3y">
-          <div className="col-md-2 col-sm-6">
-            <label className="form-label">Trip trip_duration</label>
-            <div className="input-group">
-              <input
-                type="test"
-                className="form-control"
-                onChange={(e) =>
-                  setNewPost({ ...newPost, trip_duration: e.target.value })
-                }
-              />
-              <span className="input-group-text">hrs</span>
+        <div className="row justify-content-center">
+          <div className="row justify-content-center m-0">
+            <div className="col-md-4 p-3">
+              <div className="row">
+                <label htmlFor="title" className="form-label">
+                  Title
+                </label>
+              </div>
+              <div className="row">
+                <input
+                  className="fake-input m-0"
+                  type="text"
+                  placeholder="My amazing trip!"
+                  onChange={(e) => {
+                    setNewPost({ ...newPost, title: e.target.value });
+                    setValidationErrors((prevErrors) => ({
+                      ...prevErrors,
+                      title: "",
+                    }));
+                  }}
+                />
+              </div>
+              {validationErrors.title && (
+                <div className="text-danger">{validationErrors.title}</div>
+              )}
             </div>
-            <div className="validation"></div>
-          </div>
-          <div className="col-md-2 col-sm-6">
-            <label className="form-label">Price</label>
-            <div className="input-group">
-              <input
-                type="test"
-                className="form-control"
-                onChange={(e) =>
-                  setNewPost({ ...newPost, price: e.target.value })
-                }
-              />
-              <span className="input-group-text">€</span>
+
+            <div className="col-md-4 p-3">
+              <div className="row">
+                <label htmlFor="country" className="form-label">
+                  Country
+                </label>
+              </div>
+              <div className="row">
+                <select
+                  className="fake-input m-0"
+                  onChange={(e) => {
+                    setNewPost({ ...newPost, country: e.target.value });
+                    setValidationErrors((prevErrors) => ({
+                      ...prevErrors,
+                      country: "",
+                    }));
+                  }}
+                >
+                  {store.countries &&
+                    store.countries.map((country) => (
+                      <option key={country.id} value={country.id}>
+                        {country.name}
+                      </option>
+                    ))}
+                </select>
+              </div>
+              {validationErrors.country && (
+                <div className="text-danger">{validationErrors.country}</div>
+              )}
             </div>
-            <div className="validation"></div>
           </div>
-          <div className="col-md-4">
-            <label className="form-label">Transports</label>
-            <div className="input-group d-flex rectangle justify-content-center rounded bg-light">
-              {store.transports &&
-                store.transports.map((transport) => (
-                  <div
-                    key={transport.id}
-                    className="form-check form-check-inline"
-                  >
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      value={transport.name}
-                      onChange={(e) => {
-                        setNewPost({
-                          ...newPost,
-                          transports: [...newPost.transports, transport],
-                        });
-                      }}
-                    />
-                    <label className="form-check-label" htmlFor="inlineRadio1">
-                      <i className={transport.icon}></i>
-                    </label>
-                    <div className="validation"></div>
+
+          {/*  --------- MAP --------- */}
+          <div className="row justify-content-center mb-3">
+            {newPost.country && (
+              <Map newPost={newPost} setFrom={setFrom} setTo={setTo} />
+            )}
+          </div>
+
+          <div className="row justify-content-center m-0">
+            <div className="col-md-3 p-3">
+              <div className="row">
+                <label className="form-label">Trip duration</label>
+              </div>
+              <div className="row">
+                <input
+                  type="text"
+                  className="fake-input m-0"
+                  placeholder="hrs."
+                  onChange={(e) => {
+                    setNewPost({ ...newPost, trip_duration: e.target.value });
+                    setValidationErrors((prevErrors) => ({
+                      ...prevErrors,
+                      trip_duration: "",
+                    }));
+                  }}
+                />
+              </div>
+              {validationErrors.trip_duration && (
+                <div className="text-danger">
+                  {validationErrors.trip_duration}
+                </div>
+              )}
+            </div>
+
+            <div className="col-md-3 p-3">
+              <div className="row">
+                <label className="form-label">Price</label>
+              </div>
+              <div className="row">
+                <input
+                  type="text"
+                  className="fake-input m-0"
+                  placeholder="€"
+                  onChange={(e) => {
+                    setNewPost({ ...newPost, price: e.target.value });
+                    setValidationErrors((prevErrors) => ({
+                      ...prevErrors,
+                      price: "",
+                    }));
+                  }}
+                />
+              </div>
+              {validationErrors.price && (
+                <div className="text-danger">{validationErrors.price}</div>
+              )}
+            </div>
+
+            <div className="col-md-8 col-lg-7 p-3">
+              <div className="row">
+                <label className="form-label">Transports</label>
+              </div>
+              <div className="row d-flex justify-content-center">
+                {store.transports &&
+                  store.transports.map((transport) => (
+                    <div
+                      key={transport.id}
+                      className="form-check form-check-inline col-2 m-0 mt-3"
+                    >
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        value={transport.name}
+                        onChange={(e) => {
+                          setNewPost({
+                            ...newPost,
+                            transports: [...newPost.transports, transport],
+                          });
+                        }}
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor="inlineRadio1"
+                      >
+                        <i className={transport.icon}></i>
+                      </label>
+                      {validationErrors.transports && (
+                        <div className="text-danger">{error.transports}</div>
+                      )}
+                    </div>
+                  ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="row g-3 justify-content-center mb-3">
+            <div className="col-md-8 p-3">
+              <div className="row">
+                <label htmlFor="message" className="form-label">
+                  Description
+                </label>
+              </div>
+              <div className="row">
+                <textarea
+                  className="fake-input m-0"
+                  rows="7"
+                  onChange={(e) => {
+                    setNewPost({ ...newPost, description: e.target.value });
+                    setValidationErrors((prevErrors) => ({
+                      ...prevErrors,
+                      description: "",
+                    }));
+                  }}
+                ></textarea>
+                {validationErrors.description && (
+                  <div className="text-danger">
+                    {validationErrors.description}
                   </div>
-                ))}
+                )}
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="row g-3 justify-content-center mb-3">
-          <div className="col-md-8 justify-content-end">
-            <label htmlFor="message" className="form-label">
-              Description
-            </label>
-            <textarea
-              className="form-control"
-              rows="7"
-              onChange={(e) =>
-                setNewPost({ ...newPost, description: e.target.value })
-              }
-            ></textarea>
+        <div className="row justify-content-center">
+          <div className="col-3 col-sm-3 col-md-2 p-3">
+            <Link to={"/userprofile"}>
+              <button className="raise color-danger">Delete</button>
+            </Link>
           </div>
-        </div>
-      </div>
-
-      <div className="d-flex justify-content-evenly mb-5 p-2">
-        <div className="col-2">
-          <Link to={"/userprofile"}>
-            <button className="btn btn-secondary p-3">Delete</button>
-          </Link>
-        </div>
-        <div className="col-2">
-          <button
-            className="btn btn-primary p-3"
-            type="submit"
-            onClick={() => validations()}
-          >
-            Save
-          </button>
+          <div className="col-3 col-sm-3 col-md-2 p-3">
+            <button
+              className="raise"
+              type="submit"
+              onClick={() => validations()}
+            >
+              Save
+            </button>
+          </div>
         </div>
       </div>
     </div>
