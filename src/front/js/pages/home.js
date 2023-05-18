@@ -5,6 +5,7 @@ import { Context } from "../store/appContext";
 import { CountriesScroll } from "../component/countriesScroll";
 import { Card } from "../component/Card";
 
+
 export const Home = () => {
   const { store } = useContext(Context);
 

@@ -75,6 +75,12 @@ export const CardDetails = () => {
                 </div>
               </div>
             </div>
+
+
+            <div className="row justify-content-center">
+              <Comments />
+            </div> 
+
           </div>
         </div>
       )}

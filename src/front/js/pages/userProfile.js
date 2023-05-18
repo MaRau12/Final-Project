@@ -4,7 +4,10 @@ import { Context } from "../store/appContext";
 import rigoImage from "../../img/rigo-baby.jpg";
 import posts from "../../img/posts.jpg";
 import album from "../../img/album.jpg";
-import { Card } from "../component/Card";
+
+import { Card } from "../component/card";
+import "../../styles/home.css"
+
 
 export const UserProfile = () => {
   const { store, actions } = useContext(Context);
@@ -18,10 +21,11 @@ export const UserProfile = () => {
   console.log("fav:", store.favorites);
 
   return store.currentUser ? (
-    <div>
-      <div className="Container bg-light">
-        <div className="row bg-white m-5">
-          <div className="col-md-4 float-start">
+    <div className="container ">
+      <div className="container bg-light ">
+        <div className="row  m-5 shadow p-3 mb-5  rounded color-bg-primary">
+          <div className="col-md-4 float-start ">
+
             <div
               className="ratio ratio-1x1 rounded-circle overflow-hidden p-5 mx-auto"
               style={{ width: "14rem" }}
@@ -37,10 +41,10 @@ export const UserProfile = () => {
             <p>{store.currentUser.description}</p>
           </div>
           <div className="col-4 p-3">
-            <ul className="list-group list-group-flush">
-              <li className="list-group-item">
-                Name: {store.currentUser.full_name}
-              </li>
+
+            <div className="nametag">
+            <ul className="list-group list-group-flush color-bg-primary">
+             
               <li className="list-group-item">
                 Email: {store.currentUser.email}
               </li>
@@ -51,6 +55,8 @@ export const UserProfile = () => {
                 City: {store.currentUser.city}
               </li>
             </ul>
+            </div>
+
           </div>
           <div className="col-4 p-3">
             <p>Album</p>
@@ -109,3 +115,21 @@ export const UserProfile = () => {
     ""
   );
 };
+
+/*
+              <ul className="list-group list-group-flush color-bg-primary">
+              <li className="">
+                Name: {store.currentUser.full_name}
+              </li>
+              <li className="list-group-item">
+                Email: {store.currentUser.email}
+              </li>
+              <li className="list-group-item">
+                Country: {store.currentUser.country}
+              </li>
+              <li className="list-group-item">
+                City: {store.currentUser.city}
+              </li>
+            </ul>
+
+            */
