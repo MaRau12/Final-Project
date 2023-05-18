@@ -87,7 +87,7 @@ export const NewPost = () => {
     <div className="img-bg">
       <div className="container primary">
         <div className="row mb-3 pt-3">
-          <div className="col-2">
+          <div>
             <button type="button" className="slide p-2" onClick={goBack}>
               Go Back
             </button>
@@ -95,13 +95,13 @@ export const NewPost = () => {
         </div>
 
         <div className="row justify-content-center mb-3">
-          <div className="title col-8 text-center">
+          <div className="title col-8 col-sm-8 col-md-8 text-center">
             <h1 className="color-primary m-0">New post</h1>
           </div>
         </div>
 
-        <div className="row justify-content-center mb-3">
-          <div className="row g-3 justify-content-center mb-3">
+        <div className="row justify-content-center">
+          <div className="row justify-content-center m-0">
             <div className="col-md-4 p-3">
               <div className="row">
                 <label htmlFor="title" className="form-label">
@@ -127,7 +127,7 @@ export const NewPost = () => {
               )}
             </div>
 
-            <div className="col-md-3 p-3">
+            <div className="col-md-4 p-3">
               <div className="row">
                 <label htmlFor="country" className="form-label">
                   Country
@@ -159,14 +159,14 @@ export const NewPost = () => {
           </div>
 
           {/*  --------- MAP --------- */}
-          <div className="row g-3 justify-content-center mb-3">
+          <div className="row justify-content-center mb-3">
             {newPost.country && (
               <Map newPost={newPost} setFrom={setFrom} setTo={setTo} />
             )}
           </div>
 
-          <div className="row justify-content-center mb-3">
-            <div className="col-md-2 col-sm-6">
+          <div className="row justify-content-center m-0">
+            <div className="col-md-3 p-3">
               <div className="row">
                 <label className="form-label">Trip duration</label>
               </div>
@@ -191,7 +191,7 @@ export const NewPost = () => {
               )}
             </div>
 
-            <div className="col-md-1 col-sm-6 mx-3">
+            <div className="col-md-3 p-3">
               <div className="row">
                 <label className="form-label">Price</label>
               </div>
@@ -214,7 +214,7 @@ export const NewPost = () => {
               )}
             </div>
 
-            <div className="col-md-4">
+            <div className="col-md-8 col-lg-7 p-3">
               <div className="row">
                 <label className="form-label">Transports</label>
               </div>
@@ -252,7 +252,7 @@ export const NewPost = () => {
           </div>
 
           <div className="row g-3 justify-content-center mb-3">
-            <div className="col-8">
+            <div className="col-md-8 p-3">
               <div className="row">
                 <label htmlFor="message" className="form-label">
                   Description
@@ -280,13 +280,13 @@ export const NewPost = () => {
           </div>
         </div>
 
-        <div className="row justify-content-center pb-5">
-          <div className="col-2">
+        <div className="row justify-content-center">
+          <div className="col-3 col-sm-3 col-md-2 p-3">
             <Link to={"/userprofile"}>
               <button className="raise color-danger">Delete</button>
             </Link>
           </div>
-          <div className="col-2">
+          <div className="col-3 col-sm-3 col-md-2 p-3">
             <button
               className="raise"
               type="submit"
