@@ -8,6 +8,7 @@ import { Card } from "../component/card";
 
 import "../../styles/home.css";
 
+
 export const Home = () => {
   const { store } = useContext(Context);
 
