@@ -33,10 +33,9 @@ const getState = ({ getStore, getActions, setStore }) => {
         if (response.ok) {
           setStore({ currentUser: data });
           setStore({ currentUserPosts: data.post });
-          console.log("current user found");
-          console.log("current user posts:", data.post);
         }
       },
+
       getAllCountries: async () => {
         const response = await fetch(
           process.env.BACKEND_URL + "/api/countries",
@@ -69,11 +68,13 @@ const getState = ({ getStore, getActions, setStore }) => {
         const data = await response.json();
         await setStore({ transports: data.data });
       },
+
       getAllPosts: async () => {
         const response = await fetch(process.env.BACKEND_URL + "/api/posts");
         const data = await response.json();
         setStore({ posts: data.posts });
       },
+
       createNewPost: async () => {
         const response = await fetch(process.env.BACKEND_URL + "/api/posts", {
           method: "POST",
@@ -95,10 +96,12 @@ const getState = ({ getStore, getActions, setStore }) => {
           },
           body: JSON.stringify(postId),
         };
-        const response = await fetch( process.env.BACKEND_URL + "/api/posts/" + postId, options 
+        const response = await fetch(
+          process.env.BACKEND_URL + "/api/posts/" + postId,
+          options
         );
         if (response.ok) {
-          await getActions().getCurrentUser()
+          await getActions().getCurrentUser();
         }
       },
 
@@ -112,6 +115,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           await getAllPostsByUserId();
         }
       },
+
       getAllPostsByUserId: async () => {
         const token = sessionStorage.getItem("token");
         const options = {
@@ -122,7 +126,8 @@ const getState = ({ getStore, getActions, setStore }) => {
           },
         };
         const response = await fetch(
-          process.env.BACKEND_URL + "/api/posts_by_user_id", options
+          process.env.BACKEND_URL + "/api/posts_by_user_id",
+          options
         );
         const data = await response.json();
         setStore({ userPosts: data.posts });

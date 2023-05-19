@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
-import { useNavigate } from "react-router-dom";
-import { Columns } from "@phosphor-icons/react";
 
 export const UserSettings = () => {
   const { store, actions } = useContext(Context);
@@ -70,9 +68,8 @@ export const UserSettings = () => {
                         Change your data here
                       </p>
                       <img
-                      className="rounded-circle"
+                        className="rounded-circle"
                         src={
-                          
                           preView != null
                             ? preView
                             : store.currentUser.profile_image_url
@@ -82,7 +79,7 @@ export const UserSettings = () => {
                         alt="..."
                         width={200}
                         height={200}
-                      ></img>
+                      />
                       <div className="mb-3">
                         <input
                           type="file"
@@ -95,13 +92,17 @@ export const UserSettings = () => {
                             className="fa-solid fa-circle-plus fa-2xl mp-0"
                             style={{ marginRight: 10 }}
                           />
-                          
                         </label>
-                        <button onClick={() => {
-                          setFiles(null)
-                          setPreview(null)
-                        }}>X</button>
+                        <button
+                          onClick={() => {
+                            setFiles(null);
+                            setPreview(null);
+                          }}
+                        >
+                          X
+                        </button>
                       </div>
+
                       <div className="mb-3">
                         <label
                           htmlFor="exampleInputName"

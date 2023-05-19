@@ -1,16 +1,17 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 import { Context } from "../store/appContext";
 import { Map } from "../component/map";
-import { object } from "prop-types";
 
 export const NewPost = () => {
   const { store } = useContext(Context);
   const navigate = useNavigate();
 
   const [validationErrors, setValidationErrors] = useState({});
+  const [files, setFiles] = useState(null);
+  const [preView, setPreview] = useState(null);
 
   const [newPost, setNewPost] = useState({
     title: "",
@@ -23,6 +24,17 @@ export const NewPost = () => {
     description: "",
   });
 
+  useEffect(() => {
+    // create the preview
+    if (files != null && files.length > 0) {
+      const objectUrl = URL.createObjectURL(files[0]);
+      setPreview(objectUrl);
+
+      // free memory when ever this component is unmounted
+      return () => URL.revokeObjectURL(objectUrl);
+    }
+  }, [files]);
+
   function setFrom(city) {
     setNewPost({ ...newPost, from_location: city });
   }
@@ -31,13 +43,17 @@ export const NewPost = () => {
   }
 
   async function post() {
+    let body = new FormData();
+    if (files != null) {
+      body.append("post_image", files[0]);
+    }
+    body.append("user_data", JSON.stringify(newPost));
     const response = await fetch(process.env.BACKEND_URL + "/api/posts", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
         Authorization: "Bearer " + sessionStorage.getItem("token"),
       },
-      body: JSON.stringify(newPost),
+      body: body,
     });
     if (response.ok) {
       console.log("success");
@@ -66,7 +82,7 @@ export const NewPost = () => {
     }
     if (
       newPost.description.trim() === "" ||
-      newPost.description.trim().length < 5
+      newPost.description.trim().length < 20
     ) {
       errors.description = "Description must have at least 5 characters";
     }
@@ -81,12 +97,37 @@ export const NewPost = () => {
   return (
     <div className="text-center">
       <div className="d-flex justify-content-center border-bottom mt-3 p-3 ">
-        <i className="fa-solid fa-circle-plus fa-2xl mp-0"></i>
+        <i className="fa-solid fa-circle-plus fa-2xl mp-0" />
         <h3 className="ms-3">New post</h3>
       </div>
 
       <div className="bg-light border-botto_locationm p-3">
         <div className="row g-3 justify-content-center mb-3">
+          <div className="col-md-12">
+            <img
+              className="img-fluid img-thumbnail"
+              src={preView != null ? preView : "https://placehold.co/500x500"}
+              alt="..."
+              width={500}
+              height={500}
+            />
+
+            <div className="mb-3">
+              <input
+                type="file"
+                id={"upload-button"}
+                style={{ display: "none" }}
+                onChange={(e) => setFiles(e.target.files)}
+              />
+              <label htmlFor={"upload-button"}>
+                <i
+                  className="fa-solid fa-circle-plus fa-2xl mp-0"
+                  style={{ marginRight: 10 }}
+                />
+              </label>
+            </div>
+          </div>
+
           <div className="col-md-5">
             <label htmlFor="title" className="form-label">
               Title

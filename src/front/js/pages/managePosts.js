@@ -1,10 +1,5 @@
-import React, { useState, useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
 import { Context } from "../store/appContext";
-import rigoImage from "../../img/rigo-baby.jpg";
-import posts from "../../img/posts.jpg";
-import album from "../../img/album.jpg";
-import { Heart } from "@phosphor-icons/react";
 import { Card } from "../component/card.js";
 
 export const ManagePosts = () => {
