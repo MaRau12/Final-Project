@@ -54,13 +54,11 @@ def edit_user_data():
         user.full_name = body["full_name"] 
     else:
          user.full_name
-
     if 'profile_image' in request.files:
         # upload file to uploadcare
         result = cloudinary.uploader.upload(request.files['profile_image'])
         # update the user with the given cloudinary image URL
         user.profile_image_url = result['secure_url']  
-
     if body["user_name"]:
         user.user_name = body["user_name"]
     else: user.user_name 

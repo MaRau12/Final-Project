@@ -117,36 +117,29 @@ export const NewPost = () => {
         </div>
         <div className="row justify-content-center">
           <div className="row justify-content-center m-0">
-            
-            
- 
-          <div className="col-md-12">
-            <img
-              className="img-fluid img-thumbnail"
-              src={preView != null ? preView : "https://placehold.co/500x500"}
-              alt="..."
-              width={500}
-              height={500}
-            />
-
-            <div className="mb-3">
-              <input
-                type="file"
-                id={"upload-button"}
-                style={{ display: "none" }}
-                onChange={(e) => setFiles(e.target.files)}
+            <div className="col-md-12">
+              <img
+                className="img-fluid img-thumbnail"
+                src={preView != null ? preView : "https://placehold.co/500x500"}
+                alt="..."
+                width={500}
+                height={500}
               />
-              <label htmlFor={"upload-button"}>
-                <i
-                  className="fa-solid fa-circle-plus fa-2xl mp-0"
-                  style={{ marginRight: 10 }}
+              <div className="mb-3">
+                <input
+                  type="file"
+                  id={"upload-button"}
+                  style={{ display: "none" }}
+                  onChange={(e) => setFiles(e.target.files)}
                 />
-              </label>
+                <label htmlFor={"upload-button"}>
+                  <i
+                    className="fa-solid fa-circle-plus fa-2xl mp-0"
+                    style={{ marginRight: 10 }}
+                  />
+                </label>
+              </div>
             </div>
-
-          </div>
-            
-            
             <div className="col-md-4 p-3">
               <div className="row">
                 <label htmlFor="title" className="form-label">
