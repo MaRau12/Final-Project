@@ -26,10 +26,10 @@ export const UserProfile = () => {
               <img
                 src={
                   preView != null
-                  ? preView
-                  : store.currentUser.profile_image_url
-                  ? store.currentUser.profile_image_url
-                  : "https://placehold.co/200x200"
+                    ? preView
+                    : store.currentUser.profile_image_url
+                    ? store.currentUser.profile_image_url
+                    : "https://placehold.co/200x200"
                 }
                 className="card-img-top rounded-circle"
                 alt=""
@@ -58,13 +58,15 @@ export const UserProfile = () => {
 
           </div>
           <div className="col-4 p-3">
-            <p>Album</p>
-            <img
-              src={album}
-              className="card-img-top "
-              style={{ width: "12rem" }}
-              atl=""
-            />
+            <h6>Album</h6>
+            <Link to="/album">
+              <img
+                src={album}
+                className="card-img-top "
+                style={{ width: "12rem" }}
+                atl=""
+              />
+            </Link>
           </div>
         </div>
 
@@ -91,22 +93,6 @@ export const UserProfile = () => {
             store.currentUser.post.map((post) => (
               <Card key={post.id} post={post} />
             ))}
-        </div>
-
-        <div className="row justify-content-md-center p-5">
-          <img
-            src={posts}
-            className="card-img-top m-5"
-            style={{ width: "16rem" }}
-            atl=""
-          />
-
-          <img
-            src={rigoImage}
-            className="card-img-top m-5"
-            style={{ width: "16rem" }}
-            atl=""
-          />
         </div>
       </div>
     </div>

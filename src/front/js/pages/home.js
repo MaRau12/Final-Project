@@ -13,9 +13,9 @@ export const Home = () => {
   const { store } = useContext(Context);
 
   return (
-    <div>
+    <div style={{background: "#273135"}}>
       <Jumbotron />
-      <Buttons />
+
       <div className="container bg-light bg-gradient rounded">
         <div className="row row-cols-sm-2 row-cols-md-2 row-cols-lg-3 g-5 h-100 ">
           {store.posts &&

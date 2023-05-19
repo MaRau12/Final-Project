@@ -12,11 +12,9 @@ import json
 
 api = Blueprint("api", __name__)
 
-
 @api.route("/register", methods=["POST"])
 def create_user():
     body = request.json
-    print(body)
     user_already_exist = User.query.filter_by(email= body["email"]).first()
     if user_already_exist:
         return jsonify({"response": "Email already in use"}), 403
@@ -52,8 +50,6 @@ def edit_user_data():
     user_id_check = get_jwt_identity()
     body = json.loads(request.form["user_data"])
     user = User.query.filter_by(id = user_id_check).first()
-    print("this is the user", user)
-    print("this is the body", body)
     if body["full_name"] :
         user.full_name = body["full_name"] 
     else:
@@ -142,7 +138,7 @@ def get_all_cities():
 @jwt_required()
 def create_new_post():
     user_id_check = get_jwt_identity()
-    body = request.json
+    body = json.loads(request.form["user_data"])
     new_from_city = City(name=body['from_location']['name'], latitude=body['from_location']['latitude'], longitude=body['from_location']['longitude'], country_name=body['from_location']['country'])
     db.session.add(new_from_city)
     db.session.commit()
@@ -150,16 +146,20 @@ def create_new_post():
     db.session.add(new_to_city)
     db.session.commit()
     transports = []
-    print(body)
 
     for transport_dict in body["transports"]:
         transport = Transport.query.get(transport_dict["id"])
         transports.append(transport)
+    if 'post_image' in request.files:
+        # upload file to uploadcare
+        result = cloudinary.uploader.upload(request.files['post_image'])
+        # update the user with the given cloudinary image URL
+        post_image_url = result['secure_url']  
 
     post = Post(
         user_id = user_id_check,
         title = body["title"],
-        # post_image_url = self.post_image_url,
+        post_image_url = post_image_url,
         trip_duration = body["trip_duration"],
         price = body["price"],
         description = body["description"],
@@ -192,8 +192,7 @@ def create_new_city():
 def delete_post(post_id):
     user_id_check = get_jwt_identity()
     post = Post.query.get(post_id)
-    print("####")
-    print(post.serialize())
+
     if post.user_id == user_id_check:
         db.session.delete(post)
         db.session.commit()
@@ -206,17 +205,23 @@ def delete_post(post_id):
 def edit_post():
     user_id_check = get_jwt_identity()
     body = request.json
+    body = json.loads(request.form["user_data"])
     post = Post.query.get(body["id"])
     if post.user_id == user_id_check:
-        post.title = body["title"],
-        post.post_image_url = body["post_image_url"],
-        post.trip_duration = body["trip_duration"],
-        post.price = body["price"],
-        post.description = body["description"],
-        post.from_location = body["from_location"],
-        post.to_location = body["to_location"],
-        post.transports = body["transports"],
-        db.session.commit();
+        post.title = body["title"]
+        if 'post_image' in request.files:
+            # upload file to uploadcare
+            result = cloudinary.uploader.upload(request.files['post_image'])
+            # update the user with the given cloudinary image URL
+            post.post_image_url = result['secure_url']  
+
+        post.trip_duration = body["trip_duration"]
+        post.price = body["price"]
+        post.description = body["description"]
+        post.from_location = body["from_location"]
+        post.to_location = body["to_location"]
+        post.transports = body["transports"]
+        db.session.commit()
         return jsonify({"response": "Post edited"}), 200
     else:
         return jsonify({"response": "Missing fields"}), 400
@@ -259,20 +264,13 @@ def get_transport_by_name():
     price = request.args.get('price')
     from_location_search = request.args.get('from_location_search')
     to_location = request.args.get('to_location')
-    travel_time = request.args.get('travel_time')
-   
-    print("####")
-    print(name == "")
-    print(travel_time == "")
-   
+    travel_time = request.args.get('travel_time')   
     queries = [Post.price <= price, or_(Post.from_city.has(name = from_location_search),  Post.to_city.has(name = from_location_search))]
     if name and name != "":
         queries.append(Post.transports.any(Transport.name == name))
     elif travel_time and travel_time != "":
         queries.append(Post.trip_duration <= travel_time)
     posts = Post.query.filter(*queries).all()
-    
-    print("####")
     
     return jsonify({"posts": [post.serialize() for post in posts]}), 200
 
