@@ -161,7 +161,7 @@ export const CardDetails = () => {
             </div>
 
             <div className="row justify-content-center mb-3">
-              <div className="col-2">
+              <div className="col-5 col-sm-4 col-md-3 col-lg-2">
                 <div className="box box-white w-70 align-items-stretch d-flex pe-3 pb-1">
                   <div className="icon icon-left icon-quarternary d-flex align-items-center justify-content-center">
                     <i className="fa-solid fa-heart"></i>
@@ -172,7 +172,7 @@ export const CardDetails = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-2">
+              <div className="col-5 col-sm-4 col-md-3 col-lg-2">
                 <div className="box box-white w-70 align-items-stretch d-flex pe-3 pb-1">
                   <div className="icon icon-left icon-tertiary d-flex align-items-center justify-content-center">
                     <i className="fa-solid fa-euro-sign"></i>
@@ -183,7 +183,7 @@ export const CardDetails = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-2">
+              <div className="col-5 col-sm-4 col-md-3 col-lg-2">
                 <div className="box box-white w-70 align-items-stretch d-flex pe-3 pb-1">
                   <div className="icon icon-left icon-secondary d-flex align-items-center justify-content-center">
                     <i className="fa-solid fa-clock"></i>
@@ -197,7 +197,7 @@ export const CardDetails = () => {
             </div>
 
             <div className="row justify-content-center">
-              <div className="fake-button col-6 mb-5">
+              <div className="fake-button col-8 col-md-8 mb-5">
                 <div className="row mb-2">
                   <span className="color-primary">@ {userName}</span>
                 </div>
