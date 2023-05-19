@@ -104,10 +104,7 @@ def get_current_user():
 
 @api.route("/users/<int:user_id>", methods=['GET'])
 def get_user_by_id(user_id):
-    print('@@@@@@@@@')
     user = User.query.get(user_id)
-    print('@@@@@@@@@')
-    print(user)
     if user:
         return jsonify({ "user": user.serialize_user_bis() }), 200
     else:

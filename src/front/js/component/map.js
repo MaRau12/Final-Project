@@ -166,7 +166,7 @@ export const Map = ({ newPost, setFrom, setTo }) => {
                 newLocation.name != "get closer to pick a city" && (
                   <button
                     type="button"
-                    className="bnt btn-dark mp-1 ms-2"
+                    className="raise mp-1 ms-2"
                     onClick={
                       newLocation.isFirst
                         ? () => {
