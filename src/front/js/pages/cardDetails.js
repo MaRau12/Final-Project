@@ -14,7 +14,7 @@ export const CardDetails = () => {
   const { store } = useContext(Context);
   const params = useParams();
 
-  const post = store.posts.filter((post) => post.id == params.id)[0];
+  const [post, setPost] = useState();
 
   const [userName, setUserName] = useState("");
 
@@ -23,7 +23,7 @@ export const CardDetails = () => {
       height: "100%",
       width: "100%",
       position: "relative",
-      overflow: "auto",
+      overflow: "visible",
     },
     lineOptions: {
       strokeColor: "blue",
@@ -33,33 +33,35 @@ export const CardDetails = () => {
       fillOpacity: 0.35,
       clickable: false,
       draggable: false,
-      editable: true,
+      editable: false,
       visible: true,
       radius: 30000,
       zIndex: 1,
     },
   };
 
-  const pointers = [
-    {
-      center: {
-        lat: post.from_location.latitude,
-        lng: post.from_location.longitude,
-      },
-    },
-    {
-      path: [
+  const pointers = post
+    ? [
         {
-          lat: post.from_location.latitude,
-          lng: post.from_location.longitude,
+          center: {
+            lat: post.from_location.latitude,
+            lng: post.from_location.longitude,
+          },
         },
         {
-          lat: post.to_location.latitude,
-          lng: post.to_location.longitude,
+          path: [
+            {
+              lat: post.from_location.latitude,
+              lng: post.from_location.longitude,
+            },
+            {
+              lat: post.to_location.latitude,
+              lng: post.to_location.longitude,
+            },
+          ],
         },
-      ],
-    },
-  ];
+      ]
+    : [];
 
   useEffect(() => {
     const fetchUserName = async () => {
@@ -77,8 +79,11 @@ export const CardDetails = () => {
       }
     };
 
-    fetchUserName();
-  }, [post.user_id]);
+    setPost(store.posts.filter((post) => post.id == params.id)[0]);
+    if (post) {
+      fetchUserName();
+    }
+  }, [post, params.id, store.posts]);
 
   const navigate = useNavigate();
   const goBack = () => {
@@ -87,11 +92,11 @@ export const CardDetails = () => {
 
   return (
     <>
-      {store.posts && (
+      {post && (
         <div className="img-bg">
           <div className="container primary">
             <div className="row mb-3 pt-3">
-              <div className="col-2">
+              <div className="">
                 <button type="button" className="slide p-2" onClick={goBack}>
                   Go Back
                 </button>
@@ -99,12 +104,19 @@ export const CardDetails = () => {
             </div>
 
             <div className="row justify-content-center mb-5">
-              <div className="col-6">
+              <div className="col-6 col-sm-6 col-md-6">
                 <img src={posts} className="card-img-top" atl="" />
               </div>
 
-              <div className="col-6">
-                <LoadScript googleMapsApiKey="AIzaSyA2oagV6knZYw4D3oN41bpT6dRB16ytOr0">
+              <div className="col-6 col-sm-6 col-md-6">
+                <LoadScript
+                  googleMapsApiKey="AIzaSyA2oagV6knZYw4D3oN41bpT6dRB16ytOr0"
+                  containerStyle={{
+                    height: "100%",
+                    width: "100%",
+                    overflow: "visible",
+                  }}
+                >
                   <GoogleMap
                     mapContainerStyle={mapStyle.containerStyle}
                     center={pointers[0].center}
@@ -130,7 +142,7 @@ export const CardDetails = () => {
             </div>
 
             <div className="row justify-content-center mb-3">
-              <div className="col-4">
+              <div className="col-7 col-sm-7 col-md-5">
                 <div className="box box-primary w-70 align-items-stretch d-flex pe-3 pb-1">
                   {post.transports.map((transport) => (
                     <div
