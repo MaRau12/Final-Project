@@ -6,6 +6,9 @@ import { Jumbotron } from "../component/jumbotron";
 import { Buttons } from "../component/buttons";
 import { Card } from "../component/card";
 
+import "../../styles/home.css";
+
+
 export const Home = () => {
   const { store } = useContext(Context);
 

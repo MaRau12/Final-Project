@@ -98,7 +98,16 @@ def get_current_user():
     user = User.query.filter_by(id = user_id_check).first()
     return jsonify(user.serialize()), 200
 
-
+@api.route("/users/<int:user_id>", methods=['GET'])
+def get_user_by_id(user_id):
+    print('@@@@@@@@@')
+    user = User.query.get(user_id)
+    print('@@@@@@@@@')
+    print(user)
+    if user:
+        return jsonify({ "user": user.serialize_user_bis() }), 200
+    else:
+        return jsonify({"error": "User not found"}), 404
 
 @api.route("/users", methods=["GET"])
 def get_all_users():

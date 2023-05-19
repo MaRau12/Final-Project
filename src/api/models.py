@@ -32,6 +32,12 @@ class User(db.Model):
             "post": [post.serialize_post_bis() for post in self.posts],
             "favorites": [favorite.serialize() for favorite in self.favorites]
         }
+    def serialize_user_bis(self):
+        return {
+            "id": self.id,
+            "user_name": self.user_name,
+            "country": self.country
+        }
 
 transports = db.Table('post_transport',
     db.Column('transport_id', db.Integer, db.ForeignKey('transport.id'), primary_key=True),
@@ -46,7 +52,7 @@ citys = db.Table('post_from_city',
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
-    post_image_url = db.Column(db.String(255), unique=False, nullable=True)
+    # post_image_url = db.Column(db.String(255), unique=False, nullable=True)
     title = db.Column(db.String(40), unique=True, nullable=False)
     trip_duration = db.Column(db.Integer(), unique=False, nullable=False)
     price = db.Column(db.Integer(), unique=False, nullable=False)
@@ -63,7 +69,7 @@ class Post(db.Model):
         return {
             "id": self.id,
             "user_id": self.user_id,
-            "post_image_url": self.post_image_url,
+            # "post_image_url": self.post_image_url,
             "title": self.title,
             "trip_duration": self.trip_duration,
             "price": self.price,
@@ -79,7 +85,7 @@ class Post(db.Model):
         return {
             "id": self.id,
             "user_id": self.user_id,
-            "post_image_url": self.post_image_url,
+            # "post_image_url": self.post_image_url,
             "title": self.title,
             "trip_duration": self.trip_duration,
             "price": self.price,
