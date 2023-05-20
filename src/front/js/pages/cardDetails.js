@@ -100,7 +100,15 @@ export const CardDetails = () => {
 
             <div className="row justify-content-center mb-5">
               <div className="col-6">
-                <img src={posts} className="card-img-top" atl="" />
+                <img
+                  src={
+                    post.post_image_url
+                      ? post.post_image_url
+                      : "https://placehold.co/500x500"
+                  }
+                  className="card-img-top"
+                  atl=""
+                />
               </div>
 
               <div className="col-6">
@@ -184,7 +192,6 @@ export const CardDetails = () => {
               </div>
             </div>
 
-
             <div className="row justify-content-center">
               <div className="fake-button col-6 mb-5">
                 <div className="row mb-2">
@@ -199,7 +206,6 @@ export const CardDetails = () => {
             {/* <div className="row justify-content-center">
               <Comments />
             </div> */}
-
           </div>
         </div>
       )}

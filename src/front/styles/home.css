@@ -251,3 +251,9 @@ label {
 .list-group {
   background-color: #d3c5bd;
 }
+
+.heart:hover,
+.raise:focus {
+  text-shadow: 0 0.5em 0.5em -0.4em var(--hover);
+  transform: translateY(-0.25em);
+}
