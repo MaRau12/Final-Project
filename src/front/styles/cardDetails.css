@@ -6,7 +6,7 @@
   font: inherit;
   line-height: 1;
   margin: 0.5em;
-  overflow: scroll;
+  overflow: hidden;
 }
 .box .icon {
   width: 60px;
