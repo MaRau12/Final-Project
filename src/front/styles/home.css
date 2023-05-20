@@ -38,13 +38,6 @@ nav {
   }
 }
 
-
-   /* All pages share the styles on index.css but you should create 
-    one more css for each page that will contain the selected used 
-    on that page only (the ones not reused in other pages).
-*/
-
-
 @media (min-width: 992px) {
   /* Adjust font size for large screens */
   .navbar-brand {
@@ -206,8 +199,7 @@ button,
   padding: 1em 2em;
 }
 
-
-.card-img-top {
+.card-component {
   width: 100%;
   height: 12vw;
   object-fit: cover;
@@ -232,9 +224,9 @@ label {
   opacity: 1;
 }
 
-
 /*-----nametag------*/
 .nametag {
+
 	padding: 1em;
 	border: 12px solid transparent;
 	border-image: 16 repeating-linear-gradient(-45deg, red 0, red 1em, transparent 0, transparent 2em,
@@ -251,4 +243,3 @@ label {
 .divider {
   border-right: 2px dashed rgb(46, 46, 46);
   
-}

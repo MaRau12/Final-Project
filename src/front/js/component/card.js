@@ -16,10 +16,11 @@ export const Card = ({ post }) => {
               ? post.post_image_url
               : "https://placehold.co/500x500"
           }
-          className="card-img-top position-relative"
+          className="img-fluid img-thumbnail card-img-top position-relative card-component shadow bg-body rounded"
           atl=""
         />
         <div>
+
           {store.currentUser.id == post.user_id ? (
             <div>
               <button
@@ -76,6 +77,8 @@ export const Card = ({ post }) => {
                       >
                         Delete
                       </button>
+
+     
                     </div>
                   </div>
                 </div>
@@ -99,14 +102,14 @@ export const Card = ({ post }) => {
                 return x.post.id;
               })
               .includes(post.id) ? (
-              <Heart
+              <Heart className="heart"
                 onClick={() => actions.addFavorite(post.id)}
                 size={35}
                 color="#eb0f0f"
                 weight="fill"
               />
             ) : (
-              <Heart onClick={() => actions.addFavorite(post.id)} size={35} />
+              <Heart className="heart" onClick={() => actions.addFavorite(post.id)} size={35} />
             )}
           </div>
         </div>
