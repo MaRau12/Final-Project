@@ -150,7 +150,7 @@ export const Navbar = () => {
             </button>
             <ul className="dropdown-menu">
               <li>
-                <Link className="dropdown-item" to="/">
+                <Link className="dropdown-item" to="/userprofile">
                   Welcome{" "}
                   {store.currentUser.user_name.charAt(0).toUpperCase() +
                     store.currentUser.user_name.slice(1)}
