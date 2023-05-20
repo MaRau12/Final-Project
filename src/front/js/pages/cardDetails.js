@@ -6,7 +6,6 @@ import { Marker, Polyline } from "@react-google-maps/api";
 
 import { Context } from "../store/appContext";
 import { Comments } from "../component/comments";
-import posts from "../../img/posts.jpg";
 
 import "../../styles/cardDetails.css";
 
@@ -104,8 +103,17 @@ export const CardDetails = () => {
             </div>
 
             <div className="row justify-content-center mb-5">
-              <div className="col-6 col-sm-6 col-md-6">
-                <img src={posts} className="card-img-top" atl="" />
+
+              <div className="col-6">
+                <img
+                  src={
+                    post.post_image_url
+                      ? post.post_image_url
+                      : "https://placehold.co/500x500"
+                  }
+                  className="card-img-top"
+                  atl=""
+                />
               </div>
 
               <div className="col-6 col-sm-6 col-md-6">
@@ -196,7 +204,6 @@ export const CardDetails = () => {
               </div>
             </div>
 
-
             <div className="row justify-content-center">
               <div className="fake-button col-8 col-md-8 mb-5">
                 <div className="row mb-2">
@@ -211,7 +218,6 @@ export const CardDetails = () => {
             {/* <div className="row justify-content-center">
               <Comments />
             </div> */}
-
           </div>
         </div>
       )}
