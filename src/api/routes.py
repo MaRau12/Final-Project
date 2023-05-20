@@ -149,7 +149,9 @@ def create_new_post():
         # upload file to uploadcare
         result = cloudinary.uploader.upload(request.files['post_image'])
         # update the user with the given cloudinary image URL
-        post_image_url = result['secure_url']  
+        post_image_url = result['secure_url']
+    else:
+        post_image_url = 'https://placehold.co/500x500'
 
     post = Post(
         user_id = user_id_check,

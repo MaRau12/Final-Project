@@ -10,11 +10,13 @@ export const NewPost = () => {
   const navigate = useNavigate();
 
   const [validationErrors, setValidationErrors] = useState({});
+  const [error, setError] = useState(null);
+
   const [files, setFiles] = useState(null);
-  const [preView, setPreview] = useState(null);
 
   const [newPost, setNewPost] = useState({
     title: "",
+    post_image_url: null,
     country: "",
     from_location: {},
     to_location: {},
@@ -23,17 +25,6 @@ export const NewPost = () => {
     transports: [],
     description: "",
   });
-
-  useEffect(() => {
-    // create the preview
-    if (files != null && files.length > 0) {
-      const objectUrl = URL.createObjectURL(files[0]);
-      setPreview(objectUrl);
-
-      // free memory when ever this component is unmounted
-      return () => URL.revokeObjectURL(objectUrl);
-    }
-  }, [files]);
 
   function setFrom(city) {
     setNewPost({ ...newPost, from_location: city });
@@ -48,16 +39,22 @@ export const NewPost = () => {
       body.append("post_image", files[0]);
     }
     body.append("user_data", JSON.stringify(newPost));
-    const response = await fetch(process.env.BACKEND_URL + "/api/posts", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + sessionStorage.getItem("token"),
-      },
-      body: body,
-    });
-    if (response.ok) {
-      console.log("success");
-      navigate("/userprofile");
+    try {
+      const response = await fetch(process.env.BACKEND_URL + "/api/posts", {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+        body: body,
+      });
+      if (response.ok) {
+        console.log("success");
+        navigate("/userprofile");
+      } else {
+        setError("Error occurred during post request");
+      }
+    } catch (error) {
+      setError("Error occurred during post request");
     }
   }
 
@@ -65,26 +62,29 @@ export const NewPost = () => {
     const errors = {};
 
     if (newPost.title.trim() === "" || newPost.title.trim().length < 5) {
-      errors.title = "Title must have at least 5 characters";
+      errors.title = " Title must have at least 5 characters";
     }
     if (!newPost.country) {
-      errors.country = "Please select a country";
+      errors.country = " Please select a country";
     }
     if (
       !newPost.trip_duration ||
       isNaN(newPost.trip_duration) ||
       newPost.trip_duration <= 0
     ) {
-      errors.trip_duration = "Please enter a valid duration";
+      errors.trip_duration = " Please enter a valid duration";
     }
     if (!newPost.price || isNaN(newPost.price) || newPost.price <= 0) {
-      errors.price = "Please enter a valid price";
+      errors.price = " Please enter a valid price";
+    }
+    if (newPost.transports.length === 0) {
+      errors.transports = " Please select a transport method";
     }
     if (
       newPost.description.trim() === "" ||
       newPost.description.trim().length < 20
     ) {
-      errors.description = "Description must have at least 5 characters";
+      errors.description = " Description must have at least 20 characters";
     }
 
     setValidationErrors(errors);
@@ -116,84 +116,65 @@ export const NewPost = () => {
           </div>
         </div>
         <div className="row justify-content-center">
-          <div className="row justify-content-center m-0">
-            <div className="col-md-12">
-              <img
-                className="img-fluid img-thumbnail"
-                src={preView != null ? preView : "https://placehold.co/500x500"}
-                alt="..."
-                width={500}
-                height={500}
+          <div className="col-md-4 p-3">
+            <div className="row">
+              <label htmlFor="title" className="form-label">
+                Title
+              </label>
+            </div>
+            <div className="row">
+              <input
+                className="fake-input m-0"
+                type="text"
+                placeholder="My amazing trip!"
+                onChange={(e) => {
+                  setNewPost({ ...newPost, title: e.target.value });
+                  setValidationErrors((prevErrors) => ({
+                    ...prevErrors,
+                    title: "",
+                  }));
+                }}
               />
-              <div className="mb-3">
-                <input
-                  type="file"
-                  id={"upload-button"}
-                  style={{ display: "none" }}
-                  onChange={(e) => setFiles(e.target.files)}
-                />
-                <label htmlFor={"upload-button"}>
-                  <i
-                    className="fa-solid fa-circle-plus fa-2xl mp-0"
-                    style={{ marginRight: 10 }}
-                  />
-                </label>
-              </div>
             </div>
-            <div className="col-md-4 p-3">
-              <div className="row">
-                <label htmlFor="title" className="form-label">
-                  Title
-                </label>
+            {validationErrors.title && (
+              <div className="text-error">
+                <i className="fa-solid fa-triangle-exclamation"></i>
+                {validationErrors.title}
               </div>
-              <div className="row">
-                <input
-                  className="fake-input m-0"
-                  type="text"
-                  placeholder="My amazing trip!"
-                  onChange={(e) => {
-                    setNewPost({ ...newPost, title: e.target.value });
-                    setValidationErrors((prevErrors) => ({
-                      ...prevErrors,
-                      title: "",
-                    }));
-                  }}
-                />
-              </div>
-              {validationErrors.title && (
-                <div className="text-danger">{validationErrors.title}</div>
-              )}
-            </div>
+            )}
+          </div>
 
-            <div className="col-md-4 p-3">
-              <div className="row">
-                <label htmlFor="country" className="form-label">
-                  Country
-                </label>
-              </div>
-              <div className="row">
-                <select
-                  className="fake-input m-0"
-                  onChange={(e) => {
-                    setNewPost({ ...newPost, country: e.target.value });
-                    setValidationErrors((prevErrors) => ({
-                      ...prevErrors,
-                      country: "",
-                    }));
-                  }}
-                >
-                  {store.countries &&
-                    store.countries.map((country) => (
-                      <option key={country.id} value={country.id}>
-                        {country.name}
-                      </option>
-                    ))}
-                </select>
-              </div>
-              {validationErrors.country && (
-                <div className="text-danger">{validationErrors.country}</div>
-              )}
+          <div className="col-md-4 p-3">
+            <div className="row">
+              <label htmlFor="country" className="form-label">
+                Country
+              </label>
             </div>
+            <div className="row">
+              <select
+                className="fake-input m-0"
+                onChange={(e) => {
+                  setNewPost({ ...newPost, country: e.target.value });
+                  setValidationErrors((prevErrors) => ({
+                    ...prevErrors,
+                    country: "",
+                  }));
+                }}
+              >
+                {store.countries &&
+                  store.countries.map((country) => (
+                    <option key={country.id} value={country.id}>
+                      {country.name}
+                    </option>
+                  ))}
+              </select>
+            </div>
+            {validationErrors.country && (
+              <div className="text-error">
+                <i className="fa-solid fa-triangle-exclamation"></i>
+                {validationErrors.country}
+              </div>
+            )}
           </div>
 
           {/*  --------- MAP --------- */}
@@ -203,7 +184,7 @@ export const NewPost = () => {
             )}
           </div>
 
-          <div className="row justify-content-center m-0">
+          <div className="row justify-content-center mb-3">
             <div className="col-md-3 p-3">
               <div className="row">
                 <label className="form-label">Trip duration</label>
@@ -223,7 +204,8 @@ export const NewPost = () => {
                 />
               </div>
               {validationErrors.trip_duration && (
-                <div className="text-danger">
+                <div className="text-error">
+                  <i className="fa-solid fa-triangle-exclamation"></i>
                   {validationErrors.trip_duration}
                 </div>
               )}
@@ -248,7 +230,10 @@ export const NewPost = () => {
                 />
               </div>
               {validationErrors.price && (
-                <div className="text-danger">{validationErrors.price}</div>
+                <div className="text-error">
+                  <i className="fa-solid fa-triangle-exclamation"></i>
+                  {validationErrors.price}
+                </div>
               )}
             </div>
 
@@ -280,16 +265,33 @@ export const NewPost = () => {
                       >
                         <i className={transport.icon}></i>
                       </label>
-                      {validationErrors.transports && (
-                        <div className="text-danger">{error.transports}</div>
-                      )}
                     </div>
                   ))}
               </div>
+              {validationErrors.transports && (
+                <div className="text-error text-center">
+                  <i className="fa-solid fa-triangle-exclamation"></i>
+                  {validationErrors.transports}
+                </div>
+              )}
             </div>
           </div>
 
-          <div className="row g-3 justify-content-center mb-3">
+          <div className="col-10 col-md-6 col-lg-4">
+            <div className="row text-center">
+              <label className="form-label">Add picture</label>
+            </div>
+            <div className="row">
+              <input
+                type="file"
+                id={"upload-button"}
+                className="fake-input"
+                onChange={(e) => setFiles(e.target.files)}
+              />
+            </div>
+          </div>
+
+          <div className="row justify-content-center mb-3">
             <div className="col-md-8 p-3">
               <div className="row">
                 <label htmlFor="message" className="form-label">
@@ -309,7 +311,8 @@ export const NewPost = () => {
                   }}
                 ></textarea>
                 {validationErrors.description && (
-                  <div className="text-danger">
+                  <div className="text-error">
+                    <i className="fa-solid fa-triangle-exclamation"></i>
                     {validationErrors.description}
                   </div>
                 )}
@@ -318,6 +321,16 @@ export const NewPost = () => {
           </div>
         </div>
 
+        {error && (
+          <div className="row justify-content-center mb-3">
+            <div className="col-md-8">
+              <div className="text-error">
+                <i className="fa-solid fa-triangle-exclamation"></i>
+                {error}
+              </div>
+            </div>
+          </div>
+        )}
         <div className="row justify-content-center">
           <div className="col-3 col-sm-3 col-md-2 p-3">
             <Link to={"/userprofile"}>

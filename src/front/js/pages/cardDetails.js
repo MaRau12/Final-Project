@@ -103,7 +103,6 @@ export const CardDetails = () => {
             </div>
 
             <div className="row justify-content-center mb-5">
-
               <div className="col-6">
                 <img
                   src={

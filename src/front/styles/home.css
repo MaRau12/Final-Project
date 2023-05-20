@@ -250,3 +250,10 @@ label {
 .divider {
   border-right: 2px dashed rgb(46, 46, 46);
 }
+
+.text-error {
+  color: #ffffff;
+}
+.fa-triangle-exclamation {
+  color: #ff0800;
+}
