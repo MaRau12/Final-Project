@@ -9,7 +9,7 @@ export const CountriesScroll = () => {
 
   return (
     <div className="container">
-      <div className="scroll d-flex justify-content-center my-3">
+      <div className="scroll d-flex justify-content-center my-3 overflow-auto">
         {countries &&
           countries.map((country) => {
             if (

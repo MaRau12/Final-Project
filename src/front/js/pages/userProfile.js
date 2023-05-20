@@ -4,21 +4,24 @@ import { Context } from "../store/appContext";
 import rigoImage from "../../img/rigo-baby.jpg";
 import posts from "../../img/posts.jpg";
 import album from "../../img/album.jpg";
+import deepSea from "../../img/deepSea.jpg";
+import desert from "../../img/desert.jpg";
+
 
 import { Card } from "../component/card";
 
-
 export const UserProfile = () => {
+ 
   const { store, actions } = useContext(Context);
   const [preView, setPreview] = useState(null);
 
+
   return store.currentUser ? (
     <div className="container ">
-      <div className="container bg-light ">
-
-        <div className="row bg-white m-5 shadow p-3 mb-5 bg-body rounded">
+      <div className="container bg-light py-1">
+        
+        <div className="row color-bg-primary m-5 shadow p-3 mb-5  rounded">
           <div className="col-md-4 float-start ">
-
             <div
               className="ratio ratio-1x1 rounded-circle overflow-hidden p-5 mx-auto"
               style={{ width: "14rem" }}
@@ -34,16 +37,20 @@ export const UserProfile = () => {
                 className="card-img-top rounded-circle"
                 alt=""
               />
+              
             </div>
-
-            <h3>{store.currentUser.user_name}</h3>
-            <p>{store.currentUser.description}</p>
+   
           </div>
-          <div className="col-4 p-3">
-
-            <div className="nametag">
-            <ul className="list-group list-group-flush color-bg-primary">
-             
+          <div className="col-md-8">
+          <div className="row  nametag ">
+            <div className="col divider">
+            <p>{store.currentUser.description}</p>
+            </div>
+            <div className="col">
+            <ul className="list-group list-group-flush ">
+              <li className="list-groupt-item">
+                Name: {store.currentUser.full_name}
+              </li>
               <li className="list-group-item">
                 Email: {store.currentUser.email}
               </li>
@@ -55,25 +62,49 @@ export const UserProfile = () => {
               </li>
             </ul>
             </div>
-
           </div>
-          <div className="col-4 p-3">
-            <h6>Album</h6>
-            <Link to="/album">
-              <img
-                src={album}
-                className="card-img-top "
-                style={{ width: "12rem" }}
-                atl=""
-              />
+           </div>
+          </div>
+
+
+        <div> {/* placeholder scroll for album Images*/}
+        <div className="button" >
+          <Link to="/album"> Album
             </Link>
+        </div>
+        
+          <div className="scroll d-flex justify-content-center my-3 overflow-auto">
+          <img
+                src={album}
+                alt="..."
+                class="img-thumbnail"
+                style={{ width: "18rem" }}
+              />
+              <img
+                src={posts}
+                alt="..."
+                class="img-thumbnail"
+                style={{ width: "18rem" }}
+              />
+              <img
+                src={desert}
+                alt="..."
+                class="img-thumbnail"
+                style={{ width: "18rem" }}
+              />
+              <img
+                src={deepSea}
+                alt="..."
+                class="img-thumbnail"
+                style={{ width: "18rem" }}
+              />
           </div>
         </div>
 
         <div className="row p-5">
           <h3>Your favorites:</h3>
         </div>
-        <div className="row row-cols-6 g-3 m-5">
+        <div className="row row-cols-sm-2 row-cols-md-2 row-cols-lg-3 g-5 h-100 ">
           {store.currentUser.favorites &&
             store.currentUser.favorites.map((favorite) => (
               <Card key={favorite.id} post={favorite.post} />
@@ -88,7 +119,7 @@ export const UserProfile = () => {
             </button>
           </Link>
         </div>
-        <div className="row row-cols-sm-2 row-cols-md-2 row-cols-lg-4 g-5 m-5">
+        <div className="row row-cols-sm-2 row-cols-md-2 row-cols-lg-3 g-5 h-100">
           {store.currentUser.post &&
             store.currentUser.post.map((post) => (
               <Card key={post.id} post={post} />
@@ -116,5 +147,6 @@ export const UserProfile = () => {
                 City: {store.currentUser.city}
               </li>
             </ul>
-
+         
+            <p>{store.currentUser.description}</p>
             */

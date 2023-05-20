@@ -38,11 +38,6 @@ nav {
   }
 }
 
-/*
-    All pages share the styles on index.css but you should create 
-    one more css for each page that will contain the selected used 
-    on that page only (the ones not reused in other pages).
-*/
 @media (min-width: 992px) {
   /* Adjust font size for large screens */
   .navbar-brand {
@@ -170,6 +165,8 @@ nav {
   --hover: #7d4432;
 }
 
+
+
 /* .fake-button {
   --color: #d3c5bd;
   --hover: #b07443;
@@ -229,31 +226,20 @@ label {
 
 /*-----nametag------*/
 .nametag {
-  padding: 1em;
-  border: 16px solid transparent;
-  border-image: 16
-    repeating-linear-gradient(
-      -45deg,
-      red 0,
-      red 1em,
-      transparent 0,
-      transparent 2em,
-      #58a 0,
-      #58a 3em,
-      transparent 0,
-      transparent 4em
-    );
 
-  max-width: 20em;
-  font: 100%/1.6 Baskerville, Palatino, serif;
+	padding: 1em;
+	border: 12px solid transparent;
+	border-image: 16 repeating-linear-gradient(-45deg, red 0, red 1em, transparent 0, transparent 2em,
+	              #58a 0, #58a 3em, transparent 0, transparent 4em);
+	
+	/*max-width: 20em;*/
+	font: 100%/1.6 Baskerville, Palatino, serif;
 }
 
-.list-group {
-  background-color: #d3c5bd;
+.list-group{
+   background-color: #d3c5bd
 }
 
-.heart:hover,
-.raise:focus {
-  text-shadow: 0 0.5em 0.5em -0.4em var(--hover);
-  transform: translateY(-0.25em);
-}
+.divider {
+  border-right: 2px dashed rgb(46, 46, 46);
+  

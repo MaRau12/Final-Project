@@ -101,8 +101,9 @@ const getState = ({ getStore, getActions, setStore }) => {
           options
         );
         if (response.ok) {
-          await getActions().getCurrentUser();
+          return true;
         }
+        return false;
       },
 
       editPost: async (editedPost) => {

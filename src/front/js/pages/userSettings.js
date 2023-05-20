@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
+import { useNavigate } from "react-router-dom";
 
 export const UserSettings = () => {
+  const navigate = useNavigate();
   const { store, actions } = useContext(Context);
   const [userData, setUserData] = useState({
     full_name: "",
@@ -52,6 +54,7 @@ export const UserSettings = () => {
         console.log("user update fetch");
       }
     } else alert("Passwords do not match");
+    navigate("/userprofile");
   };
 
   return (
