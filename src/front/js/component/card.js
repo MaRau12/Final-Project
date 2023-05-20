@@ -16,7 +16,7 @@ export const Card = ({ post }) => {
               ? post.post_image_url
               : "https://placehold.co/500x500"
           }
-          className="card-img-top position-relative"
+          className="card-img-top position-relative card-component"
           atl=""
         />
         <div>
@@ -36,7 +36,7 @@ export const Card = ({ post }) => {
                   id={"staticBackdrop" + post.id}
                   data-bs-backdrop="static"
                   data-bs-keyboard="false"
-                  tabindex="-1"
+                  tabIndex="-1"
                   aria-labelledby="staticBackdropLabel"
                   aria-hidden="true"
                 >
