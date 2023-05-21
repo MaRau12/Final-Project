@@ -1,21 +1,22 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import { GoogleMap, LoadScript } from "@react-google-maps/api";
 import { Marker, Polyline } from "@react-google-maps/api";
 
 import { Context } from "../store/appContext";
+import { Jumbotron } from "../component/jumbotron";
 import { Comments } from "../component/comments";
 
-import "../../styles/cardDetails.css";
-
 export const CardDetails = () => {
-  const { store } = useContext(Context);
+  const { store, actions } = useContext(Context);
   const params = useParams();
 
   const [post, setPost] = useState();
-
   const [userName, setUserName] = useState("");
+  const [comment, setComment] = useState("");
+  const [error, setError] = useState(null);
 
   const mapStyle = {
     containerStyle: {
@@ -38,7 +39,6 @@ export const CardDetails = () => {
       zIndex: 1,
     },
   };
-
   const pointers = post
     ? [
         {
@@ -89,57 +89,89 @@ export const CardDetails = () => {
     navigate(-1);
   };
 
+  const postComment = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch(process.env.BACKEND_URL + "/api/comments", {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          post_id: post.id,
+          date: new Date().toISOString(),
+          comment: comment,
+        }),
+      });
+      if (response.ok) {
+        // Clear the comment input field
+        setComment("");
+        setError(null);
+        actions.getAllPosts();
+      } else {
+        setError("An error occurred while posting the comment.");
+        console.error(error);
+      }
+    } catch (error) {
+      // Handle the error (e.g., display error message)
+      setError("An error occurred while posting the comment.");
+      console.error(error);
+    }
+  };
+
   return (
     <>
+      <Jumbotron />
       {post && (
-        <div className="img-bg">
-          <div className="container primary">
-            <div className="row mb-3 pt-3">
-              <div className="">
-                <button type="button" className="slide p-2" onClick={goBack}>
-                  Go Back
-                </button>
-              </div>
+        <div className="container bg-light bg-gradient rounded">
+          <div className="row mb-3 pt-3">
+            <div className="">
+              <button type="button" className="slide p-2" onClick={goBack}>
+                Go Back
+              </button>
             </div>
+          </div>
 
-            <div className="row justify-content-center mb-5">
-              <div className="col-6">
-                <img
-                  src={
-                    post.post_image_url
-                      ? post.post_image_url
-                      : "https://placehold.co/500x500"
-                  }
-                  className="card-img-top"
-                  atl=""
-                />
-              </div>
-
-              <div className="col-6 col-sm-6 col-md-6">
-                <LoadScript
-                  googleMapsApiKey="AIzaSyA2oagV6knZYw4D3oN41bpT6dRB16ytOr0"
-                  containerStyle={{
-                    height: "100%",
-                    width: "100%",
-                    overflow: "visible",
-                  }}
+          <div className="row justify-content-center mb-5">
+            <div className="col-6">
+              <img
+                src={
+                  post.post_image_url
+                    ? post.post_image_url
+                    : "https://placehold.co/500x500"
+                }
+                className="card-img-top"
+                atl=""
+              />
+            </div>
+            <div className="col-6 col-sm-6 col-md-6">
+              <LoadScript
+                googleMapsApiKey="AIzaSyA2oagV6knZYw4D3oN41bpT6dRB16ytOr0"
+                containerStyle={{
+                  height: "100%",
+                  width: "100%",
+                  overflow: "visible",
+                }}
+              >
+                <GoogleMap
+                  mapContainerStyle={mapStyle.containerStyle}
+                  center={pointers[0].center}
+                  zoom={6}
                 >
-                  <GoogleMap
-                    mapContainerStyle={mapStyle.containerStyle}
-                    center={pointers[0].center}
-                    zoom={6}
-                  >
-                    <Marker position={pointers[1].path[0]} />
-                    <Marker position={pointers[1].path[1]} />
-                    <Polyline
-                      path={pointers[1].path}
-                      options={mapStyle.lineOptions}
-                    />
-                  </GoogleMap>
-                </LoadScript>
-              </div>
+                  <Marker position={pointers[1].path[0]} />
+                  <Marker position={pointers[1].path[1]} />
+                  <Polyline
+                    path={pointers[1].path}
+                    options={mapStyle.lineOptions}
+                  />
+                </GoogleMap>
+              </LoadScript>
             </div>
+          </div>
 
+          <div className="post-details row color-bg-secondary color-white py-5 mb-5">
             <div className="row justify-content-center mb-3">
               <div className="title col-8 text-center">
                 <h1 className="color-primary m-0">
@@ -150,11 +182,11 @@ export const CardDetails = () => {
 
             <div className="row justify-content-center mb-3">
               <div className="col-7 col-sm-7 col-md-5">
-                <div className="box box-primary w-70 align-items-stretch d-flex pe-3 pb-1">
+                <div className="box w-70 align-items-stretch d-flex pe-3 pb-1">
                   {post.transports.map((transport) => (
                     <div
                       key={transport.id}
-                      className="icon icon-left icon-primary d-flex align-items-center justify-content-center me-1"
+                      className="icon icon-left color-blue d-flex align-items-center justify-content-center me-1"
                     >
                       <i className={transport.icon}></i>
                     </div>
@@ -170,7 +202,7 @@ export const CardDetails = () => {
             <div className="row justify-content-center mb-3">
               <div className="col-5 col-sm-4 col-md-3 col-lg-2">
                 <div className="box box-white w-70 align-items-stretch d-flex pe-3 pb-1">
-                  <div className="icon icon-left icon-quarternary d-flex align-items-center justify-content-center">
+                  <div className="icon icon-left color-red d-flex align-items-center justify-content-center">
                     <i className="fa-solid fa-heart"></i>
                   </div>
                   <div className="text text-right">
@@ -181,7 +213,7 @@ export const CardDetails = () => {
               </div>
               <div className="col-5 col-sm-4 col-md-3 col-lg-2">
                 <div className="box box-white w-70 align-items-stretch d-flex pe-3 pb-1">
-                  <div className="icon icon-left icon-tertiary d-flex align-items-center justify-content-center">
+                  <div className="icon icon-left color-green d-flex align-items-center justify-content-center">
                     <i className="fa-solid fa-euro-sign"></i>
                   </div>
                   <div className="text text-right">
@@ -192,7 +224,7 @@ export const CardDetails = () => {
               </div>
               <div className="col-5 col-sm-4 col-md-3 col-lg-2">
                 <div className="box box-white w-70 align-items-stretch d-flex pe-3 pb-1">
-                  <div className="icon icon-left icon-secondary d-flex align-items-center justify-content-center">
+                  <div className="icon icon-left color-orange d-flex align-items-center justify-content-center">
                     <i className="fa-solid fa-clock"></i>
                   </div>
                   <div className="text text-right">
@@ -204,7 +236,7 @@ export const CardDetails = () => {
             </div>
 
             <div className="row justify-content-center">
-              <div className="fake-button col-8 col-md-8 mb-5">
+              <div className="fake-button col-8 col-md-8">
                 <div className="row mb-2">
                   <span className="color-primary">@ {userName}</span>
                 </div>
@@ -213,11 +245,58 @@ export const CardDetails = () => {
                 </div>
               </div>
             </div>
-
-            {/* <div className="row justify-content-center">
-              <Comments />
-            </div> */}
           </div>
+
+          <div className="row justify-content-center pb-5">
+            <div className="comments-container col-8 col-md-8 p-3 bg-body">
+              <div className="title text-center mb-2">
+                <h2 className="color-primary m-0">Comments</h2>
+              </div>
+              <div
+                className="comments-scroll"
+                style={{ maxHeight: "300px", overflow: "auto" }}
+              >
+                {post.comments &&
+                  post.comments.map((comment) => (
+                    <Comments key={comment.id} comments={comment} />
+                  ))}
+              </div>
+            </div>
+          </div>
+
+          {store.currentUser.id && (
+            <div className="row justify-content-center pb-5">
+              <div className="col-8 color-bg-primary rounded p-3">
+                <div className="row align-items-center p-0">
+                  <div className="col-md-9">
+                    <div className="comment-text">
+                      <textarea
+                        className="col-12 comment-box p-3"
+                        value={comment}
+                        rows={5}
+                        onChange={(e) => setComment(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="comment-image text-center col-md-3">
+                    <img
+                      src={
+                        store.currentUser.profile_image_url != null
+                          ? store.currentUser.profile_image_url
+                          : "https://placehold.co/500x500"
+                      }
+                    />
+                  </div>
+                </div>
+                {error && <div>{error}</div>}
+                <div className="row px-3 pt-2">
+                  <button className="m-0" onClick={postComment}>
+                    Post Your Comment
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </>
