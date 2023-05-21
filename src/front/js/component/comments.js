@@ -1,124 +1,60 @@
-import React, { useContext } from "react";
-import { Context } from "../store/appContext";
+import React, { useEffect, useState } from "react";
 
-import "../../styles/comments.css";
+export const Comments = ({ comments }) => {
+  const [user, setUser] = useState(null);
 
-export const Comments = () => {
+  const dateParts = comments.date.split(" ");
+  const formattedDate = dateParts.slice(1, 4).join(" ");
+  const formattedTime = dateParts[4].slice(0, 5);
+
+  const fetchUserName = async () => {
+    try {
+      const response = await fetch(
+        process.env.BACKEND_URL + `/api/users/${comments.commenting_user_id}`
+      );
+      const data = await response.json();
+      const name =
+        data.user.user_name.charAt(0).toUpperCase() +
+        data.user.user_name.slice(1);
+      setUser({ ...user, name: name, img: data.user.img, id: data.user.id });
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserName();
+  }, []);
+
   return (
-    <div class="comments-container">
-      <h1>Comments</h1>
-
-      <ul id="comments-list" class="comments-list">
-        <li>
-          <div class="comment-main-level">
-            {/* <!-- Avatar --> */}
-            <div class="comment-avatar">
-              <img
-                src="http://i9.photobucket.com/albums/a88/creaticode/avatar_1_zps8e1c80cd.jpg"
-                alt=""
-              />
+    <>
+      {user && (
+        <div className="row justify-content-between py-2 m-2">
+          <div className="comment-image text-center col-md-3 mb-2">
+            <img
+              src={user.img != null ? user.img : "https://placehold.co/500x500"}
+            />
+          </div>
+          <div className="comment-box col-md-8">
+            <div className="row justify-content-between align-items-center mt-2">
+              <div className="col-4">
+                <span className="comment-tag">@ {user.name} </span>
+              </div>
+              <div className="col-6 text-end me-2">
+                <div className="row">
+                  <span>{formattedTime}</span>
+                </div>
+                <div className="row">
+                  <span>{formattedDate}</span>
+                </div>
+              </div>
             </div>
-            {/* <!-- Contenedor del Comentario --> */}
-            <div class="comment-box">
-              <div class="comment-head">
-                <h6 class="comment-name by-author">
-                  <a href="http://creaticode.com/blog">Agustin Ortiz</a>
-                </h6>
-                <span>hace 20 minutos</span>
-                <i class="fa fa-reply"></i>
-                <i class="fa fa-heart"></i>
-              </div>
-              <div class="comment-content">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit
-                omnis animi et iure laudantium vitae, praesentium optio,
-                sapiente distinctio illo?
-              </div>
+            <div className="comment-text pt-2 ps-2">
+              <p>{comments.comment}</p>
             </div>
           </div>
-          {/* <!-- Respuestas de los comentarios --> */}
-          <ul class="comments-list reply-list">
-            <li>
-              {/* <!-- Avatar --> */}
-              <div class="comment-avatar">
-                <img
-                  src="http://i9.photobucket.com/albums/a88/creaticode/avatar_2_zps7de12f8b.jpg"
-                  alt=""
-                />
-              </div>
-              {/* <!-- Contenedor del Comentario --> */}
-              <div class="comment-box">
-                <div class="comment-head">
-                  <h6 class="comment-name">
-                    <a href="http://creaticode.com/blog">Lorena Rojero</a>
-                  </h6>
-                  <span>hace 10 minutos</span>
-                  <i class="fa fa-reply"></i>
-                  <i class="fa fa-heart"></i>
-                </div>
-                <div class="comment-content">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Velit omnis animi et iure laudantium vitae, praesentium optio,
-                  sapiente distinctio illo?
-                </div>
-              </div>
-            </li>
-
-            <li>
-              {/* <!-- Avatar --> */}
-              <div class="comment-avatar">
-                <img
-                  src="http://i9.photobucket.com/albums/a88/creaticode/avatar_1_zps8e1c80cd.jpg"
-                  alt=""
-                />
-              </div>
-              {/* <!-- Contenedor del Comentario --> */}
-              <div class="comment-box">
-                <div class="comment-head">
-                  <h6 class="comment-name by-author">
-                    <a href="http://creaticode.com/blog">Agustin Ortiz</a>
-                  </h6>
-                  <span>hace 10 minutos</span>
-                  <i class="fa fa-reply"></i>
-                  <i class="fa fa-heart"></i>
-                </div>
-                <div class="comment-content">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Velit omnis animi et iure laudantium vitae, praesentium optio,
-                  sapiente distinctio illo?
-                </div>
-              </div>
-            </li>
-          </ul>
-        </li>
-
-        <li>
-          <div class="comment-main-level">
-            {/* <!-- Avatar --> */}
-            <div class="comment-avatar">
-              <img
-                src="http://i9.photobucket.com/albums/a88/creaticode/avatar_2_zps7de12f8b.jpg"
-                alt=""
-              />
-            </div>
-            {/* <!-- Contenedor del Comentario --> */}
-            <div class="comment-box">
-              <div class="comment-head">
-                <h6 class="comment-name">
-                  <a href="http://creaticode.com/blog">Lorena Rojero</a>
-                </h6>
-                <span>hace 10 minutos</span>
-                <i class="fa fa-reply"></i>
-                <i class="fa fa-heart"></i>
-              </div>
-              <div class="comment-content">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit
-                omnis animi et iure laudantium vitae, praesentium optio,
-                sapiente distinctio illo?
-              </div>
-            </div>
-          </div>
-        </li>
-      </ul>
-    </div>
+        </div>
+      )}
+    </>
   );
 };

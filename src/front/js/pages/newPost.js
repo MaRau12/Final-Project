@@ -6,7 +6,7 @@ import { Context } from "../store/appContext";
 import { Map } from "../component/map";
 
 export const NewPost = () => {
-  const { store } = useContext(Context);
+  const { store, actions } = useContext(Context);
   const navigate = useNavigate();
 
   const [validationErrors, setValidationErrors] = useState({});
@@ -49,6 +49,7 @@ export const NewPost = () => {
       });
       if (response.ok) {
         console.log("success");
+        actions.getAllPosts();
         navigate("/userprofile");
       } else {
         setError("Error occurred during post request");
@@ -101,7 +102,7 @@ export const NewPost = () => {
 
   return (
     <div className="img-bg">
-      <div className="container primary">
+      <div className="container color-bg-secondary-trans">
         <div className="row mb-3 pt-3">
           <div>
             <button type="button" className="slide p-2" onClick={goBack}>
@@ -334,7 +335,7 @@ export const NewPost = () => {
         <div className="row justify-content-center">
           <div className="col-3 col-sm-3 col-md-2 p-3">
             <Link to={"/userprofile"}>
-              <button className="raise color-danger">Delete</button>
+              <button className="raise color-red">Delete</button>
             </Link>
           </div>
           <div className="col-3 col-sm-3 col-md-2 p-3">

@@ -36,7 +36,8 @@ class User(db.Model):
         return {
             "id": self.id,
             "user_name": self.user_name,
-            "country": self.country
+            "country": self.country,
+            "img":self.profile_image_url
         }
 
 transports = db.Table('post_transport',
@@ -78,7 +79,8 @@ class Post(db.Model):
             "from_location": self.from_city.serialize(),
             "to_location": self.to_city.serialize(),
             "transports": [transport.serialize_transport_bis() for transport in self.transports],
-            "likes": len(self.favorites)
+            "likes": len(self.favorites),
+            "comments": [comment.serialize() for comment in self.comments]
         }
 
     def serialize_post_bis(self):
@@ -93,7 +95,7 @@ class Post(db.Model):
             "transports": [transport.serialize_transport_bis() for transport in self.transports],
             "from_location": self.from_city.serialize(),
             "to_location": self.to_city.serialize(),
-            "transports": [transport.serialize_transport_bis() for transport in self.transports]
+            "transports": [transport.serialize_transport_bis() for transport in self.transports],
         }
 
 class Transport(db.Model):
@@ -160,7 +162,7 @@ class City(db.Model):
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     post_id = db.Column(db.Integer(), db.ForeignKey('post.id'), nullable=False)
-    commenting_user_id = db.Column(db.Integer(), unique=True, nullable=False)
+    commenting_user_id = db.Column(db.Integer(), unique=False, nullable=False)
     date = db.Column(db.DateTime(), unique=False, nullable=False)
     comment = db.Column(db.String(), unique=True, nullable=False)
 
