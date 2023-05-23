@@ -23,25 +23,25 @@ export const Album = () => {
               <img
                 src={album}
                 alt="..."
-                class="img-thumbnail"
+                className="img-thumbnail"
                 style={{ width: "18rem" }}
               />
               <img
                 src={posts}
                 alt="..."
-                class="img-thumbnail"
+                className="img-thumbnail"
                 style={{ width: "18rem" }}
               />
               <img
                 src={desert}
                 alt="..."
-                class="img-thumbnail"
+                className="img-thumbnail"
                 style={{ width: "18rem" }}
               />
               <img
                 src={deepSea}
                 alt="..."
-                class="img-thumbnail"
+                className="img-thumbnail"
                 style={{ width: "18rem" }}
               />
             </div>

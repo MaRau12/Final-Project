@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
 
 import { GoogleMap, LoadScript } from "@react-google-maps/api";
 import { Marker, Polyline } from "@react-google-maps/api";

@@ -50,6 +50,7 @@ export const NewPost = () => {
       if (response.ok) {
         console.log("success");
         actions.getAllPosts();
+        actions.getCurrentUser();
         navigate("/userprofile");
       } else {
         setError("Error occurred during post request");
