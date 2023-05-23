@@ -7,19 +7,15 @@ import album from "../../img/album.jpg";
 import deepSea from "../../img/deepSea.jpg";
 import desert from "../../img/desert.jpg";
 
-
 import { Card } from "../component/card";
 
 export const UserProfile = () => {
- 
   const { store, actions } = useContext(Context);
   const [preView, setPreview] = useState(null);
-
 
   return store.currentUser ? (
     <div className="container ">
       <div className="container bg-light py-1">
-        
         <div className="row color-bg-primary m-5 shadow p-3 mb-5  rounded">
           <div className="col-md-4 float-start ">
             <div
@@ -37,67 +33,64 @@ export const UserProfile = () => {
                 className="card-img-top rounded-circle"
                 alt=""
               />
-              
             </div>
-   
           </div>
           <div className="col-md-8">
-          <div className="row  nametag ">
-            <div className="col divider">
-            <p>{store.currentUser.description}</p>
-            </div>
-            <div className="col">
-            <ul className="list-group list-group-flush ">
-              <li className="list-groupt-item">
-                Name: {store.currentUser.full_name}
-              </li>
-              <li className="list-group-item">
-                Email: {store.currentUser.email}
-              </li>
-              <li className="list-group-item">
-                Country: {store.currentUser.country}
-              </li>
-              <li className="list-group-item">
-                City: {store.currentUser.city}
-              </li>
-            </ul>
+            <div className="row  nametag ">
+              <div className="col divider">
+                <p>{store.currentUser.description}</p>
+              </div>
+              <div className="col">
+                <ul className="list-group list-group-flush ">
+                  <li className="list-groupt-item">
+                    Name: {store.currentUser.full_name}
+                  </li>
+                  <li className="list-group-item">
+                    Email: {store.currentUser.email}
+                  </li>
+                  <li className="list-group-item">
+                    Country: {store.currentUser.country}
+                  </li>
+                  <li className="list-group-item">
+                    City: {store.currentUser.city}
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
-           </div>
-          </div>
-
-
-        <div> {/* placeholder scroll for album Images*/}
-        <div className="button" >
-          <Link to="/album"> Album
-            </Link>
         </div>
-        
+
+        <div>
+          {" "}
+          {/* placeholder scroll for album Images*/}
+          <div className="button">
+            <Link to="/album"> Album</Link>
+          </div>
           <div className="scroll d-flex justify-content-center my-3 overflow-auto">
-          <img
-                src={album}
-                alt="..."
-                class="img-thumbnail"
-                style={{ width: "18rem" }}
-              />
-              <img
-                src={posts}
-                alt="..."
-                class="img-thumbnail"
-                style={{ width: "18rem" }}
-              />
-              <img
-                src={desert}
-                alt="..."
-                class="img-thumbnail"
-                style={{ width: "18rem" }}
-              />
-              <img
-                src={deepSea}
-                alt="..."
-                class="img-thumbnail"
-                style={{ width: "18rem" }}
-              />
+            <img
+              src={album}
+              alt="..."
+              className="img-thumbnail"
+              style={{ width: "18rem" }}
+            />
+            <img
+              src={posts}
+              alt="..."
+              className="img-thumbnail"
+              style={{ width: "18rem" }}
+            />
+            <img
+              src={desert}
+              alt="..."
+              className="img-thumbnail"
+              style={{ width: "18rem" }}
+            />
+            <img
+              src={deepSea}
+              alt="..."
+              className="img-thumbnail"
+              style={{ width: "18rem" }}
+            />
           </div>
         </div>
 

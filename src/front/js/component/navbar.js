@@ -145,10 +145,13 @@ export const Navbar = () => {
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            Profile img
+            Welcome{" "}
+            {store.currentUser.user_name.charAt(0).toUpperCase() +
+              store.currentUser.user_name.slice(1)}
+            !
           </button>
           <ul className="dropdown-menu">
-            <li>
+            {/* <li>
               <Link className="dropdown-item" to="/userprofile">
                 Welcome{" "}
                 {store.currentUser.user_name.charAt(0).toUpperCase() +
@@ -158,7 +161,7 @@ export const Navbar = () => {
             </li>
             <li>
               <hr className="dropdown-divider" />
-            </li>
+            </li> */}
             <li>
               <Link className="dropdown-item" to="/userprofile">
                 Profile
